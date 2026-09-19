@@ -10,6 +10,7 @@ import ProductFormModal from '@/components/ProductFormModal.vue'
 import CookModal from '@/components/CookModal.vue'
 import EatModal from '@/components/EatModal.vue'
 import NutritionView from '@/views/NutritionView.vue'
+import ChefView from '@/views/ChefView.vue'
 import {
   Refrigerator,
   LogOut,
@@ -31,8 +32,8 @@ const authStore = useAuthStore()
 const productStore = useProductStore()
 const nutritionStore = useNutritionStore()
 
-// Navigation tab: 'fridge' | 'nutrition'
-const currentTab = ref<'fridge' | 'nutrition'>('fridge')
+// Navigation tab: 'fridge' | 'nutrition' | 'chef'
+const currentTab = ref<'fridge' | 'nutrition' | 'chef'>('fridge')
 
 const isCreatingFridge = ref(false)
 const newFridgeName = ref('')
@@ -172,7 +173,7 @@ async function handleEat(portions: number, mealType: string) {
           <button
             @click="currentTab = 'fridge'"
             :class="[
-              'px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all',
+              'px-3 py-1.5 rounded-xl text-xs font-medium transition-all',
               currentTab === 'fridge'
                 ? 'bg-white text-stone-800 shadow-xs'
                 : 'text-stone-500 hover:text-stone-700'
@@ -183,7 +184,7 @@ async function handleEat(portions: number, mealType: string) {
           <button
             @click="currentTab = 'nutrition'"
             :class="[
-              'px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5',
+              'px-3 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5',
               currentTab === 'nutrition'
                 ? 'bg-white text-stone-800 shadow-xs'
                 : 'text-stone-500 hover:text-stone-700'
@@ -191,6 +192,18 @@ async function handleEat(portions: number, mealType: string) {
           >
             <Activity class="w-3.5 h-3.5 text-emerald-600" />
             <span>Щоденник</span>
+          </button>
+          <button
+            @click="currentTab = 'chef'"
+            :class="[
+              'px-3 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5',
+              currentTab === 'chef'
+                ? 'bg-white text-stone-800 shadow-xs'
+                : 'text-stone-500 hover:text-stone-700'
+            ]"
+          >
+            <Sparkles class="w-3.5 h-3.5 text-teal-600" />
+            <span>AI Шеф</span>
           </button>
         </div>
 
@@ -303,7 +316,10 @@ async function handleEat(portions: number, mealType: string) {
             <div class="text-base sm:text-lg font-semibold text-amber-700">{{ productStore.stats.expiringSoon }}</div>
           </div>
 
-          <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-stone-200/60 text-center shadow-sm">
+          <div
+            @click="currentTab = 'chef'"
+            class="bg-white p-3.5 sm:p-4 rounded-2xl border border-stone-200/60 text-center shadow-sm cursor-pointer hover:border-teal-200 hover:bg-teal-50/20 transition-all"
+          >
             <div class="w-8 h-8 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center mx-auto mb-1.5">
               <Sparkles class="w-4 h-4" />
             </div>
@@ -410,6 +426,11 @@ async function handleEat(portions: number, mealType: string) {
       <!-- NUTRITION TAB -->
       <div v-else-if="currentTab === 'nutrition'">
         <NutritionView />
+      </div>
+
+      <!-- CHEF TAB -->
+      <div v-else-if="currentTab === 'chef'">
+        <ChefView />
       </div>
     </main>
 

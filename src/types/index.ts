@@ -138,6 +138,55 @@ export interface TokenResult {
   refresh_token: string
 }
 
+export interface RecipeIngredient {
+  name: string
+  quantity: number
+  unit: string
+  category: string
+  in_fridge: boolean
+}
+
+export interface Recipe {
+  title: string
+  description: string
+  prep_time_mins: number
+  cook_time_mins: number
+  servings: number
+  calories: number
+  protein_grams: number
+  fat_grams: number
+  carbs_grams: number
+  ingredients: RecipeIngredient[]
+  steps: string[]
+}
+
+export interface ShoppingSuggestion {
+  name: string
+  quantity: number
+  unit: string
+  category: string
+}
+
+export interface ChatMessage {
+  role: 'user' | 'assistant'
+  content: string
+  recipe?: Recipe
+  shopping_suggestions?: ShoppingSuggestion[]
+}
+
+export interface ChatRequest {
+  message: string
+  history?: { role: string; content: string }[]
+  dietary_preference?: string
+  language?: string
+}
+
+export interface ChatResponse {
+  reply: string
+  recipe?: Recipe
+  shopping_suggestions?: ShoppingSuggestion[]
+}
+
 export interface APIResponse<T> {
   success: boolean
   data?: T
@@ -146,3 +195,4 @@ export interface APIResponse<T> {
     message: string
   }
 }
+
