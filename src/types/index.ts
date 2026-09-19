@@ -196,3 +196,74 @@ export interface APIResponse<T> {
   }
 }
 
+export interface ShoppingItem {
+  id: string
+  fridge_id: string
+  name: string
+  category: string
+  quantity: number
+  unit: string
+  is_bought: boolean
+  created_by: string
+  created_at: string
+  updated_at: string
+}
+
+export interface ShoppingSummary {
+  items: ShoppingItem[]
+  total_count: number
+  bought_count: number
+  left_count: number
+}
+
+export interface CreateShoppingItemInput {
+  name: string
+  category?: string
+  quantity?: number
+  unit?: string
+  is_bought?: boolean
+}
+
+export interface SavedRecipe {
+  id: string
+  user_id: string
+  fridge_id?: string
+  title: string
+  description: string
+  ingredients: {
+    name: string
+    amount: number
+    unit: string
+    in_fridge?: boolean
+  }[]
+  steps: string[]
+  calories: number
+  protein: number
+  fat: number
+  carbs: number
+  prep_time_mins: number
+  cook_time_mins: number
+  servings: number
+  created_at: string
+}
+
+export interface CreateSavedRecipeInput {
+  title: string
+  description: string
+  ingredients: {
+    name: string
+    amount: number
+    unit: string
+    in_fridge?: boolean
+  }[]
+  steps: string[]
+  calories: number
+  protein: number
+  fat: number
+  carbs: number
+  prep_time_mins: number
+  cook_time_mins: number
+  servings: number
+}
+
+

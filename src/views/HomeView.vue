@@ -11,6 +11,8 @@ import CookModal from '@/components/CookModal.vue'
 import EatModal from '@/components/EatModal.vue'
 import NutritionView from '@/views/NutritionView.vue'
 import ChefView from '@/views/ChefView.vue'
+import ShoppingView from '@/views/ShoppingView.vue'
+import SavedRecipesView from '@/views/SavedRecipesView.vue'
 import {
   Refrigerator,
   LogOut,
@@ -23,7 +25,9 @@ import {
   X,
   AlertTriangle,
   CookingPot,
-  Activity
+  Activity,
+  ShoppingCart,
+  BookHeart
 } from 'lucide-vue-next'
 import type { Product, Fridge, CreateProductInput, UpdateProductInput, CookRecipeInput } from '@/types'
 
@@ -32,8 +36,8 @@ const authStore = useAuthStore()
 const productStore = useProductStore()
 const nutritionStore = useNutritionStore()
 
-// Navigation tab: 'fridge' | 'nutrition' | 'chef'
-const currentTab = ref<'fridge' | 'nutrition' | 'chef'>('fridge')
+// Navigation tab: 'fridge' | 'nutrition' | 'chef' | 'shopping' | 'recipes'
+const currentTab = ref<'fridge' | 'nutrition' | 'chef' | 'shopping' | 'recipes'>('fridge')
 
 const isCreatingFridge = ref(false)
 const newFridgeName = ref('')
@@ -204,6 +208,30 @@ async function handleEat(portions: number, mealType: string) {
           >
             <Sparkles class="w-3.5 h-3.5 text-teal-600" />
             <span>AI Шеф</span>
+          </button>
+          <button
+            @click="currentTab = 'shopping'"
+            :class="[
+              'px-3 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5',
+              currentTab === 'shopping'
+                ? 'bg-white text-stone-800 shadow-xs'
+                : 'text-stone-500 hover:text-stone-700'
+            ]"
+          >
+            <ShoppingCart class="w-3.5 h-3.5 text-emerald-600" />
+            <span>Покупки</span>
+          </button>
+          <button
+            @click="currentTab = 'recipes'"
+            :class="[
+              'px-3 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5',
+              currentTab === 'recipes'
+                ? 'bg-white text-stone-800 shadow-xs'
+                : 'text-stone-500 hover:text-stone-700'
+            ]"
+          >
+            <BookHeart class="w-3.5 h-3.5 text-rose-500" />
+            <span>Рецепти</span>
           </button>
         </div>
 
@@ -431,6 +459,16 @@ async function handleEat(portions: number, mealType: string) {
       <!-- CHEF TAB -->
       <div v-else-if="currentTab === 'chef'">
         <ChefView />
+      </div>
+
+      <!-- SHOPPING TAB -->
+      <div v-else-if="currentTab === 'shopping'">
+        <ShoppingView />
+      </div>
+
+      <!-- SAVED RECIPES TAB -->
+      <div v-else-if="currentTab === 'recipes'">
+        <SavedRecipesView />
       </div>
     </main>
 

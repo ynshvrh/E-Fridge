@@ -3,6 +3,8 @@ import { ref, nextTick } from 'vue'
 import { useChefStore } from '@/stores/chef'
 import { useNutritionStore } from '@/stores/nutrition'
 import { useProductStore } from '@/stores/products'
+import { useShoppingStore } from '@/stores/shopping'
+import { useRecipesStore } from '@/stores/recipes'
 import {
   Send,
   Sparkles,
@@ -12,17 +14,23 @@ import {
   Check,
   PlusCircle,
   RotateCcw,
-  CheckCircle2
+  CheckCircle2,
+  Bookmark,
+  ShoppingCart
 } from 'lucide-vue-next'
-import type { Recipe } from '@/types'
+import type { Recipe, ShoppingSuggestion } from '@/types'
 
 const chefStore = useChefStore()
 const nutritionStore = useNutritionStore()
 const productStore = useProductStore()
+const shoppingStore = useShoppingStore()
+const recipesStore = useRecipesStore()
 
 const inputMessage = ref('')
 const cookingSuccess = ref<string | null>(null)
 const isCooking = ref(false)
+const savedRecipeTitles = ref<Set<string>>(new Set())
+const addedToShoppingTitles = ref<Set<string>>(new Set())
 
 const quickPrompts = [
   'Що приготувати на вечерю?',
@@ -66,6 +74,69 @@ async function handleCookFromRecipe(recipe: Recipe) {
     alert(err.message || 'Помилка приготування страви')
   } finally {
     isCooking.value = false
+  }
+}
+
+async function handleSaveRecipe(recipe: Recipe) {
+  try {
+    await recipesStore.saveRecipe({
+      title: recipe.title,
+      description: recipe.description,
+      ingredients: recipe.ingredients.map((i) => ({
+        name: i.name,
+        amount: i.quantity,
+        unit: i.unit,
+        in_fridge: i.in_fridge,
+      })),
+      steps: recipe.steps,
+      calories: recipe.calories,
+      protein: recipe.protein_grams,
+      fat: recipe.fat_grams,
+      carbs: recipe.carbs_grams,
+      prep_time_mins: recipe.prep_time_mins,
+      cook_time_mins: recipe.cook_time_mins,
+      servings: recipe.servings,
+    })
+    savedRecipeTitles.value.add(recipe.title)
+    cookingSuccess.value = `Рецепт "${recipe.title}" збережено в улюблені!`
+  } catch (err: any) {
+    alert(err.message || 'Помилка збереження рецепта')
+  }
+}
+
+async function handleAddSuggestionsToShopping(suggestions: ShoppingSuggestion[], key: string) {
+  try {
+    await shoppingStore.batchAddItems(
+      suggestions.map((s) => ({
+        name: s.name,
+        quantity: s.quantity,
+        unit: s.unit,
+        category: s.category || 'other',
+      }))
+    )
+    addedToShoppingTitles.value.add(key)
+    cookingSuccess.value = `Рекомендовані товари додано до списку покупок!`
+  } catch (err: any) {
+    alert(err.message || 'Помилка додавання до списку покупок')
+  }
+}
+
+async function handleAddMissingToShopping(recipe: Recipe) {
+  const missing = recipe.ingredients.filter((i) => !i.in_fridge)
+  if (!missing.length) return
+  try {
+    await shoppingStore.batchAddItems(
+      missing.map((i) => ({
+        name: i.name,
+        quantity: i.quantity,
+        unit: i.unit,
+        category: i.category || 'other',
+      }))
+    )
+    addedToShoppingTitles.value.add(recipe.title)
+    cookingSuccess.value = `Відсутні інгредієнти додано до списку покупок!`
+  } catch (err: any) {
+    alert(err.message || 'Помилка додавання інгредієнтів')
   }
 }
 </script>
@@ -151,8 +222,19 @@ async function handleCookFromRecipe(recipe: Recipe) {
                   {{ msg.recipe.description }}
                 </p>
               </div>
-              <div class="shrink-0 p-2 bg-amber-100/70 text-amber-700 rounded-xl">
-                <CookingPot class="w-4 h-4" />
+              <div class="flex items-center gap-1.5 shrink-0">
+                <button
+                  @click="handleSaveRecipe(msg.recipe)"
+                  :disabled="savedRecipeTitles.has(msg.recipe.title)"
+                  class="px-2.5 py-1 rounded-xl border text-[11px] font-medium transition-all flex items-center gap-1 shadow-2xs"
+                  :class="savedRecipeTitles.has(msg.recipe.title) ? 'text-rose-700 bg-rose-50 border-rose-200' : 'text-stone-600 hover:text-stone-800 bg-white hover:bg-stone-50 border-stone-200'"
+                >
+                  <Bookmark class="w-3.5 h-3.5" :class="{ 'fill-rose-500 text-rose-500': savedRecipeTitles.has(msg.recipe.title) }" />
+                  <span>{{ savedRecipeTitles.has(msg.recipe.title) ? 'Збережено' : 'Зберегти' }}</span>
+                </button>
+                <div class="p-1.5 bg-amber-100/70 text-amber-700 rounded-xl">
+                  <CookingPot class="w-4 h-4" />
+                </div>
               </div>
             </div>
 
@@ -212,15 +294,25 @@ async function handleCookFromRecipe(recipe: Recipe) {
               </ol>
             </div>
 
-            <!-- Cook Action -->
-            <div class="pt-2">
+            <!-- Cook & Shopping Actions -->
+            <div class="pt-2 flex flex-col sm:flex-row gap-2">
               <button
                 @click="handleCookFromRecipe(msg.recipe)"
                 :disabled="isCooking"
-                class="w-full py-2 px-3 bg-amber-600 hover:bg-amber-700 active:scale-[0.99] text-white text-xs font-medium rounded-xl shadow-xs transition-all flex items-center justify-center gap-1.5 disabled:opacity-60"
+                class="flex-1 py-2 px-3 bg-amber-600 hover:bg-amber-700 active:scale-[0.99] text-white text-xs font-medium rounded-xl shadow-xs transition-all flex items-center justify-center gap-1.5 disabled:opacity-60"
               >
                 <CookingPot class="w-3.5 h-3.5" />
-                <span>{{ isCooking ? 'Приготування...' : 'Приготувати та списати інгредієнти' }}</span>
+                <span>{{ isCooking ? 'Приготування...' : 'Приготувати та списати' }}</span>
+              </button>
+
+              <button
+                v-if="msg.recipe.ingredients.some(i => !i.in_fridge)"
+                @click="handleAddMissingToShopping(msg.recipe)"
+                :disabled="addedToShoppingTitles.has(msg.recipe.title)"
+                class="py-2 px-3 bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-medium rounded-xl transition-colors flex items-center justify-center gap-1.5"
+              >
+                <ShoppingCart class="w-3.5 h-3.5 text-stone-500" />
+                <span>{{ addedToShoppingTitles.has(msg.recipe.title) ? 'Вже в списку' : 'Купити відсутнє' }}</span>
               </button>
             </div>
           </div>
@@ -228,11 +320,21 @@ async function handleCookFromRecipe(recipe: Recipe) {
           <!-- Shopping Suggestions (if any) -->
           <div
             v-if="msg.shopping_suggestions && msg.shopping_suggestions.length > 0"
-            class="bg-emerald-50/50 border border-emerald-100 rounded-2xl p-3 space-y-1.5"
+            class="bg-emerald-50/50 border border-emerald-100 rounded-2xl p-3 space-y-2"
           >
-            <div class="text-xs font-medium text-emerald-900 flex items-center gap-1.5">
-              <PlusCircle class="w-3.5 h-3.5 text-emerald-600" />
-              <span>Рекомендовано докупити:</span>
+            <div class="flex items-center justify-between gap-2">
+              <div class="text-xs font-medium text-emerald-900 flex items-center gap-1.5">
+                <PlusCircle class="w-3.5 h-3.5 text-emerald-600" />
+                <span>Рекомендовано докупити:</span>
+              </div>
+              <button
+                @click="handleAddSuggestionsToShopping(msg.shopping_suggestions, 'sug_' + index)"
+                :disabled="addedToShoppingTitles.has('sug_' + index)"
+                class="text-[11px] font-medium text-emerald-700 hover:text-emerald-800 bg-white border border-emerald-200/80 px-2 py-0.5 rounded-lg flex items-center gap-1 transition-colors"
+              >
+                <ShoppingCart class="w-3 h-3" />
+                <span>{{ addedToShoppingTitles.has('sug_' + index) ? 'Додано' : 'Додати всі в список' }}</span>
+              </button>
             </div>
             <div class="flex flex-wrap gap-1.5">
               <span
