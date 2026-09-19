@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useProductStore } from '@/stores/products'
 import { useNutritionStore } from '@/stores/nutrition'
@@ -25,6 +25,24 @@ const emit = defineEmits<{
 const authStore = useAuthStore()
 const productStore = useProductStore()
 const nutritionStore = useNutritionStore()
+
+onMounted(async () => {
+  if (!productStore.categories.length) {
+    await productStore.fetchCategories()
+  }
+  if (authStore.currentFridgeId) {
+    await productStore.fetchProducts()
+  }
+})
+
+watch(
+  () => authStore.currentFridgeId,
+  async (newId) => {
+    if (newId) {
+      await productStore.fetchProducts()
+    }
+  }
+)
 
 // Modals state
 const isProductModalOpen = ref(false)

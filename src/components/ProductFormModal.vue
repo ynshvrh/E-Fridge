@@ -28,6 +28,27 @@ const notes = ref('')
 
 const showNutrition = ref(false)
 
+const defaultCategories: CategoryInfo[] = [
+  { id: 'dairy', label: 'Молочні продукти', icon: 'Milk' },
+  { id: 'meat-fish', label: "М'ясо та риба", icon: 'Beef' },
+  { id: 'vegetables', label: 'Овочі та зелень', icon: 'Carrot' },
+  { id: 'fruits', label: 'Фрукти та ягоди', icon: 'Apple' },
+  { id: 'bakery', label: 'Хліб та випічка', icon: 'Croissant' },
+  { id: 'pantry', label: 'Бакалія', icon: 'Wheat' },
+  { id: 'snacks', label: 'Снеки та солодощі', icon: 'Cookie' },
+  { id: 'drinks', label: 'Напої', icon: 'CupSoda' },
+  { id: 'alcohol', label: 'Алкоголь', icon: 'Wine' },
+  { id: 'sauces', label: 'Соуси та приправи', icon: 'Salad' },
+  { id: 'frozen', label: 'Заморожені продукти', icon: 'Snowflake' },
+  { id: 'canned-prepared', label: 'Консервація', icon: 'Box' },
+  { id: 'prepared-meals', label: 'Готові страви', icon: 'CookingPot' },
+  { id: 'other', label: 'Інше', icon: 'Package' },
+]
+
+const availableCategories = computed(() => {
+  return props.categories && props.categories.length > 0 ? props.categories : defaultCategories
+})
+
 const units = ['шт', 'г', 'кг', 'мл', 'л', 'уп']
 
 onMounted(() => {
@@ -105,7 +126,7 @@ function save() {
               v-model="category"
               class="w-full px-3.5 py-2.5 bg-stone-50 text-sm rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
             >
-              <option v-for="cat in categories" :key="cat.id" :value="cat.id">
+              <option v-for="cat in availableCategories" :key="cat.id" :value="cat.id">
                 {{ cat.label }}
               </option>
             </select>

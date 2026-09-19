@@ -54,7 +54,7 @@ async function handleCookFromRecipe(recipe: Recipe) {
       unit: i.unit,
     }))
 
-    await nutritionStore.cookRecipe({
+    const result = await nutritionStore.cookRecipe({
       recipe_title: recipe.title,
       servings: recipe.servings,
       expiry_days: 4,
@@ -65,7 +65,15 @@ async function handleCookFromRecipe(recipe: Recipe) {
     })
 
     await productStore.fetchProducts()
-    cookingSuccess.value = `Страву "${recipe.title}" успішно приготовано! Списано інгредієнти та записано 1 порцію у щоденник.`
+    let msg = `Страву "${recipe.title}" успішно приготовано!`
+    if (result?.deductions && result.deductions.length > 0) {
+      const names = result.deductions.map((d) => `${d.product_name} (-${d.deducted_qty} ${d.unit})`).join(', ')
+      msg += ` Списано з холодильника: ${names}.`
+    }
+    if (result?.missing && result.missing.length > 0) {
+      msg += ` (Відсутні або пропущені: ${result.missing.join(', ')})`
+    }
+    cookingSuccess.value = msg
   } catch (err: any) {
     alert(err.message || 'Помилка приготування страви')
   } finally {
