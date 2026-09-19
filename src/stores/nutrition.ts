@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { api } from '@/services/api'
+import { getLocalDateString } from '@/utils/date'
 import type { DailySummary, Goals, NutritionLog, CookRecipeInput, CookResult } from '@/types'
 
 export const useNutritionStore = defineStore('nutrition', () => {
-  const currentDate = ref<string>(new Date().toISOString().split('T')[0])
+  const currentDate = ref<string>(getLocalDateString())
   const dailySummary = ref<DailySummary | null>(null)
   const loading = ref<boolean>(false)
 

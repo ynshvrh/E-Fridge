@@ -11,6 +11,7 @@ import {
   Flame,
   Settings2
 } from 'lucide-vue-next'
+import { getLocalDateString, addDaysToLocalDateString } from '@/utils/date'
 import type { Goals } from '@/types'
 
 const nutritionStore = useNutritionStore()
@@ -30,15 +31,12 @@ onMounted(async () => {
 })
 
 function changeDate(days: number) {
-  const current = new Date(nutritionStore.currentDate)
-  current.setDate(current.getDate() + days)
-  const dateStr = current.toISOString().split('T')[0]
+  const dateStr = addDaysToLocalDateString(nutritionStore.currentDate, days)
   nutritionStore.fetchDaily(dateStr)
 }
 
 const isToday = computed(() => {
-  const today = new Date().toISOString().split('T')[0]
-  return nutritionStore.currentDate === today
+  return nutritionStore.currentDate === getLocalDateString()
 })
 
 const summary = computed(() => nutritionStore.dailySummary)

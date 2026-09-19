@@ -222,14 +222,9 @@ function showNotice(msg: string) {
             :key="item.id"
             class="group bg-white p-3 rounded-2xl border border-stone-200/70 hover:border-emerald-200/80 shadow-xs flex items-center justify-between gap-3 transition-all"
           >
-            <!-- Checkbox & Item info -->
+            <!-- Item info -->
             <div class="flex items-center gap-3 flex-1 min-w-0">
-              <button
-                @click="handleToggleBought(item)"
-                class="w-5 h-5 rounded-lg border border-stone-300 hover:border-emerald-500 flex items-center justify-center transition-colors shrink-0"
-              >
-                <!-- Unchecked box -->
-              </button>
+              <div class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></div>
               <div class="truncate">
                 <span class="text-xs sm:text-sm font-medium text-stone-800 truncate block">
                   {{ item.name }}
@@ -246,11 +241,11 @@ function showNotice(msg: string) {
               <button
                 @click="handleMoveToFridge(item)"
                 :disabled="movingItemId === item.id"
-                title="Купити і перенести в холодильник"
-                class="px-2.5 py-1 text-[11px] font-medium bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-xl transition-colors flex items-center gap-1"
+                title="Позначити як куплене та перенести в холодильник"
+                class="px-3 py-1.5 text-xs font-medium bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-xl shadow-2xs transition-all flex items-center gap-1.5 disabled:opacity-50"
               >
-                <PackagePlus class="w-3 h-3" />
-                <span class="hidden sm:inline">В холодильник</span>
+                <Check class="w-3.5 h-3.5" />
+                <span>{{ movingItemId === item.id ? 'Додаємо...' : 'Куплено' }}</span>
               </button>
 
               <!-- Delete -->

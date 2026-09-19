@@ -14,7 +14,9 @@ import {
   Search,
   X,
   AlertTriangle,
-  CookingPot
+  CookingPot,
+  RotateCcw,
+  CheckCircle2
 } from 'lucide-vue-next'
 import type { Product, CreateProductInput, UpdateProductInput, CookRecipeInput } from '@/types'
 
@@ -108,13 +110,27 @@ async function handleCook(payload: CookRecipeInput) {
   }
 }
 
+const successNotice = ref<string | null>(null)
+
+function showNotice(msg: string) {
+  successNotice.value = msg
+  setTimeout(() => {
+    if (successNotice.value === msg) {
+      successNotice.value = null
+    }
+  }, 4000)
+}
+
 async function handleEat(portions: number, mealType: string) {
   if (!eatingProduct.value) return
+  const prodName = eatingProduct.value.name
+  const unit = eatingProduct.value.unit
   try {
     await nutritionStore.consumeMeal(eatingProduct.value.id, portions, mealType)
     await productStore.fetchProducts()
     isEatModalOpen.value = false
     eatingProduct.value = null
+    showNotice(`З'їдено ${portions} ${unit} "${prodName}". Записано у щоденник харчування!`)
   } catch (err: any) {
     alert(err.message || 'Помилка при записі прийому їжі')
   }
@@ -151,6 +167,20 @@ async function handleEat(portions: number, mealType: string) {
           </button>
         </div>
       </div>
+    </div>
+
+    <!-- Success Notice Banner -->
+    <div
+      v-if="successNotice"
+      class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center justify-between gap-2 shadow-xs transition-all"
+    >
+      <div class="flex items-center gap-2">
+        <CheckCircle2 class="w-4 h-4 shrink-0 text-emerald-600" />
+        <span>{{ successNotice }}</span>
+      </div>
+      <button @click="successNotice = null" class="text-emerald-600 hover:text-emerald-800">
+        <X class="w-4 h-4" />
+      </button>
     </div>
 
     <!-- Quick Summary Cards -->
@@ -254,7 +284,30 @@ async function handleEat(portions: number, mealType: string) {
       />
     </div>
 
-    <!-- Empty State -->
+    <!-- Empty State: Filtered Empty vs Totally Empty -->
+    <div
+      v-else-if="productStore.products.length > 0 && productStore.filteredProducts.length === 0"
+      class="bg-white p-8 rounded-3xl border border-stone-200/60 text-center shadow-sm space-y-3 my-4"
+    >
+      <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto">
+        <Search class="w-6 h-6" />
+      </div>
+      <div>
+        <h3 class="font-medium text-stone-800 text-sm">У цій категорії продуктів не знайдено</h3>
+        <p class="text-xs text-stone-400 mt-1 max-w-sm mx-auto">
+          У вашому холодильнику є інші продукти ({{ productStore.products.length }} шт.). Скиньте фільтр, щоб побачити їх.
+        </p>
+      </div>
+      <button
+        @click="productStore.selectedCategory = 'all'; productStore.searchQuery = ''"
+        class="inline-flex items-center gap-1.5 px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-medium rounded-xl transition-all mt-2"
+      >
+        <RotateCcw class="w-4 h-4" />
+        <span>Показати всі продукти</span>
+      </button>
+    </div>
+
+    <!-- Empty State: Completely Empty Fridge -->
     <div
       v-else
       class="bg-white p-8 rounded-3xl border border-stone-200/60 text-center shadow-sm space-y-3 my-4"
