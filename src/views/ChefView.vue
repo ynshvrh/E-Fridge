@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, onMounted } from 'vue'
 import { useChefStore } from '@/stores/chef'
 import { useNutritionStore } from '@/stores/nutrition'
 import { useProductStore } from '@/stores/products'
@@ -33,6 +33,10 @@ const quickPrompts = [
   'Легкий дієтичний сніданок',
   'Швидка страва за 15 хвилин',
 ]
+
+onMounted(async () => {
+  await chefStore.fetchHistory()
+})
 
 async function send(text?: string) {
   const query = text || inputMessage.value

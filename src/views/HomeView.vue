@@ -8,6 +8,8 @@ import NutritionView from '@/views/NutritionView.vue'
 import ChefView from '@/views/ChefView.vue'
 import ShoppingView from '@/views/ShoppingView.vue'
 import SavedRecipesView from '@/views/SavedRecipesView.vue'
+import PlannerView from '@/views/PlannerView.vue'
+import SettingsView from '@/views/SettingsView.vue'
 import {
   Refrigerator,
   LogOut,
@@ -17,7 +19,9 @@ import {
   ChevronDown,
   Activity,
   ShoppingCart,
-  BookHeart
+  BookHeart,
+  CalendarDays,
+  Settings
 } from 'lucide-vue-next'
 import type { Fridge } from '@/types'
 
@@ -25,7 +29,7 @@ const router = useRouter()
 const authStore = useAuthStore()
 
 // Navigation tabs
-const currentTab = ref<'fridge' | 'nutrition' | 'chef' | 'shopping' | 'recipes'>('fridge')
+const currentTab = ref<'fridge' | 'nutrition' | 'chef' | 'shopping' | 'recipes' | 'planner' | 'settings'>('fridge')
 
 // New Fridge Modal
 const isCreatingFridge = ref(false)
@@ -66,11 +70,11 @@ async function handleLogout() {
         </div>
 
         <!-- Navigation Tabs Bar -->
-        <div class="flex items-center gap-1 bg-stone-200/60 p-1 rounded-2xl">
+        <div class="flex items-center gap-1 bg-stone-200/60 p-1 rounded-2xl overflow-x-auto max-w-[calc(100vw-180px)] sm:max-w-none">
           <button
             @click="currentTab = 'fridge'"
             :class="[
-              'px-3 py-1.5 rounded-xl text-xs font-medium transition-all',
+              'px-3 py-1.5 rounded-xl text-xs font-medium transition-all shrink-0',
               currentTab === 'fridge'
                 ? 'bg-white text-stone-800 shadow-xs'
                 : 'text-stone-500 hover:text-stone-700'
@@ -81,7 +85,7 @@ async function handleLogout() {
           <button
             @click="currentTab = 'nutrition'"
             :class="[
-              'px-3 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5',
+              'px-3 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 shrink-0',
               currentTab === 'nutrition'
                 ? 'bg-white text-stone-800 shadow-xs'
                 : 'text-stone-500 hover:text-stone-700'
@@ -93,7 +97,7 @@ async function handleLogout() {
           <button
             @click="currentTab = 'chef'"
             :class="[
-              'px-3 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5',
+              'px-3 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 shrink-0',
               currentTab === 'chef'
                 ? 'bg-white text-stone-800 shadow-xs'
                 : 'text-stone-500 hover:text-stone-700'
@@ -103,9 +107,21 @@ async function handleLogout() {
             <span>AI Шеф</span>
           </button>
           <button
+            @click="currentTab = 'planner'"
+            :class="[
+              'px-3 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 shrink-0',
+              currentTab === 'planner'
+                ? 'bg-white text-stone-800 shadow-xs'
+                : 'text-stone-500 hover:text-stone-700'
+            ]"
+          >
+            <CalendarDays class="w-3.5 h-3.5 text-indigo-600" />
+            <span>План</span>
+          </button>
+          <button
             @click="currentTab = 'shopping'"
             :class="[
-              'px-3 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5',
+              'px-3 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 shrink-0',
               currentTab === 'shopping'
                 ? 'bg-white text-stone-800 shadow-xs'
                 : 'text-stone-500 hover:text-stone-700'
@@ -117,7 +133,7 @@ async function handleLogout() {
           <button
             @click="currentTab = 'recipes'"
             :class="[
-              'px-3 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5',
+              'px-3 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 shrink-0',
               currentTab === 'recipes'
                 ? 'bg-white text-stone-800 shadow-xs'
                 : 'text-stone-500 hover:text-stone-700'
@@ -173,6 +189,20 @@ async function handleLogout() {
             </div>
           </div>
 
+          <!-- Settings Button -->
+          <button
+            @click="currentTab = 'settings'"
+            title="Налаштування"
+            :class="[
+              'p-2 rounded-xl transition-colors',
+              currentTab === 'settings'
+                ? 'bg-stone-200/80 text-stone-800'
+                : 'text-stone-400 hover:text-stone-600 hover:bg-stone-100/60'
+            ]"
+          >
+            <Settings class="w-4 h-4" />
+          </button>
+
           <!-- Logout Button -->
           <button
             @click="handleLogout"
@@ -190,8 +220,10 @@ async function handleLogout() {
       <FridgeView v-if="currentTab === 'fridge'" @navigate="currentTab = $event" />
       <NutritionView v-else-if="currentTab === 'nutrition'" />
       <ChefView v-else-if="currentTab === 'chef'" />
+      <PlannerView v-else-if="currentTab === 'planner'" />
       <ShoppingView v-else-if="currentTab === 'shopping'" />
       <SavedRecipesView v-else-if="currentTab === 'recipes'" />
+      <SettingsView v-else-if="currentTab === 'settings'" />
     </main>
 
     <!-- Modal Create Fridge -->

@@ -2,13 +2,26 @@ export interface User {
   id: string
   email: string
   name: string
+  dietary_preferences?: string
+  cuisine_preference?: string
+  preferred_language?: string
+  preferred_model?: string
   created_at: string
+}
+
+export interface FridgeMember {
+  id: string
+  name: string
+  email: string
+  role: string
+  joined_at: string
 }
 
 export interface Fridge {
   id: string
   name: string
   role: 'owner' | 'member' | 'viewer' | string
+  members?: FridgeMember[]
   created_at?: string
 }
 
@@ -265,5 +278,76 @@ export interface CreateSavedRecipeInput {
   cook_time_mins: number
   servings: number
 }
+
+export interface MealPlan {
+  id: string
+  fridge_id: string
+  user_id: string
+  date: string
+  meal_type: 'breakfast' | 'lunch' | 'dinner' | 'snack' | string
+  recipe_title: string
+  recipe_id?: string
+  calories: number
+  protein: number
+  fat: number
+  carbs: number
+  is_completed: boolean
+  notes: string
+  created_at: string
+  updated_at: string
+}
+
+export interface CreateMealPlanInput {
+  date: string
+  meal_type: string
+  recipe_title: string
+  recipe_id?: string
+  calories?: number
+  protein?: number
+  fat?: number
+  carbs?: number
+  notes?: string
+}
+
+export interface UpdateMealPlanInput {
+  date: string
+  meal_type: string
+  recipe_title: string
+  recipe_id?: string
+  calories?: number
+  protein?: number
+  fat?: number
+  carbs?: number
+  notes?: string
+}
+
+export interface GeneratePlanInput {
+  days: number
+  start_date?: string
+  dietary_preference?: string
+}
+
+export interface UpdateProfileInput {
+  name: string
+  dietary_preferences: string
+  cuisine_preference: string
+  preferred_language: string
+  preferred_model: string
+}
+
+export interface UpdatePasswordInput {
+  old_password: string
+  new_password: string
+}
+
+export interface ChefChatMessage {
+  id?: string
+  role: 'user' | 'assistant'
+  content: string
+  recipe?: Recipe
+  shopping_suggestions?: ShoppingSuggestion[]
+  created_at?: string
+}
+
 
 

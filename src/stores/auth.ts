@@ -95,6 +95,36 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  async function updateProfile(payload: import('@/types').UpdateProfileInput) {
+    const updated = await api.put<User>('/auth/profile', payload)
+    user.value = updated
+    return updated
+  }
+
+  async function updatePassword(oldPassword: string, newPassword: string) {
+    return api.put('/auth/password', { old_password: oldPassword, new_password: newPassword })
+  }
+
+  async function fetchFridgeDetails(fridgeId: string): Promise<Fridge> {
+    const details = await api.get<Fridge>(`/fridges/${fridgeId}`)
+    const idx = fridges.value.findIndex((f) => f.id === fridgeId)
+    if (idx !== -1) {
+      fridges.value[idx] = details
+    }
+    return details
+  }
+
+  async function addFridgeMember(fridgeId: string, email: string, role: string = 'member') {
+    const member = await api.post(`/fridges/${fridgeId}/members`, { email, role })
+    await fetchFridgeDetails(fridgeId)
+    return member
+  }
+
+  async function removeFridgeMember(fridgeId: string, userId: string) {
+    await api.delete(`/fridges/${fridgeId}/members/${userId}`)
+    await fetchFridgeDetails(fridgeId)
+  }
+
   // Listen for 401 events
   if (typeof window !== 'undefined') {
     window.addEventListener('auth:unauthorized', () => {
@@ -117,5 +147,10 @@ export const useAuthStore = defineStore('auth', () => {
     logout,
     fetchMe,
     selectFridge,
+    updateProfile,
+    updatePassword,
+    fetchFridgeDetails,
+    addFridgeMember,
+    removeFridgeMember,
   }
 })

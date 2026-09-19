@@ -54,7 +54,23 @@ export const useChefStore = defineStore('chef', () => {
     }
   }
 
-  function clearMessages() {
+  async function fetchHistory() {
+    try {
+      const history = await api.get<ChatMessage[]>('/chef/history')
+      if (history && history.length > 0) {
+        messages.value = history
+      }
+    } catch (err) {
+      console.error('Failed to fetch chef history:', err)
+    }
+  }
+
+  async function clearMessages() {
+    try {
+      await api.delete('/chef/history')
+    } catch (err) {
+      console.error('Failed to clear chef history:', err)
+    }
     messages.value = [
       {
         role: 'assistant',
@@ -69,5 +85,6 @@ export const useChefStore = defineStore('chef', () => {
     dietaryPreference,
     sendMessage,
     clearMessages,
+    fetchHistory,
   }
 })
