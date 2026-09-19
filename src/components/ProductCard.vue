@@ -14,6 +14,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'consume', id: string, amount: number): void
+  (e: 'eat', product: Product): void
   (e: 'edit', product: Product): void
   (e: 'delete', id: string): void
 }>()
@@ -121,11 +122,20 @@ const hasMacros = computed(() => {
 
       <div class="flex items-center gap-1.5">
         <button
-          @click="emit('consume', product.id, 1)"
-          title="Списати 1 одиницю"
-          class="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-xl bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-medium transition-colors"
+          v-if="product.category === 'prepared-meals' || product.calories > 0"
+          @click="emit('eat', product)"
+          title="З'їсти порцію (записати в щоденник)"
+          class="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-xl bg-amber-50 text-amber-800 hover:bg-amber-100 font-medium transition-colors"
         >
           <Utensils class="w-3 h-3" />
+          <span>З'їсти</span>
+        </button>
+
+        <button
+          @click="emit('consume', product.id, 1)"
+          title="Списати 1 одиницю"
+          class="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200 font-medium transition-colors"
+        >
           <span>-1 {{ product.unit }}</span>
         </button>
       </div>
