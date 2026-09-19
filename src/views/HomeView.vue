@@ -1,14 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import { useProductStore } from '@/stores/products'
-import { useNutritionStore } from '@/stores/nutrition'
 import { api } from '@/services/api'
-import ProductCard from '@/components/ProductCard.vue'
-import ProductFormModal from '@/components/ProductFormModal.vue'
-import CookModal from '@/components/CookModal.vue'
-import EatModal from '@/components/EatModal.vue'
+import FridgeView from '@/views/FridgeView.vue'
 import NutritionView from '@/views/NutritionView.vue'
 import ChefView from '@/views/ChefView.vue'
 import ShoppingView from '@/views/ShoppingView.vue'
@@ -18,54 +13,24 @@ import {
   LogOut,
   Plus,
   CheckCircle2,
-  PackageOpen,
   Sparkles,
   ChevronDown,
-  Search,
-  X,
-  AlertTriangle,
-  CookingPot,
   Activity,
   ShoppingCart,
   BookHeart
 } from 'lucide-vue-next'
-import type { Product, Fridge, CreateProductInput, UpdateProductInput, CookRecipeInput } from '@/types'
+import type { Fridge } from '@/types'
 
 const router = useRouter()
 const authStore = useAuthStore()
-const productStore = useProductStore()
-const nutritionStore = useNutritionStore()
 
-// Navigation tab: 'fridge' | 'nutrition' | 'chef' | 'shopping' | 'recipes'
+// Navigation tabs
 const currentTab = ref<'fridge' | 'nutrition' | 'chef' | 'shopping' | 'recipes'>('fridge')
 
+// New Fridge Modal
 const isCreatingFridge = ref(false)
 const newFridgeName = ref('')
 const isFridgeMenuOpen = ref(false)
-
-// Modals state
-const isProductModalOpen = ref(false)
-const editingProduct = ref<Product | null>(null)
-const isCookModalOpen = ref(false)
-const isEatModalOpen = ref(false)
-const eatingProduct = ref<Product | null>(null)
-
-onMounted(async () => {
-  await productStore.fetchCategories()
-  if (authStore.currentFridgeId) {
-    await productStore.fetchProducts()
-    await nutritionStore.fetchDaily()
-  }
-})
-
-watch(
-  () => authStore.currentFridgeId,
-  async (newId) => {
-    if (newId) {
-      await productStore.fetchProducts()
-    }
-  }
-)
 
 async function createFridge() {
   if (!newFridgeName.value.trim()) return
@@ -85,95 +50,23 @@ async function handleLogout() {
   await authStore.logout()
   router.push({ name: 'login' })
 }
-
-function openAddProductModal() {
-  editingProduct.value = null
-  isProductModalOpen.value = true
-}
-
-function openEditProductModal(product: Product) {
-  editingProduct.value = product
-  isProductModalOpen.value = true
-}
-
-function openEatModal(product: Product) {
-  eatingProduct.value = product
-  isEatModalOpen.value = true
-}
-
-async function handleProductSubmit(payload: CreateProductInput | UpdateProductInput) {
-  try {
-    if (editingProduct.value) {
-      await productStore.updateProduct(editingProduct.value.id, payload)
-    } else {
-      await productStore.addProduct(payload as CreateProductInput)
-    }
-    isProductModalOpen.value = false
-    editingProduct.value = null
-  } catch (err: any) {
-    alert(err.message || 'Помилка збереження продукту')
-  }
-}
-
-async function handleConsume(id: string, amount: number) {
-  try {
-    await productStore.consumeProduct(id, amount)
-  } catch (err: any) {
-    alert(err.message || 'Помилка списання')
-  }
-}
-
-async function handleDelete(id: string) {
-  if (confirm('Видалити цей продукт?')) {
-    try {
-      await productStore.deleteProduct(id)
-    } catch (err: any) {
-      alert(err.message || 'Помилка видалення')
-    }
-  }
-}
-
-async function handleCook(payload: CookRecipeInput) {
-  try {
-    await nutritionStore.cookRecipe(payload)
-    await productStore.fetchProducts()
-    isCookModalOpen.value = false
-  } catch (err: any) {
-    alert(err.message || 'Помилка приготування')
-  }
-}
-
-async function handleEat(portions: number, mealType: string) {
-  if (!eatingProduct.value) return
-  try {
-    await nutritionStore.consumeMeal(eatingProduct.value.id, portions, mealType)
-    await productStore.fetchProducts()
-    isEatModalOpen.value = false
-    eatingProduct.value = null
-  } catch (err: any) {
-    alert(err.message || 'Помилка при записі прийому їжі')
-  }
-}
 </script>
 
 <template>
   <div class="min-h-full pb-20">
-    <!-- Navigation / Top Bar -->
-    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-20 border-b border-stone-200/60">
-      <div class="max-w-3xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+    <!-- Top Sticky Header -->
+    <header class="sticky top-0 z-20 bg-stone-50/80 backdrop-blur-md border-b border-stone-200/60 px-4 sm:px-6 py-3">
+      <div class="max-w-3xl mx-auto flex items-center justify-between gap-3">
         <!-- Logo -->
-        <div class="flex items-center gap-2.5">
-          <div class="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 shadow-sm">
-            <Refrigerator class="w-5 h-5" />
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-xs">
+            <Refrigerator class="w-4 h-4" />
           </div>
-          <div>
-            <h1 class="font-semibold text-base text-stone-800 leading-none">E-Fridge</h1>
-            <span class="text-[11px] text-stone-400">Розумна кухня</span>
-          </div>
+          <span class="font-semibold text-stone-800 text-sm hidden sm:inline tracking-tight">E-Fridge</span>
         </div>
 
-        <!-- Navigation Tabs (Center) -->
-        <div class="flex items-center bg-stone-100/90 p-1 rounded-2xl">
+        <!-- Navigation Tabs Bar -->
+        <div class="flex items-center gap-1 bg-stone-200/60 p-1 rounded-2xl">
           <button
             @click="currentTab = 'fridge'"
             :class="[
@@ -235,7 +128,7 @@ async function handleEat(portions: number, mealType: string) {
           </button>
         </div>
 
-        <!-- User & Actions -->
+        <!-- User & Fridge Actions -->
         <div class="flex items-center gap-2 sm:gap-3">
           <!-- Fridge Switcher Dropdown -->
           <div class="relative">
@@ -294,182 +187,11 @@ async function handleEat(portions: number, mealType: string) {
 
     <!-- Main Container -->
     <main class="max-w-3xl mx-auto px-4 sm:px-6 pt-6">
-      <!-- FRIDGE TAB -->
-      <div v-if="currentTab === 'fridge'" class="space-y-6">
-        <!-- Welcome Greeting Card -->
-        <div class="bg-gradient-to-br from-emerald-50/70 via-white to-stone-50/40 p-5 sm:p-6 rounded-3xl border border-emerald-100/60 shadow-sm">
-          <div class="flex items-center justify-between flex-wrap gap-3">
-            <div>
-              <h2 class="text-xl font-semibold text-stone-800">
-                Привіт, {{ authStore.user?.name }}! 👋
-              </h2>
-              <p class="text-xs text-stone-500 mt-0.5">
-                Холодильник: <span class="font-medium text-emerald-700">{{ authStore.currentFridge?.name }}</span>
-              </p>
-            </div>
-            <div class="flex items-center gap-2">
-              <button
-                @click="isCookModalOpen = true"
-                class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-white text-xs font-medium rounded-2xl shadow-sm transition-all active:scale-[0.98]"
-              >
-                <CookingPot class="w-4 h-4" />
-                <span>Приготувати</span>
-              </button>
-              <button
-                @click="openAddProductModal"
-                class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium rounded-2xl shadow-sm transition-all active:scale-[0.98]"
-              >
-                <Plus class="w-4 h-4" />
-                <span>Додати продукт</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Quick Summary Cards -->
-        <div class="grid grid-cols-3 gap-3">
-          <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-stone-200/60 text-center shadow-sm">
-            <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-1.5">
-              <PackageOpen class="w-4 h-4" />
-            </div>
-            <div class="text-[11px] sm:text-xs text-stone-500">У наявності</div>
-            <div class="text-base sm:text-lg font-semibold text-stone-800">{{ productStore.stats.total }}</div>
-          </div>
-
-          <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-stone-200/60 text-center shadow-sm">
-            <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-1.5">
-              <AlertTriangle class="w-4 h-4" />
-            </div>
-            <div class="text-[11px] sm:text-xs text-stone-500">Закінчуються</div>
-            <div class="text-base sm:text-lg font-semibold text-amber-700">{{ productStore.stats.expiringSoon }}</div>
-          </div>
-
-          <div
-            @click="currentTab = 'chef'"
-            class="bg-white p-3.5 sm:p-4 rounded-2xl border border-stone-200/60 text-center shadow-sm cursor-pointer hover:border-teal-200 hover:bg-teal-50/20 transition-all"
-          >
-            <div class="w-8 h-8 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center mx-auto mb-1.5">
-              <Sparkles class="w-4 h-4" />
-            </div>
-            <div class="text-[11px] sm:text-xs text-stone-500">AI Шеф</div>
-            <div class="text-base sm:text-lg font-semibold text-teal-700">Готовий</div>
-          </div>
-        </div>
-
-        <!-- Filters & Search -->
-        <div class="space-y-3">
-          <!-- Search bar -->
-          <div class="relative">
-            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
-              <Search class="w-4 h-4" />
-            </div>
-            <input
-              v-model="productStore.searchQuery"
-              type="text"
-              placeholder="Пошук продуктів..."
-              class="w-full pl-10 pr-9 py-2 bg-white text-stone-800 text-sm rounded-2xl border border-stone-200/80 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all shadow-xs"
-            />
-            <button
-              v-if="productStore.searchQuery"
-              @click="productStore.searchQuery = ''"
-              class="absolute inset-y-0 right-0 pr-3 flex items-center text-stone-400 hover:text-stone-600"
-            >
-              <X class="w-4 h-4" />
-            </button>
-          </div>
-
-          <!-- Categories horizontal pills -->
-          <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-            <button
-              @click="productStore.selectedCategory = 'all'"
-              :class="[
-                'px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all',
-                productStore.selectedCategory === 'all'
-                  ? 'bg-emerald-700 text-white shadow-xs'
-                  : 'bg-white border border-stone-200/70 text-stone-600 hover:bg-stone-50'
-              ]"
-            >
-              Всі
-            </button>
-            <button
-              v-for="cat in productStore.categories"
-              :key="cat.id"
-              @click="productStore.selectedCategory = cat.id"
-              :class="[
-                'px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all',
-                productStore.selectedCategory === cat.id
-                  ? 'bg-emerald-700 text-white shadow-xs'
-                  : 'bg-white border border-stone-200/70 text-stone-600 hover:bg-stone-50'
-              ]"
-            >
-              {{ cat.label }}
-            </button>
-          </div>
-        </div>
-
-        <!-- Products Grid -->
-        <div v-if="productStore.loading" class="text-center py-12 text-stone-400 text-sm">
-          Завантаження продуктів...
-        </div>
-
-        <div
-          v-else-if="productStore.filteredProducts.length > 0"
-          class="grid grid-cols-1 sm:grid-cols-2 gap-3"
-        >
-          <ProductCard
-            v-for="prod in productStore.filteredProducts"
-            :key="prod.id"
-            :product="prod"
-            @consume="handleConsume"
-            @eat="openEatModal"
-            @edit="openEditProductModal"
-            @delete="handleDelete"
-          />
-        </div>
-
-        <!-- Empty State -->
-        <div
-          v-else
-          class="bg-white p-8 rounded-3xl border border-stone-200/60 text-center shadow-sm space-y-3 my-4"
-        >
-          <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto">
-            <PackageOpen class="w-6 h-6" />
-          </div>
-          <div>
-            <h3 class="font-medium text-stone-800 text-sm">Поки що немає продуктів</h3>
-            <p class="text-xs text-stone-400 mt-1 max-w-sm mx-auto">
-              Додайте перший продукт у ваш холодильник, щоб відстежувати термін придатності та готувати смачні страви.
-            </p>
-          </div>
-          <button
-            @click="openAddProductModal"
-            class="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium rounded-xl shadow-sm transition-all mt-2"
-          >
-            <Plus class="w-4 h-4" />
-            <span>Додати продукт</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- NUTRITION TAB -->
-      <div v-else-if="currentTab === 'nutrition'">
-        <NutritionView />
-      </div>
-
-      <!-- CHEF TAB -->
-      <div v-else-if="currentTab === 'chef'">
-        <ChefView />
-      </div>
-
-      <!-- SHOPPING TAB -->
-      <div v-else-if="currentTab === 'shopping'">
-        <ShoppingView />
-      </div>
-
-      <!-- SAVED RECIPES TAB -->
-      <div v-else-if="currentTab === 'recipes'">
-        <SavedRecipesView />
-      </div>
+      <FridgeView v-if="currentTab === 'fridge'" @navigate="currentTab = $event" />
+      <NutritionView v-else-if="currentTab === 'nutrition'" />
+      <ChefView v-else-if="currentTab === 'chef'" />
+      <ShoppingView v-else-if="currentTab === 'shopping'" />
+      <SavedRecipesView v-else-if="currentTab === 'recipes'" />
     </main>
 
     <!-- Modal Create Fridge -->
@@ -505,29 +227,5 @@ async function handleEat(portions: number, mealType: string) {
         </div>
       </div>
     </div>
-
-    <!-- Product Form Modal (Add / Edit) -->
-    <ProductFormModal
-      v-if="isProductModalOpen"
-      :initial-data="editingProduct"
-      :categories="productStore.categories"
-      @close="isProductModalOpen = false"
-      @submit="handleProductSubmit"
-    />
-
-    <!-- Cook Modal -->
-    <CookModal
-      v-if="isCookModalOpen"
-      @close="isCookModalOpen = false"
-      @cook="handleCook"
-    />
-
-    <!-- Eat Modal -->
-    <EatModal
-      v-if="isEatModalOpen && eatingProduct"
-      :product="eatingProduct"
-      @close="isEatModalOpen = false; eatingProduct = null"
-      @confirm="handleEat"
-    />
   </div>
 </template>
