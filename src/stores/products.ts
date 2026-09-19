@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { api } from '@/services/api'
-import type { Product, CategoryInfo, CreateProductInput, UpdateProductInput } from '@/types'
+import type { Product, CategoryInfo, CreateProductInput, UpdateProductInput, NutritionEstimate, BarcodeProductResult } from '@/types'
 
 export const useProductStore = defineStore('products', () => {
   const products = ref<Product[]>([])
@@ -104,6 +104,14 @@ export const useProductStore = defineStore('products', () => {
     products.value = []
   }
 
+  async function estimateNutrition(name: string, unit?: string, quantity?: number): Promise<NutritionEstimate> {
+    return api.post<NutritionEstimate>('/products/estimate-nutrition', { name, unit, quantity })
+  }
+
+  async function lookupBarcode(barcode: string): Promise<BarcodeProductResult> {
+    return api.get<BarcodeProductResult>(`/products/barcode/${encodeURIComponent(barcode)}`)
+  }
+
   return {
     products,
     categories,
@@ -119,5 +127,7 @@ export const useProductStore = defineStore('products', () => {
     consumeProduct,
     deleteProduct,
     clearFridge,
+    estimateNutrition,
+    lookupBarcode,
   }
 })

@@ -77,6 +77,30 @@ export interface UpdateProductInput {
   notes?: string
 }
 
+export interface NutritionEstimate {
+  name: string
+  calories: number
+  protein: number
+  fat: number
+  carbs: number
+  category: string
+  standard_unit: string
+}
+
+export interface BarcodeProductResult {
+  barcode: string
+  name: string
+  category: string
+  quantity: number
+  unit: string
+  calories: number
+  protein: number
+  fat: number
+  carbs: number
+  brands?: string
+  image_url?: string
+}
+
 export interface CookIngredient {
   name: string
   quantity: number
@@ -332,7 +356,7 @@ export interface UpdateProfileInput {
   dietary_preferences: string
   cuisine_preference: string
   preferred_language: string
-  preferred_model: string
+  preferred_model?: string
 }
 
 export interface UpdatePasswordInput {

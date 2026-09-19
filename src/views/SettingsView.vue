@@ -4,18 +4,16 @@ import { useAuthStore } from '@/stores/auth'
 import {
   Settings,
   User as UserIcon,
-  Sparkles,
   Users,
   KeyRound,
   CheckCircle2,
   X,
-  Trash2,
-  Cpu
+  Trash2
 } from 'lucide-vue-next'
 
 const authStore = useAuthStore()
 
-type Tab = 'profile' | 'ai' | 'fridge' | 'security'
+type Tab = 'profile' | 'fridge' | 'security'
 const activeTab = ref<Tab>('profile')
 
 const successNotice = ref<string | null>(null)
@@ -27,7 +25,6 @@ const name = ref(authStore.user?.name || '')
 const dietaryProfile = ref(authStore.user?.dietary_preferences || '')
 const cuisine = ref(authStore.user?.cuisine_preference || 'any')
 const language = ref(authStore.user?.preferred_language || 'uk')
-const preferredModel = ref(authStore.user?.preferred_model || '')
 
 // Password Form
 const oldPassword = ref('')
@@ -56,14 +53,6 @@ const cuisines = [
   { id: 'asian', label: 'Паназійська / Східна' },
   { id: 'mediterranean', label: 'Середземноморська' },
   { id: 'american', label: 'Американська' },
-]
-
-const models = [
-  { id: '', label: 'Автоматичний розумний вибір (Рекомендовано)' },
-  { id: 'anthropic/claude-3.5-sonnet', label: 'Claude 3.5 Sonnet (Найрозумніший кулінарний AI)' },
-  { id: 'deepseek/deepseek-chat', label: 'DeepSeek Chat (Швидкий та збалансований)' },
-  { id: 'meta-llama/llama-3.3-70b-instruct:free', label: 'Llama 3.3 70B Free (Безкоштовний)' },
-  { id: 'google/gemini-2.5-flash', label: 'Gemini 2.5 Flash' },
 ]
 
 onMounted(async () => {
@@ -100,7 +89,6 @@ async function handleSaveProfile() {
       dietary_preferences: dietaryProfile.value.trim(),
       cuisine_preference: cuisine.value,
       preferred_language: language.value,
-      preferred_model: preferredModel.value,
     })
     showNotice('Профіль успішно оновлено!')
   } catch (err: any) {
@@ -188,7 +176,7 @@ function clearNotices() {
         </div>
         <div>
           <h2 class="text-base font-semibold text-stone-800">Налаштування</h2>
-          <p class="text-xs text-stone-500">Керуйте персональними даними, дієтою, ШІ та спільним доступом</p>
+          <p class="text-xs text-stone-500">Керуйте персональними даними, дієтою та спільним доступом до холодильника</p>
         </div>
       </div>
     </div>
@@ -215,14 +203,6 @@ function clearNotices() {
       >
         <UserIcon class="w-3.5 h-3.5" />
         <span>Профіль & Дієта</span>
-      </button>
-
-      <button
-        @click="activeTab = 'ai'"
-        :class="['px-3.5 py-2 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-all', activeTab === 'ai' ? 'bg-emerald-600 text-white shadow-xs' : 'bg-white text-stone-600 hover:bg-stone-100 border border-stone-200/60']"
-      >
-        <Cpu class="w-3.5 h-3.5" />
-        <span>ШІ Моделі (OpenRouter)</span>
       </button>
 
       <button
@@ -279,34 +259,7 @@ function clearNotices() {
       </form>
     </div>
 
-    <!-- Tab 2: AI Multi-tier & OpenRouter -->
-    <div v-if="activeTab === 'ai'" class="bg-white p-6 rounded-3xl border border-stone-200/80 shadow-xs space-y-5">
-      <div class="p-4 bg-teal-50/70 border border-teal-100 rounded-2xl text-xs space-y-2 text-teal-900">
-        <div class="font-semibold flex items-center gap-1.5">
-          <Sparkles class="w-4 h-4 text-teal-600" />
-          <span>Дворівнева розумна архітектура моделей</span>
-        </div>
-        <p class="leading-relaxed text-teal-800">
-          • <strong>Швидкий/Безкоштовний рівень (Fast Tier):</strong> використовується для швидких порад, чату, сортування та відповідей на кулінарні запитання.<br>
-          • <strong>Глибокий рівень (Smart Tier - Claude 3.5 Sonnet):</strong> автоматично підключається для генерації авторських рецептів та тижневого збалансованого плану харчування.
-        </p>
-      </div>
-
-      <form @submit.prevent="handleSaveProfile" class="space-y-4 text-xs">
-        <div>
-          <label class="block font-medium text-stone-700 mb-1">Бажана модель AI Шефа</label>
-          <select v-model="preferredModel" class="w-full px-3.5 py-2.5 bg-stone-50 text-xs rounded-xl border border-stone-200">
-            <option v-for="m in models" :key="m.id" :value="m.id">{{ m.label }}</option>
-          </select>
-        </div>
-
-        <button type="submit" :disabled="isSaving" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-xs font-medium transition-all">
-          {{ isSaving ? 'Збереження...' : 'Застосувати налаштування ШІ' }}
-        </button>
-      </form>
-    </div>
-
-    <!-- Tab 3: Fridge & Members -->
+    <!-- Tab 2: Fridge & Members -->
     <div v-if="activeTab === 'fridge'" class="bg-white p-6 rounded-3xl border border-stone-200/80 shadow-xs space-y-5">
       <div>
         <h3 class="text-sm font-semibold text-stone-800">Поточний холодильник: {{ authStore.currentFridge?.name }}</h3>
