@@ -67,8 +67,8 @@ async function handleLogout() {
     <header class="sticky top-0 z-30 bg-white/85 dark:bg-[#09090b]/85 backdrop-blur-md border-b border-zinc-200/80 dark:border-zinc-800 transition-colors">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-3">
         <!-- Brand Logo & Name -->
-        <div class="flex items-center gap-2.5 cursor-pointer select-none" @click="currentTab = 'fridge'">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-violet-600 via-purple-600 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-violet-500/25">
+        <div class="flex items-center gap-2.5 cursor-pointer select-none shrink-0" @click="currentTab = 'fridge'">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-violet-600 via-purple-600 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-violet-500/25 shrink-0">
             <Refrigerator class="w-5 h-5" />
           </div>
           <div>
@@ -169,12 +169,12 @@ async function handleLogout() {
         </nav>
 
         <!-- Right Side: Theme Switcher, Fridge Dropdown, Profile/Settings, Logout -->
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
           <!-- Theme Switcher Button -->
           <button
             type="button"
             @click="toggleTheme"
-            class="p-2 rounded-xl text-zinc-600 dark:text-zinc-300 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition cursor-pointer flex items-center justify-center active:scale-95 border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700"
+            class="p-2 min-w-[36px] min-h-[36px] rounded-xl text-zinc-600 dark:text-zinc-300 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition cursor-pointer flex items-center justify-center active:scale-95 border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700 shrink-0"
             :title="isDark ? 'Перемкнути на світлу тему' : 'Перемкнути на темну тему'"
             aria-label="Перемикач теми"
           >

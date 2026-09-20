@@ -9,6 +9,9 @@ function getInitialTheme(): Theme {
     if (saved === 'dark' || saved === 'light') {
       return saved
     }
+    if (typeof document !== 'undefined' && document.documentElement.classList.contains('dark')) {
+      return 'dark'
+    }
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
   } catch {
     return 'light'
@@ -25,6 +28,9 @@ function applyThemeToDom(theme: Theme) {
   } else {
     document.documentElement.classList.remove('dark')
   }
+  try {
+    window.dispatchEvent(new CustomEvent('theme-changed', { detail: { theme } }))
+  } catch {}
 }
 
 // Immediately apply theme upon module load
@@ -40,7 +46,10 @@ export function useTheme() {
   }
 
   function toggleTheme() {
-    setTheme(currentTheme.value === 'dark' ? 'light' : 'dark')
+    const isCurrentlyDark = typeof document !== 'undefined'
+      ? document.documentElement.classList.contains('dark')
+      : currentTheme.value === 'dark'
+    setTheme(isCurrentlyDark ? 'light' : 'dark')
   }
 
   function initTheme() {

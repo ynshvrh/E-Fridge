@@ -2,6 +2,7 @@
 import { ref, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { useTheme } from '@/composables/useTheme'
 import {
   Refrigerator,
   ArrowRight,
@@ -13,11 +14,14 @@ import {
   CheckCircle2,
   RefreshCw,
   KeyRound,
+  Sun,
+  Moon
 } from 'lucide-vue-next'
 import GoogleSignInButton from '@/components/GoogleSignInButton.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
+const { isDark, toggleTheme } = useTheme()
 
 const step = ref<'form' | 'verification'>('form')
 
@@ -135,7 +139,21 @@ function handleBackToForm() {
 </script>
 
 <template>
-  <div class="min-h-full flex flex-col justify-center py-12 px-4 sm:px-6">
+  <div class="min-h-full flex flex-col justify-center py-12 px-4 sm:px-6 relative">
+    <!-- Top-Right Theme Switcher -->
+    <div class="fixed top-4 right-4 z-20">
+      <button
+        type="button"
+        @click="toggleTheme"
+        class="p-2.5 rounded-2xl text-zinc-600 dark:text-zinc-300 hover:text-violet-600 dark:hover:text-violet-400 bg-white dark:bg-[#121217] border border-zinc-200 dark:border-zinc-800 shadow-sm transition cursor-pointer flex items-center justify-center active:scale-95"
+        :title="isDark ? 'Перемкнути на світлу тему' : 'Перемкнути на темну тему'"
+        aria-label="Перемикач теми"
+      >
+        <Sun v-if="isDark" class="w-4 h-4 text-amber-400" />
+        <Moon v-else class="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
+      </button>
+    </div>
+
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
       <div class="flex justify-center mb-4">
         <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-600 flex items-center justify-center text-white shadow-sm shadow-violet-500/20">
