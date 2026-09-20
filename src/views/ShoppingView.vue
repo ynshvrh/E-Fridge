@@ -109,28 +109,28 @@ function showNotice(msg: string) {
 </script>
 
 <template>
-  <div class="space-y-5">
+  <div class="space-y-3.5 sm:space-y-5">
     <!-- Header banner -->
-    <div class="bg-gradient-to-br from-violet-50/70 via-white to-indigo-50/40 dark:from-[#121217] dark:via-[#121217] dark:to-violet-950/20 p-5 rounded-3xl border border-violet-100/70 dark:border-zinc-800 shadow-xs flex items-center justify-between flex-wrap gap-4">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl bg-violet-100/80 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 flex items-center justify-center shadow-xs">
-          <ShoppingCart class="w-5 h-5" />
+    <div class="bg-gradient-to-br from-violet-50/70 via-white to-indigo-50/40 dark:from-[#121217] dark:via-[#121217] dark:to-violet-950/20 p-3.5 sm:p-5 rounded-3xl border border-violet-100/70 dark:border-zinc-800 shadow-xs flex items-center justify-between flex-wrap gap-3 sm:gap-4">
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-violet-100/80 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 flex items-center justify-center shadow-xs shrink-0">
+          <ShoppingCart class="w-4 h-4 sm:w-5 sm:h-5" />
         </div>
         <div>
-          <h2 class="text-base font-semibold text-zinc-800 dark:text-zinc-100">Список покупок</h2>
+          <h2 class="text-sm sm:text-base font-semibold text-zinc-800 dark:text-zinc-100">Список покупок</h2>
           <p class="text-xs text-zinc-500 dark:text-zinc-400">Плануйте закупи та переносьте товари прямо у холодильник</p>
         </div>
       </div>
 
       <!-- Stats pills -->
-      <div class="flex items-center gap-2 text-xs">
-        <span class="px-2.5 py-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-xl font-medium border border-zinc-200/60 dark:border-zinc-700/60">
+      <div class="flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs">
+        <span class="px-2 py-0.5 sm:px-2.5 sm:py-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-xl font-medium border border-zinc-200/60 dark:border-zinc-700/60">
           Всього: {{ shoppingStore.totalCount }}
         </span>
-        <span class="px-2.5 py-1 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 rounded-xl font-medium border border-amber-200/60 dark:border-amber-800/60">
+        <span class="px-2 py-0.5 sm:px-2.5 sm:py-1 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 rounded-xl font-medium border border-amber-200/60 dark:border-amber-800/60">
           Купити: {{ shoppingStore.leftCount }}
         </span>
-        <span class="px-2.5 py-1 bg-violet-50 dark:bg-violet-950/40 text-violet-700 dark:text-violet-300 rounded-xl font-medium border border-violet-200/60 dark:border-violet-800/60">
+        <span class="px-2 py-0.5 sm:px-2.5 sm:py-1 bg-violet-50 dark:bg-violet-950/40 text-violet-700 dark:text-violet-300 rounded-xl font-medium border border-violet-200/60 dark:border-violet-800/60">
           Куплено: {{ shoppingStore.boughtCount }}
         </span>
       </div>
@@ -139,14 +139,14 @@ function showNotice(msg: string) {
     <!-- Success notice banner -->
     <div
       v-if="successNotice"
-      class="bg-violet-50 dark:bg-violet-950/40 text-violet-800 dark:text-violet-300 border border-violet-200/80 dark:border-violet-800/80 px-4 py-2.5 rounded-2xl text-xs flex items-center gap-2 shadow-xs transition-all"
+      class="bg-violet-50 dark:bg-violet-950/40 text-violet-800 dark:text-violet-300 border border-violet-200/80 dark:border-violet-800/80 px-3.5 py-2 rounded-2xl text-xs flex items-center gap-2 shadow-xs transition-all"
     >
       <CheckCircle2 class="w-4 h-4 text-violet-600 dark:text-violet-400 shrink-0" />
       <span>{{ successNotice }}</span>
     </div>
 
     <!-- Quick Add Bar -->
-    <div class="bg-white dark:bg-[#121217] p-4 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xs">
+    <div class="bg-white dark:bg-[#121217] p-3 sm:p-4 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xs">
       <form @submit.prevent="handleAddItem" class="space-y-3">
         <div class="flex flex-col sm:flex-row gap-2">
           <!-- Item Name -->

@@ -99,15 +99,15 @@ function showNotice(msg: string) {
 </script>
 
 <template>
-  <div class="space-y-5">
+  <div class="space-y-3.5 sm:space-y-5">
     <!-- Header banner -->
-    <div class="bg-gradient-to-br from-violet-500/10 via-purple-500/5 to-indigo-500/10 dark:from-[#121217] dark:via-[#121217] dark:to-zinc-900 p-5 rounded-3xl border border-violet-200/60 dark:border-zinc-800 shadow-sm flex items-center justify-between flex-wrap gap-4">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-600 text-white flex items-center justify-center shadow-xs">
-          <BookHeart class="w-5 h-5" />
+    <div class="bg-gradient-to-br from-violet-500/10 via-purple-500/5 to-indigo-500/10 dark:from-[#121217] dark:via-[#121217] dark:to-zinc-900 p-3.5 sm:p-5 rounded-3xl border border-violet-200/60 dark:border-zinc-800 shadow-sm flex items-center justify-between flex-wrap gap-3 sm:gap-4">
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-600 text-white flex items-center justify-center shadow-xs shrink-0">
+          <BookHeart class="w-4 h-4 sm:w-5 sm:h-5" />
         </div>
         <div>
-          <h2 class="text-base font-semibold text-zinc-800 dark:text-zinc-100">Збережені рецепти</h2>
+          <h2 class="text-sm sm:text-base font-semibold text-zinc-800 dark:text-zinc-100">Збережені рецепти</h2>
           <p class="text-xs text-zinc-500 dark:text-zinc-400">Ваша персональна кулінарна книга з улюбленими стравами</p>
         </div>
       </div>

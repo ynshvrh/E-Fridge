@@ -291,30 +291,27 @@ async function handleLogout() {
     <!-- Main Workspace Area -->
     <div class="flex-1 flex flex-col min-w-0 min-h-screen">
       <!-- Mobile Top Sticky Header (Hidden on md: and up) -->
-      <header class="sticky top-0 z-30 bg-white/85 dark:bg-[#09090b]/85 backdrop-blur-md border-b border-zinc-200/80 dark:border-zinc-800 transition-colors md:hidden">
-        <div class="px-4 py-2.5 flex items-center justify-between gap-3">
+      <header class="sticky top-0 z-30 bg-white/85 dark:bg-[#09090b]/85 backdrop-blur-md border-b border-zinc-200/80 dark:border-zinc-800 transition-colors md:hidden w-full overflow-hidden">
+        <div class="px-3 py-2 flex items-center justify-between gap-2 max-w-full">
           <!-- Brand Logo & Name -->
-          <div class="flex items-center gap-2.5 cursor-pointer select-none shrink-0" @click="currentTab = 'fridge'">
-            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-violet-600 via-purple-600 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-violet-500/25 shrink-0">
-              <Refrigerator class="w-5 h-5" />
+          <div class="flex items-center gap-2 cursor-pointer select-none shrink-0" @click="currentTab = 'fridge'">
+            <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-violet-600 via-purple-600 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-violet-500/25 shrink-0">
+              <Refrigerator class="w-4 h-4" />
             </div>
             <div>
-              <span class="font-bold text-zinc-900 dark:text-zinc-100 text-base tracking-tight block leading-none">
+              <span class="font-bold text-zinc-900 dark:text-zinc-100 text-sm tracking-tight block leading-none">
                 E-Fridge
-              </span>
-              <span class="text-[10px] text-zinc-400 font-medium">
-                Смарт-помічник
               </span>
             </div>
           </div>
 
           <!-- Right Side Controls (Mobile) -->
-          <div class="flex items-center gap-1.5 shrink-0">
+          <div class="flex items-center gap-1 shrink-0">
             <!-- Theme Switcher Button -->
             <button
               type="button"
               @click="toggleTheme"
-              class="p-2 min-w-[36px] min-h-[36px] rounded-xl text-zinc-600 dark:text-zinc-300 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition cursor-pointer flex items-center justify-center active:scale-95 border border-transparent shrink-0"
+              class="p-1.5 rounded-xl text-zinc-600 dark:text-zinc-300 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition cursor-pointer flex items-center justify-center active:scale-95 shrink-0"
               :title="isDark ? 'Перемкнути на світлу тему' : 'Перемкнути на темну тему'"
               aria-label="Перемикач теми"
             >
@@ -327,10 +324,10 @@ async function handleLogout() {
               <button
                 type="button"
                 @click="isFridgeMenuOpen = !isFridgeMenuOpen"
-                class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-zinc-700 dark:text-zinc-200 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200/80 dark:hover:bg-zinc-700/80 rounded-xl transition-colors border border-zinc-200/70 dark:border-zinc-700 cursor-pointer"
+                class="flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-zinc-700 dark:text-zinc-200 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200/80 dark:hover:bg-zinc-700/80 rounded-xl transition-colors border border-zinc-200/70 dark:border-zinc-700 cursor-pointer"
               >
-                <span class="truncate max-w-[100px]">{{ authStore.currentFridge?.name || 'Холодильник' }}</span>
-                <ChevronDown class="w-3.5 h-3.5 text-zinc-400" />
+                <span class="truncate max-w-[85px] sm:max-w-[120px]">{{ authStore.currentFridge?.name || 'Холодильник' }}</span>
+                <ChevronDown class="w-3.5 h-3.5 text-zinc-400 shrink-0" />
               </button>
 
               <!-- Dropdown Menu -->
@@ -374,7 +371,7 @@ async function handleLogout() {
               @click="currentTab = 'settings'"
               title="Налаштування та профіль"
               :class="[
-                'p-2 rounded-xl transition-colors cursor-pointer',
+                'p-1.5 rounded-xl transition-colors cursor-pointer shrink-0',
                 currentTab === 'settings'
                   ? 'bg-violet-100/80 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300'
                   : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800'
@@ -388,7 +385,7 @@ async function handleLogout() {
               type="button"
               @click="handleLogout"
               title="Вийти з акаунту"
-              class="p-2 text-zinc-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-xl transition-colors cursor-pointer"
+              class="p-1.5 text-zinc-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-xl transition-colors cursor-pointer shrink-0"
             >
               <LogOut class="w-4 h-4" />
             </button>
@@ -397,7 +394,7 @@ async function handleLogout() {
       </header>
 
       <!-- Main Responsive Workspace Container -->
-      <main class="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-24 md:pb-12 flex-1">
+      <main class="max-w-6xl w-full mx-auto px-2.5 sm:px-6 lg:px-8 pt-2.5 sm:pt-6 pb-20 md:pb-12 flex-1">
         <FridgeView v-if="currentTab === 'fridge'" @navigate="currentTab = $event" />
         <NutritionView v-else-if="currentTab === 'nutrition'" />
         <ChefView v-else-if="currentTab === 'chef'" />
@@ -409,72 +406,81 @@ async function handleLogout() {
     </div>
 
     <!-- Mobile-First Bottom Navigation Bar (Visible only on mobile/tablets < 768px) -->
-    <nav class="fixed bottom-0 inset-x-0 z-40 bg-white/95 dark:bg-[#09090b]/95 backdrop-blur-md border-t border-zinc-200/80 dark:border-zinc-800/80 px-2 py-1.5 flex justify-around items-center md:hidden shadow-lg transition-colors">
+    <nav class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#09090b]/95 backdrop-blur-md border-t border-zinc-200/80 dark:border-zinc-800/80 px-1 py-1 flex items-center justify-around md:hidden shadow-lg transition-colors pb-[env(safe-area-inset-bottom,0px)]">
       <button
         type="button"
         @click="currentTab = 'fridge'"
-        class="flex flex-col items-center gap-1 py-1 px-2.5 rounded-xl transition text-[11px] cursor-pointer"
+        class="flex-1 min-w-0 flex flex-col items-center justify-center gap-0.5 py-1 px-1 rounded-xl transition text-[10px] cursor-pointer"
         :class="[
           currentTab === 'fridge'
             ? 'text-violet-600 dark:text-violet-400 font-bold'
             : 'text-zinc-500 dark:text-zinc-400'
         ]"
       >
-        <Refrigerator class="w-5 h-5" />
-        <span>Холодильник</span>
+        <Refrigerator class="w-5 h-5 shrink-0" />
+        <span class="truncate w-full text-center">Холодильник</span>
       </button>
 
       <button
         type="button"
         @click="currentTab = 'nutrition'"
-        class="flex flex-col items-center gap-1 py-1 px-2.5 rounded-xl transition text-[11px] cursor-pointer"
+        class="flex-1 min-w-0 flex flex-col items-center justify-center gap-0.5 py-1 px-1 rounded-xl transition text-[10px] cursor-pointer"
         :class="[
           currentTab === 'nutrition'
             ? 'text-violet-600 dark:text-violet-400 font-bold'
             : 'text-zinc-500 dark:text-zinc-400'
         ]"
       >
-        <Activity class="w-5 h-5" />
-        <span>Щоденник</span>
+        <Activity class="w-5 h-5 shrink-0" />
+        <span class="truncate w-full text-center">Щоденник</span>
       </button>
 
       <!-- Center AI Chef Action Button -->
       <button
         type="button"
         @click="currentTab = 'chef'"
-        class="flex flex-col items-center gap-1 py-1 px-3 rounded-2xl transition text-[11px] relative -top-2 bg-gradient-to-tr from-violet-600 via-purple-600 to-indigo-600 text-white shadow-md shadow-violet-600/30 cursor-pointer"
-        :class="{ 'ring-2 ring-violet-400 ring-offset-2 dark:ring-offset-zinc-950': currentTab === 'chef' }"
+        class="flex-1 min-w-0 flex flex-col items-center justify-center gap-0.5 py-1 px-1 rounded-xl transition text-[10px] cursor-pointer"
       >
-        <Sparkles class="w-5 h-5" />
-        <span class="font-semibold">ШІ Шеф</span>
+        <div
+          class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-violet-600 via-purple-600 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-violet-600/30 transition-transform active:scale-95"
+          :class="{ 'ring-2 ring-violet-400 ring-offset-2 dark:ring-offset-zinc-950': currentTab === 'chef' }"
+        >
+          <Sparkles class="w-4 h-4 shrink-0" />
+        </div>
+        <span
+          class="truncate w-full text-center mt-0.5"
+          :class="currentTab === 'chef' ? 'text-violet-600 dark:text-violet-400 font-bold' : 'text-zinc-500 dark:text-zinc-400'"
+        >
+          ШІ Шеф
+        </span>
       </button>
 
       <button
         type="button"
         @click="currentTab = 'planner'"
-        class="flex flex-col items-center gap-1 py-1 px-2.5 rounded-xl transition text-[11px] cursor-pointer"
+        class="flex-1 min-w-0 flex flex-col items-center justify-center gap-0.5 py-1 px-1 rounded-xl transition text-[10px] cursor-pointer"
         :class="[
           currentTab === 'planner'
             ? 'text-violet-600 dark:text-violet-400 font-bold'
             : 'text-zinc-500 dark:text-zinc-400'
         ]"
       >
-        <CalendarDays class="w-5 h-5" />
-        <span>План</span>
+        <CalendarDays class="w-5 h-5 shrink-0" />
+        <span class="truncate w-full text-center">План</span>
       </button>
 
       <button
         type="button"
         @click="currentTab = 'shopping'"
-        class="flex flex-col items-center gap-1 py-1 px-2.5 rounded-xl transition text-[11px] cursor-pointer"
+        class="flex-1 min-w-0 flex flex-col items-center justify-center gap-0.5 py-1 px-1 rounded-xl transition text-[10px] cursor-pointer"
         :class="[
           currentTab === 'shopping'
             ? 'text-violet-600 dark:text-violet-400 font-bold'
             : 'text-zinc-500 dark:text-zinc-400'
         ]"
       >
-        <ShoppingCart class="w-5 h-5" />
-        <span>Покупки</span>
+        <ShoppingCart class="w-5 h-5 shrink-0" />
+        <span class="truncate w-full text-center">Покупки</span>
       </button>
     </nav>
 

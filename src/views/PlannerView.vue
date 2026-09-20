@@ -261,11 +261,11 @@ async function handleAddMealSubmit() {
 </script>
 
 <template>
-  <div class="space-y-6 max-w-5xl mx-auto pb-12">
+  <div class="space-y-3.5 sm:space-y-6 max-w-5xl mx-auto pb-8 sm:pb-12">
     <!-- Notices / Toasts -->
     <div
       v-if="successNotice"
-      class="p-4 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl text-emerald-800 dark:text-emerald-300 text-sm flex items-center justify-between shadow-sm animate-in fade-in"
+      class="p-3 sm:p-4 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl text-emerald-800 dark:text-emerald-300 text-sm flex items-center justify-between shadow-sm animate-in fade-in"
     >
       <span>{{ successNotice }}</span>
       <button @click="successNotice = null" class="p-1 hover:bg-emerald-100 rounded">
@@ -275,7 +275,7 @@ async function handleAddMealSubmit() {
 
     <div
       v-if="errorNotice"
-      class="p-4 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 rounded-xl text-rose-800 dark:text-rose-300 text-sm flex items-center justify-between shadow-sm animate-in fade-in"
+      class="p-3 sm:p-4 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 rounded-xl text-rose-800 dark:text-rose-300 text-sm flex items-center justify-between shadow-sm animate-in fade-in"
     >
       <span>{{ errorNotice }}</span>
       <button @click="errorNotice = null" class="p-1 hover:bg-rose-100 rounded">
@@ -284,13 +284,13 @@ async function handleAddMealSubmit() {
     </div>
 
     <!-- Center Date Navigation Header -->
-    <div class="bg-white dark:bg-[#121217] rounded-3xl p-4 sm:p-5 border border-zinc-200/80 dark:border-zinc-800 shadow-sm flex flex-col xl:flex-row items-center justify-between gap-4">
+    <div class="bg-white dark:bg-[#121217] rounded-3xl p-3 sm:p-5 border border-zinc-200/80 dark:border-zinc-800 shadow-sm flex flex-col xl:flex-row items-center justify-between gap-3 sm:gap-4">
       <!-- Left side: Today helper -->
-      <div class="flex items-center gap-2 order-2 xl:order-1 self-center xl:self-auto min-h-[36px]">
+      <div class="flex items-center gap-2 order-2 xl:order-1 self-center xl:self-auto min-h-[32px] sm:min-h-[36px]">
         <button
           v-if="!isToday"
           @click="goToToday"
-          class="px-3.5 py-1.5 sm:py-2 rounded-xl text-xs font-semibold bg-violet-50 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 hover:bg-violet-100 dark:hover:bg-violet-900/40 border border-violet-200 dark:border-violet-800 transition cursor-pointer whitespace-nowrap"
+          class="px-3 py-1.5 sm:py-2 rounded-xl text-xs font-semibold bg-violet-50 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 hover:bg-violet-100 dark:hover:bg-violet-900/40 border border-violet-200 dark:border-violet-800 transition cursor-pointer whitespace-nowrap"
         >
           Повернутися до сьогодні
         </button>
@@ -300,17 +300,17 @@ async function handleAddMealSubmit() {
       <div class="flex items-center justify-center gap-2 sm:gap-3 order-1 xl:order-2 w-full xl:w-auto">
         <button
           @click="prevDay"
-          class="p-2 sm:p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300 transition cursor-pointer shrink-0"
+          class="p-1.5 sm:p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300 transition cursor-pointer shrink-0"
           title="Попередній день"
         >
           <ChevronLeft class="w-5 h-5" />
         </button>
 
-        <div class="text-center px-2 min-w-[180px] sm:min-w-[240px]">
-          <div class="text-[11px] sm:text-xs uppercase tracking-wider text-zinc-400 dark:text-zinc-500 font-semibold mb-0.5">
+        <div class="text-center px-1 sm:px-2 min-w-[140px] sm:min-w-[240px]">
+          <div class="text-[10px] sm:text-xs uppercase tracking-wider text-zinc-400 dark:text-zinc-500 font-semibold mb-0.5">
             План харчування на
           </div>
-          <div class="text-base sm:text-lg lg:text-xl font-bold text-zinc-900 dark:text-white flex items-center justify-center gap-2">
+          <div class="text-sm sm:text-lg lg:text-xl font-bold text-zinc-900 dark:text-white flex items-center justify-center gap-1.5 sm:gap-2">
             <span class="truncate">{{ displayDateString }}</span>
             <input
               type="date"

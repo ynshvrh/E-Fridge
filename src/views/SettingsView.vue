@@ -217,17 +217,17 @@ function clearNotices() {
 </script>
 
 <template>
-  <div class="space-y-5 max-w-4xl mx-auto pb-10">
+  <div class="space-y-3.5 sm:space-y-5 max-w-4xl mx-auto pb-6 sm:pb-10">
     <!-- Header Banner -->
     <div
-      class="bg-gradient-to-br from-violet-50/70 via-white to-indigo-50/40 dark:from-[#121217] dark:via-[#121217] dark:to-violet-950/20 p-5 rounded-3xl border border-violet-100/70 dark:border-zinc-800 shadow-xs flex items-center justify-between flex-wrap gap-3"
+      class="bg-gradient-to-br from-violet-50/70 via-white to-indigo-50/40 dark:from-[#121217] dark:via-[#121217] dark:to-violet-950/20 p-3.5 sm:p-5 rounded-3xl border border-violet-100/70 dark:border-zinc-800 shadow-xs flex items-center justify-between flex-wrap gap-2.5 sm:gap-3"
     >
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl bg-violet-100/80 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 flex items-center justify-center shadow-xs">
-          <Settings class="w-5 h-5 text-violet-600 dark:text-violet-400" />
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-violet-100/80 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 flex items-center justify-center shadow-xs shrink-0">
+          <Settings class="w-4 h-4 sm:w-5 sm:h-5 text-violet-600 dark:text-violet-400" />
         </div>
         <div>
-          <h2 class="text-base font-semibold text-zinc-800 dark:text-zinc-100">Налаштування профілю</h2>
+          <h2 class="text-sm sm:text-base font-semibold text-zinc-800 dark:text-zinc-100">Налаштування профілю</h2>
           <p class="text-xs text-zinc-500 dark:text-zinc-400">Керуйте персональними даними, дієтою, темою інтерфейсу та доступом</p>
         </div>
       </div>

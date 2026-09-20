@@ -134,12 +134,12 @@ async function handleEat(payload: { amount: number; unit: string; mealType: stri
 </script>
 
 <template>
-  <div class="space-y-6">
+  <div class="space-y-3.5 sm:space-y-6">
     <!-- Welcome Greeting Card -->
-    <div class="bg-gradient-to-br from-violet-50/70 via-white to-indigo-50/40 dark:from-[#121217] dark:via-[#121217] dark:to-violet-950/20 p-5 sm:p-6 rounded-3xl border border-violet-100/60 dark:border-zinc-800 shadow-sm">
-      <div class="flex items-center justify-between flex-wrap gap-3">
+    <div class="bg-gradient-to-br from-violet-50/70 via-white to-indigo-50/40 dark:from-[#121217] dark:via-[#121217] dark:to-violet-950/20 p-3.5 sm:p-6 rounded-3xl border border-violet-100/60 dark:border-zinc-800 shadow-sm">
+      <div class="flex items-center justify-between flex-wrap gap-2.5 sm:gap-3">
         <div>
-          <h2 class="text-xl font-semibold text-zinc-800 dark:text-zinc-100">
+          <h2 class="text-lg sm:text-xl font-semibold text-zinc-800 dark:text-zinc-100">
             Привіт, {{ authStore.user?.name }}! 👋
           </h2>
           <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
@@ -150,7 +150,7 @@ async function handleEat(payload: { amount: number; unit: string; mealType: stri
           <button
             type="button"
             @click="isCookModalOpen = true"
-            class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-xs font-medium rounded-2xl shadow-sm transition-all active:scale-[0.98] cursor-pointer"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-xs font-medium rounded-2xl shadow-sm transition-all active:scale-[0.98] cursor-pointer"
           >
             <CookingPot class="w-4 h-4" />
             <span>Приготувати</span>
@@ -158,7 +158,7 @@ async function handleEat(payload: { amount: number; unit: string; mealType: stri
           <button
             type="button"
             @click="openAddProductModal"
-            class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white text-xs font-medium rounded-2xl shadow-sm transition-all active:scale-[0.98] cursor-pointer"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white text-xs font-medium rounded-2xl shadow-sm transition-all active:scale-[0.98] cursor-pointer"
           >
             <Plus class="w-4 h-4" />
             <span>Додати продукт</span>
@@ -170,7 +170,7 @@ async function handleEat(payload: { amount: number; unit: string; mealType: stri
     <!-- Success Notice Banner -->
     <div
       v-if="successNotice"
-      class="p-3.5 rounded-2xl bg-violet-50 dark:bg-violet-950/40 border border-violet-200 dark:border-violet-800 text-violet-800 dark:text-violet-300 text-xs flex items-center justify-between gap-2 shadow-xs transition-all"
+      class="p-3 sm:p-3.5 rounded-2xl bg-violet-50 dark:bg-violet-950/40 border border-violet-200 dark:border-violet-800 text-violet-800 dark:text-violet-300 text-xs flex items-center justify-between gap-2 shadow-xs transition-all"
     >
       <div class="flex items-center gap-2">
         <CheckCircle2 class="w-4 h-4 shrink-0 text-violet-600 dark:text-violet-400" />
@@ -182,29 +182,29 @@ async function handleEat(payload: { amount: number; unit: string; mealType: stri
     </div>
 
     <!-- Quick Summary Cards -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-      <div class="bg-white dark:bg-[#121217] p-3.5 sm:p-4 rounded-2xl border border-zinc-200/60 dark:border-zinc-800 text-center shadow-xs">
-        <div class="w-8 h-8 rounded-xl bg-violet-50 dark:bg-violet-950/50 text-violet-600 dark:text-violet-400 flex items-center justify-center mx-auto mb-1.5">
-          <PackageOpen class="w-4 h-4" />
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
+      <div class="bg-white dark:bg-[#121217] p-2.5 sm:p-4 rounded-2xl border border-zinc-200/60 dark:border-zinc-800 text-center shadow-xs">
+        <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-violet-50 dark:bg-violet-950/50 text-violet-600 dark:text-violet-400 flex items-center justify-center mx-auto mb-1">
+          <PackageOpen class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
         </div>
-        <div class="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400">У наявності</div>
-        <div class="text-base sm:text-lg font-semibold text-zinc-800 dark:text-zinc-100">{{ productStore.stats.total }}</div>
+        <div class="text-[10px] sm:text-xs text-zinc-500 dark:text-zinc-400">У наявності</div>
+        <div class="text-sm sm:text-lg font-semibold text-zinc-800 dark:text-zinc-100">{{ productStore.stats.total }}</div>
       </div>
 
-      <div class="bg-white dark:bg-[#121217] p-3.5 sm:p-4 rounded-2xl border border-zinc-200/60 dark:border-zinc-800 text-center shadow-xs">
-        <div class="w-8 h-8 rounded-xl bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto mb-1.5">
-          <AlertTriangle class="w-4 h-4" />
+      <div class="bg-white dark:bg-[#121217] p-2.5 sm:p-4 rounded-2xl border border-zinc-200/60 dark:border-zinc-800 text-center shadow-xs">
+        <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto mb-1">
+          <AlertTriangle class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
         </div>
-        <div class="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400">Закінчуються</div>
-        <div class="text-base sm:text-lg font-semibold text-amber-700 dark:text-amber-400">{{ productStore.stats.expiringSoon }}</div>
+        <div class="text-[10px] sm:text-xs text-zinc-500 dark:text-zinc-400">Закінчуються</div>
+        <div class="text-sm sm:text-lg font-semibold text-amber-700 dark:text-amber-400">{{ productStore.stats.expiringSoon }}</div>
       </div>
 
-      <div class="bg-white dark:bg-[#121217] p-3.5 sm:p-4 rounded-2xl border border-zinc-200/60 dark:border-zinc-800 text-center shadow-xs col-span-2 sm:col-span-1">
-        <div class="w-8 h-8 rounded-xl bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 flex items-center justify-center mx-auto mb-1.5">
-          <Clock class="w-4 h-4" />
+      <div class="bg-white dark:bg-[#121217] p-2.5 sm:p-4 rounded-2xl border border-zinc-200/60 dark:border-zinc-800 text-center shadow-xs col-span-2 sm:col-span-1">
+        <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 flex items-center justify-center mx-auto mb-1">
+          <Clock class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
         </div>
-        <div class="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400">Протерміновані</div>
-        <div class="text-base sm:text-lg font-semibold text-rose-700 dark:text-rose-400">{{ productStore.stats.expired }}</div>
+        <div class="text-[10px] sm:text-xs text-zinc-500 dark:text-zinc-400">Протерміновані</div>
+        <div class="text-sm sm:text-lg font-semibold text-rose-700 dark:text-rose-400">{{ productStore.stats.expired }}</div>
       </div>
     </div>
 

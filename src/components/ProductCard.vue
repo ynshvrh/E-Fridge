@@ -66,7 +66,7 @@ const hasMacros = computed(() => {
 
 <template>
   <div
-    class="group relative bg-white dark:bg-[#121217] border border-zinc-200/80 dark:border-zinc-800 rounded-2xl p-4 transition-all hover:shadow-md hover:border-violet-300 dark:hover:border-violet-700 flex flex-col justify-between gap-3"
+    class="group relative bg-white dark:bg-[#121217] border border-zinc-200/80 dark:border-zinc-800 rounded-2xl p-3 sm:p-4 transition-all hover:shadow-md hover:border-violet-300 dark:hover:border-violet-700 flex flex-col justify-between gap-2.5 sm:gap-3"
   >
     <!-- Top Row: Name, Category & Actions -->
     <div>
