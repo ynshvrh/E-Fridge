@@ -327,8 +327,9 @@ function submit() {
 </script>
 
 <template>
-  <div class="fixed inset-0 z-50 bg-stone-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-6 w-full max-w-md shadow-xl border border-stone-200/80">
+  <Teleport to="body">
+    <div class="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+      <div class="bg-white dark:bg-stone-900 rounded-3xl p-5 sm:p-6 w-full max-w-md max-h-[92vh] overflow-y-auto shadow-2xl border border-stone-200/80 dark:border-stone-800 my-auto space-y-4">
       <!-- Header -->
       <div class="flex items-center justify-between pb-3 border-b border-stone-100 mb-4">
         <div class="flex items-center gap-2">
@@ -533,4 +534,5 @@ function submit() {
       </form>
     </div>
   </div>
+  </Teleport>
 </template>

@@ -64,16 +64,17 @@ function submit() {
 </script>
 
 <template>
-  <div class="fixed inset-0 z-50 bg-stone-900/40 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-    <div class="bg-white rounded-3xl p-6 w-full max-w-lg shadow-xl border border-stone-200/80 my-8">
-      <!-- Header -->
-      <div class="flex items-center justify-between pb-3 border-b border-stone-100 mb-4">
-        <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
-            <CookingPot class="w-4 h-4" />
+  <Teleport to="body">
+    <div class="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+      <div class="bg-white dark:bg-stone-900 rounded-3xl p-5 sm:p-6 w-full max-w-lg max-h-[92vh] overflow-y-auto shadow-2xl border border-stone-200/80 dark:border-stone-800 my-auto space-y-4">
+        <!-- Header -->
+        <div class="flex items-center justify-between pb-3 border-b border-stone-100 dark:border-stone-800 mb-2">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-xl bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+              <CookingPot class="w-4 h-4" />
+            </div>
+            <h3 class="text-base font-semibold text-stone-800 dark:text-stone-100">Приготувати страву</h3>
           </div>
-          <h3 class="text-base font-semibold text-stone-800">Приготувати страву (Cook & Deduct)</h3>
-        </div>
         <button
           @click="emit('close')"
           class="p-1 rounded-lg text-stone-400 hover:text-stone-600 hover:bg-stone-100 transition-colors"
@@ -245,4 +246,5 @@ function submit() {
       </form>
     </div>
   </div>
+  </Teleport>
 </template>
