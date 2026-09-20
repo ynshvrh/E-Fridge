@@ -226,34 +226,6 @@ async function handleAddMissingToShopping(recipe: Recipe) {
       ref="messagesContainer"
       class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 scroll-smooth"
     >
-      <!-- Empty state when no conversation yet -->
-      <div
-        v-if="chefStore.messages.length === 0"
-        class="h-full flex flex-col items-center justify-center text-center max-w-md mx-auto space-y-4 py-8"
-      >
-        <div class="w-14 h-14 rounded-3xl bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400 flex items-center justify-center shadow-xs">
-          <Sparkles class="w-7 h-7" />
-        </div>
-        <div>
-          <h3 class="text-base font-bold text-zinc-800 dark:text-zinc-100">Чим вам допомогти сьогодні?</h3>
-          <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">
-            Я можу створити страву з продуктів, які вже є у вашому холодильнику, розрахувати КБЖВ або підказати відсутні інгредієнти.
-          </p>
-        </div>
-
-        <!-- Quick suggestion pills in empty state -->
-        <div class="w-full flex flex-col gap-2 pt-2">
-          <button
-            v-for="prompt in quickPrompts"
-            :key="prompt"
-            @click="send(prompt)"
-            class="text-left px-4 py-2.5 rounded-2xl bg-zinc-50 dark:bg-zinc-900/80 hover:bg-violet-50 dark:hover:bg-violet-950/30 border border-zinc-200/80 dark:border-zinc-800 text-xs text-zinc-700 dark:text-zinc-200 font-medium transition-all shadow-2xs cursor-pointer flex items-center justify-between group"
-          >
-            <span>{{ prompt }}</span>
-            <Sparkles class="w-3.5 h-3.5 text-zinc-400 group-hover:text-violet-600 transition-colors shrink-0 ml-2" />
-          </button>
-        </div>
-      </div>
 
       <!-- Messages Stream -->
       <div
@@ -357,20 +329,20 @@ async function handleAddMissingToShopping(recipe: Recipe) {
       </div>
     </div>
 
-    <!-- Quick Prompts Bar (above input when there are messages) -->
-    <div
-      v-if="chefStore.messages.length > 0"
-      class="px-4 py-2 bg-zinc-50/70 dark:bg-zinc-900/80 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center gap-1.5 overflow-x-auto scrollbar-none shrink-0"
-    >
-      <button
-        v-for="prompt in quickPrompts"
-        :key="prompt"
-        @click="send(prompt)"
-        :disabled="chefStore.loading"
-        class="px-3 py-1 bg-white dark:bg-zinc-800 border border-zinc-200/70 dark:border-zinc-700 rounded-xl text-[11px] text-zinc-600 dark:text-zinc-300 hover:bg-violet-50 dark:hover:bg-violet-950/30 hover:text-violet-700 dark:hover:text-violet-300 transition-all whitespace-nowrap shadow-2xs cursor-pointer shrink-0"
-      >
-        {{ prompt }}
-      </button>
+    <!-- Quick Prompts: 4 compact buttons arranged 2x2 next to each other (No horizontal scrolling) -->
+    <div class="px-3 pt-2.5 pb-2 sm:px-4 bg-zinc-50/80 dark:bg-zinc-900/60 border-t border-zinc-100 dark:border-zinc-800/80 shrink-0">
+      <div class="grid grid-cols-2 gap-1.5 sm:gap-2 max-w-2xl mx-auto">
+        <button
+          v-for="prompt in quickPrompts"
+          :key="prompt"
+          @click="send(prompt)"
+          :disabled="chefStore.loading"
+          class="p-2 sm:p-2.5 rounded-xl bg-white dark:bg-zinc-800/90 hover:bg-violet-50 dark:hover:bg-violet-950/40 border border-zinc-200/80 dark:border-zinc-700/80 hover:border-violet-300 dark:hover:border-violet-700 text-[11px] sm:text-xs text-zinc-700 dark:text-zinc-200 font-medium transition-all shadow-2xs cursor-pointer flex items-center justify-between text-left active:scale-98 group disabled:opacity-50"
+        >
+          <span class="truncate mr-1.5">{{ prompt }}</span>
+          <Sparkles class="w-3.5 h-3.5 text-zinc-400 group-hover:text-violet-600 dark:group-hover:text-violet-400 shrink-0 transition-colors" />
+        </button>
+      </div>
     </div>
 
     <!-- Chat Input Footer -->

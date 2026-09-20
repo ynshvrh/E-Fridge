@@ -36,15 +36,6 @@ const emit = defineEmits<{
         </p>
       </div>
       <div class="flex items-center gap-1.5 shrink-0">
-        <button
-          @click="emit('save', recipe)"
-          :disabled="isSaved"
-          class="px-2.5 py-1 rounded-xl border text-[11px] font-medium transition-all flex items-center gap-1 shadow-2xs cursor-pointer"
-          :class="isSaved ? 'text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/50 border-rose-200 dark:border-rose-900' : 'text-zinc-600 dark:text-zinc-300 hover:text-zinc-800 dark:hover:text-zinc-100 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 border-zinc-200 dark:border-zinc-700'"
-        >
-          <Bookmark class="w-3.5 h-3.5" :class="{ 'fill-rose-500 text-rose-500': isSaved }" />
-          <span>{{ isSaved ? 'Збережено' : 'Зберегти' }}</span>
-        </button>
         <div class="p-1.5 bg-amber-100/70 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 rounded-xl">
           <CookingPot class="w-4 h-4" />
         </div>
@@ -107,25 +98,38 @@ const emit = defineEmits<{
       </ol>
     </div>
 
-    <!-- Actions -->
-    <div class="pt-2 flex flex-col sm:flex-row gap-2">
+    <!-- Actions: Compact and Grouped Together -->
+    <div class="pt-2 flex flex-wrap items-center gap-1.5 border-t border-amber-200/50 dark:border-amber-900/30 mt-1">
       <button
         @click="emit('cook', recipe)"
         :disabled="isCooking"
-        class="flex-1 py-2.5 px-4 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 active:scale-[0.99] text-white text-xs font-semibold rounded-xl shadow-sm shadow-violet-500/20 transition-all flex items-center justify-center gap-1.5 disabled:opacity-60 cursor-pointer"
+        title="Приготувати страву та списати продукти з холодильника"
+        class="py-1.5 px-2.5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 active:scale-95 text-white text-xs font-semibold rounded-xl shadow-2xs shadow-violet-500/20 transition-all inline-flex items-center justify-center gap-1.5 disabled:opacity-60 cursor-pointer shrink-0 whitespace-nowrap"
       >
         <CookingPot class="w-3.5 h-3.5" />
-        <span>{{ isCooking ? 'Приготування...' : 'Приготувати та списати' }}</span>
+        <span>{{ isCooking ? 'Готується...' : 'Приготувати' }}</span>
       </button>
 
       <button
         v-if="recipe.ingredients.some(i => !i.in_fridge)"
         @click="emit('add-missing', recipe)"
         :disabled="isMissingAdded"
-        class="py-2.5 px-4 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 text-xs font-medium rounded-xl transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+        title="Додати відсутні інгредієнти до списку покупок"
+        class="py-1.5 px-2.5 bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 text-xs font-medium rounded-xl transition-colors inline-flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs shrink-0 whitespace-nowrap"
       >
         <ShoppingCart class="w-3.5 h-3.5 text-zinc-400" />
-        <span>{{ isMissingAdded ? 'Вже в списку' : 'Купити відсутнє' }}</span>
+        <span>{{ isMissingAdded ? 'В списку' : 'Купити відсутнє' }}</span>
+      </button>
+
+      <button
+        @click="emit('save', recipe)"
+        :disabled="isSaved"
+        title="Зберегти рецепт"
+        class="py-1.5 px-2.5 rounded-xl border text-xs font-medium transition-all inline-flex items-center justify-center gap-1.5 shadow-2xs cursor-pointer shrink-0 whitespace-nowrap"
+        :class="isSaved ? 'text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/50 border-rose-200 dark:border-rose-900' : 'text-zinc-600 dark:text-zinc-300 hover:text-zinc-800 dark:hover:text-zinc-100 bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 border-zinc-200 dark:border-zinc-700'"
+      >
+        <Bookmark class="w-3.5 h-3.5" :class="{ 'fill-rose-500 text-rose-500': isSaved }" />
+        <span>{{ isSaved ? 'Збережено' : 'Зберегти' }}</span>
       </button>
     </div>
   </div>

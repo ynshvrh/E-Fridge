@@ -284,34 +284,34 @@ async function handleAddMealSubmit() {
     </div>
 
     <!-- Center Date Navigation Header -->
-    <div class="bg-white dark:bg-[#121217] rounded-3xl p-4 sm:p-5 border border-zinc-200/80 dark:border-zinc-800 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+    <div class="bg-white dark:bg-[#121217] rounded-3xl p-4 sm:p-5 border border-zinc-200/80 dark:border-zinc-800 shadow-sm flex flex-col xl:flex-row items-center justify-between gap-4">
       <!-- Left side: Today helper -->
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 order-2 xl:order-1 self-center xl:self-auto min-h-[36px]">
         <button
           v-if="!isToday"
           @click="goToToday"
-          class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-violet-50 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 hover:bg-violet-100 dark:hover:bg-violet-900/40 border border-violet-200 dark:border-violet-800 transition cursor-pointer"
+          class="px-3.5 py-1.5 sm:py-2 rounded-xl text-xs font-semibold bg-violet-50 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 hover:bg-violet-100 dark:hover:bg-violet-900/40 border border-violet-200 dark:border-violet-800 transition cursor-pointer whitespace-nowrap"
         >
           Повернутися до сьогодні
         </button>
       </div>
 
       <!-- Center: Date Selector with Arrows -->
-      <div class="flex items-center gap-3">
+      <div class="flex items-center justify-center gap-2 sm:gap-3 order-1 xl:order-2 w-full xl:w-auto">
         <button
           @click="prevDay"
-          class="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300 transition cursor-pointer"
+          class="p-2 sm:p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300 transition cursor-pointer shrink-0"
           title="Попередній день"
         >
           <ChevronLeft class="w-5 h-5" />
         </button>
 
-        <div class="text-center min-w-[200px] sm:min-w-[260px]">
-          <div class="text-xs uppercase tracking-wider text-zinc-400 dark:text-zinc-500 font-semibold mb-0.5">
+        <div class="text-center px-2 min-w-[180px] sm:min-w-[240px]">
+          <div class="text-[11px] sm:text-xs uppercase tracking-wider text-zinc-400 dark:text-zinc-500 font-semibold mb-0.5">
             План харчування на
           </div>
-          <div class="text-lg sm:text-xl font-bold text-zinc-900 dark:text-white flex items-center justify-center gap-2">
-            <span>{{ displayDateString }}</span>
+          <div class="text-base sm:text-lg lg:text-xl font-bold text-zinc-900 dark:text-white flex items-center justify-center gap-2">
+            <span class="truncate">{{ displayDateString }}</span>
             <input
               type="date"
               v-model="selectedDate"
@@ -320,7 +320,7 @@ async function handleAddMealSubmit() {
             />
             <label
               for="date-picker-input"
-              class="cursor-pointer p-1 text-zinc-400 hover:text-violet-600 dark:hover:text-violet-400 transition"
+              class="cursor-pointer p-1 text-zinc-400 hover:text-violet-600 dark:hover:text-violet-400 transition shrink-0"
               title="Обрати дату в календарі"
             >
               <CalendarDays class="w-4 h-4" />
@@ -330,7 +330,7 @@ async function handleAddMealSubmit() {
 
         <button
           @click="nextDay"
-          class="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300 transition cursor-pointer"
+          class="p-2 sm:p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300 transition cursor-pointer shrink-0"
           title="Наступний день"
         >
           <ChevronRight class="w-5 h-5" />
@@ -338,22 +338,22 @@ async function handleAddMealSubmit() {
       </div>
 
       <!-- Right: Whole Day Generate Button -->
-      <div>
+      <div class="order-3 xl:order-3 w-full sm:w-auto flex justify-center xl:justify-end shrink-0">
         <button
           v-if="!isDayFullyGenerated"
           @click="handleGenerateDay"
           :disabled="isGeneratingDay"
-          class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-sm shadow-violet-500/20 active:scale-95 transition-all cursor-pointer disabled:opacity-50"
+          class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-sm shadow-violet-500/20 active:scale-95 transition-all cursor-pointer disabled:opacity-50 whitespace-nowrap shrink-0"
         >
-          <Sparkles class="w-4 h-4" :class="{ 'animate-spin': isGeneratingDay }" />
-          {{ isGeneratingDay ? 'ШІ складає меню на день...' : 'Згенерувати раціон на день' }}
+          <Sparkles class="w-4 h-4 shrink-0" :class="{ 'animate-spin': isGeneratingDay }" />
+          <span>{{ isGeneratingDay ? 'ШІ складає меню на день...' : 'Згенерувати раціон на день' }}</span>
         </button>
         <div
           v-else
-          class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-violet-50 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 border border-violet-200 dark:border-violet-800"
+          class="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-violet-50 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 border border-violet-200 dark:border-violet-800 whitespace-nowrap shrink-0"
           title="Генерація на весь день дозволена 1 раз на день. Ви можете перегенерувати окрему страву."
         >
-          <CheckCircle2 class="w-4 h-4 text-violet-600 dark:text-violet-400" />
+          <CheckCircle2 class="w-4 h-4 text-violet-600 dark:text-violet-400 shrink-0" />
           <span>Раціон на день згенеровано (1/1)</span>
         </div>
       </div>
@@ -493,7 +493,7 @@ async function handleAddMealSubmit() {
           <!-- Empty slot -->
           <div v-else class="text-center py-6 text-zinc-400 space-y-3">
             <p class="text-sm">Сніданок ще не заплановано</p>
-            <div class="flex items-center justify-center gap-2">
+            <div class="flex flex-wrap items-center justify-center gap-2">
               <button
                 @click="handleGenerateSingleMeal('breakfast')"
                 :disabled="generatingMealSlot === 'breakfast'"
@@ -609,7 +609,7 @@ async function handleAddMealSubmit() {
           <!-- Empty slot -->
           <div v-else class="text-center py-6 text-zinc-400 space-y-3">
             <p class="text-sm">Обід ще не заплановано</p>
-            <div class="flex items-center justify-center gap-2">
+            <div class="flex flex-wrap items-center justify-center gap-2">
               <button
                 @click="handleGenerateSingleMeal('lunch')"
                 :disabled="generatingMealSlot === 'lunch'"
@@ -725,7 +725,7 @@ async function handleAddMealSubmit() {
           <!-- Empty slot -->
           <div v-else class="text-center py-6 text-zinc-400 space-y-3">
             <p class="text-sm">Вечеря ще не запланована</p>
-            <div class="flex items-center justify-center gap-2">
+            <div class="flex flex-wrap items-center justify-center gap-2">
               <button
                 @click="handleGenerateSingleMeal('dinner')"
                 :disabled="generatingMealSlot === 'dinner'"
