@@ -13,11 +13,22 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'consume', id: string, amount: number): void
+  (e: 'consume', id: string, amount: number, unit?: string): void
   (e: 'eat', product: Product): void
   (e: 'edit', product: Product): void
   (e: 'delete', id: string): void
 }>()
+
+const quickAmount = computed(() => {
+  const u = (props.product.unit || '').toLowerCase().trim()
+  if (u === 'г' || u === 'g') {
+    return props.product.quantity > 50 ? 50 : props.product.quantity
+  }
+  if (u === 'мл' || u === 'ml') {
+    return props.product.quantity > 100 ? 100 : props.product.quantity
+  }
+  return 1
+})
 
 const expiryBadge = computed(() => {
   if (!props.product.expiry_date || props.product.days_left === undefined) {
@@ -122,7 +133,6 @@ const hasMacros = computed(() => {
 
       <div class="flex items-center gap-1.5">
         <button
-          v-if="product.category === 'prepared-meals' || product.calories > 0"
           @click="emit('eat', product)"
           title="З'їсти порцію (записати в щоденник)"
           class="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-xl bg-amber-50 text-amber-800 hover:bg-amber-100 font-medium transition-colors"
@@ -132,11 +142,11 @@ const hasMacros = computed(() => {
         </button>
 
         <button
-          @click="emit('consume', product.id, 1)"
-          title="Списати 1 одиницю"
+          @click="emit('consume', product.id, quickAmount, product.unit)"
+          :title="`Списати ${quickAmount} ${product.unit}`"
           class="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200 font-medium transition-colors"
         >
-          <span>-1 {{ product.unit }}</span>
+          <span>-{{ quickAmount }} {{ product.unit }}</span>
         </button>
       </div>
     </div>

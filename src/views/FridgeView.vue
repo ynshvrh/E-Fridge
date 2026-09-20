@@ -82,9 +82,9 @@ async function handleProductSubmit(payload: CreateProductInput | UpdateProductIn
   }
 }
 
-async function handleConsume(id: string, amount: number) {
+async function handleConsume(id: string, amount: number, unit?: string) {
   try {
-    await productStore.consumeProduct(id, amount)
+    await productStore.consumeProduct(id, amount, unit)
   } catch (err: any) {
     alert(err.message || 'Помилка списання')
   }

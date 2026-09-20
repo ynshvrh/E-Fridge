@@ -82,8 +82,8 @@ export const useProductStore = defineStore('products', () => {
     return updated
   }
 
-  async function consumeProduct(id: string, amount: number = 1) {
-    const res = await api.post<Product>(`/products/${id}/consume`, { amount })
+  async function consumeProduct(id: string, amount: number = 1, unit?: string) {
+    const res = await api.post<Product>(`/products/${id}/consume`, { amount, unit })
     const idx = products.value.findIndex((p) => p.id === id)
     if (idx !== -1) {
       if (res.quantity <= 0) {

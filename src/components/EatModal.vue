@@ -21,6 +21,49 @@ interface UnitOption {
 
 const normUnit = computed(() => (props.product.unit || '').toLowerCase().trim())
 
+function getPackageGrams(name: string): number {
+  const clean = (name || '').toLowerCase().trim()
+  const m = clean.match(/(?:^|[^\d])(\d+(?:[.,]\d+)?)\s*(?:г|g|мл|ml|грам|грамм)/i)
+  if (m && m[1]) {
+    const val = parseFloat(m[1].replace(',', '.'))
+    if (val > 0) return val
+  }
+  const packages: Record<string, number> = {
+    nutella: 350,
+    нутелла: 350,
+    майонез: 380,
+    кетчуп: 300,
+    соус: 250,
+    моцарела: 150,
+    моцарелла: 150,
+    масло: 200,
+    'вершкове масло': 200,
+    сметана: 350,
+    сир: 200,
+    'твердий сир': 200,
+    пармезан: 150,
+    фета: 200,
+    сулугуні: 250,
+    творог: 300,
+    кисломолочний: 300,
+    йогурт: 300,
+    молоко: 1000,
+    кефір: 900,
+    сосиски: 350,
+    сардельки: 400,
+    ковбаса: 400,
+    хліб: 450,
+    батон: 400,
+    лаваш: 200,
+    яйце: 55,
+    яйця: 55,
+  }
+  for (const [k, v] of Object.entries(packages)) {
+    if (clean.includes(k)) return v
+  }
+  return 100
+}
+
 const availableUnits = computed<UnitOption[]>(() => {
   const u = normUnit.value
   if (['кг', 'г', 'kg', 'g'].includes(u)) {
@@ -37,8 +80,8 @@ const availableUnits = computed<UnitOption[]>(() => {
   }
   if (['шт', 'pcs', 'уп'].includes(u)) {
     return [
+      { id: 'г', label: 'г', step: 25, defaultAmount: 50 },
       { id: 'шт', label: 'шт', step: 1, defaultAmount: 1 },
-      { id: 'г', label: 'г', step: 25, defaultAmount: 100 },
     ]
   }
   if (['порц', 'порція'].includes(u) || props.product.category === 'prepared-meals') {
@@ -49,7 +92,7 @@ const availableUnits = computed<UnitOption[]>(() => {
   }
   return [
     { id: props.product.unit, label: props.product.unit, step: 1, defaultAmount: 1 },
-    { id: 'г', label: 'г', step: 25, defaultAmount: 100 },
+    { id: 'г', label: 'г', step: 25, defaultAmount: 50 },
   ]
 })
 
@@ -95,6 +138,7 @@ const maxStockInSelectedUnit = computed(() => {
   const from = normUnit.value
   const to = selectedUnit.value.toLowerCase().trim()
   const q = props.product.quantity
+  const packWeight = getPackageGrams(props.product.name)
 
   if (from === to) return q
   if ((from === 'кг' || from === 'kg') && (to === 'г' || to === 'g')) return q * 1000
@@ -103,8 +147,8 @@ const maxStockInSelectedUnit = computed(() => {
   if ((from === 'мл' || from === 'ml') && (to === 'л' || to === 'l')) return q / 1000
   if ((from === 'порц' || from === 'порція') && (to === 'г' || to === 'g')) return q * 300
   if ((from === 'г' || from === 'g') && (to === 'порц' || to === 'порція')) return q / 300
-  if ((from === 'шт' || from === 'pcs') && (to === 'г' || to === 'g')) return q * 100
-  if ((from === 'г' || from === 'g') && (to === 'шт' || to === 'pcs')) return q / 100
+  if (['шт', 'pcs', 'уп'].includes(from) && (to === 'г' || to === 'g' || to === 'мл' || to === 'ml')) return q * packWeight
+  if ((from === 'г' || from === 'g' || from === 'мл' || from === 'ml') && ['шт', 'pcs', 'уп'].includes(to)) return q / packWeight
   return q
 })
 
@@ -128,6 +172,7 @@ const deductQty = computed(() => {
   const from = selectedUnit.value.toLowerCase().trim()
   const to = normUnit.value
   const qty = Number(amount.value) || 0
+  const packWeight = getPackageGrams(props.product.name)
 
   if (from === to) return qty
 
@@ -145,22 +190,81 @@ const deductQty = computed(() => {
   if (['порц', 'порція'].includes(from) && (to === 'кг' || to === 'kg')) return (qty * 300) / 1000
   if ((from === 'кг' || from === 'kg') && ['порц', 'порція'].includes(to)) return (qty * 1000) / 300
 
-  // Pieces conversions (~100g per piece)
-  if (['шт', 'pcs'].includes(from) && (to === 'г' || to === 'g')) return qty * 100
-  if ((from === 'г' || from === 'g') && ['шт', 'pcs'].includes(to)) return qty / 100
-  if (['шт', 'pcs'].includes(from) && (to === 'кг' || to === 'kg')) return (qty * 100) / 1000
-  if ((from === 'кг' || from === 'kg') && ['шт', 'pcs'].includes(to)) return (qty * 1000) / 100
+  // Pieces & Packages conversions
+  if (['шт', 'pcs', 'уп'].includes(from) && (to === 'г' || to === 'g')) return qty * packWeight
+  if ((from === 'г' || from === 'g') && ['шт', 'pcs', 'уп'].includes(to)) return qty / packWeight
+  if (['шт', 'pcs', 'уп'].includes(from) && (to === 'кг' || to === 'kg')) return (qty * packWeight) / 1000
+  if ((from === 'кг' || from === 'kg') && ['шт', 'pcs', 'уп'].includes(to)) return (qty * 1000) / packWeight
 
   return qty
 })
 
-const remainingQty = computed(() => {
-  const rem = props.product.quantity - deductQty.value
-  return rem > 0 ? Math.round(rem * 100) / 100 : 0
-})
+// Real-time stock deduction preview
+const stockPreview = computed(() => {
+  const from = selectedUnit.value.toLowerCase().trim()
+  const to = normUnit.value
+  const qty = Number(amount.value) || 0
+  const packWeight = getPackageGrams(props.product.name)
 
-const willExceed = computed(() => {
-  return deductQty.value > props.product.quantity
+  const isPiece = ['шт', 'pcs', 'уп'].includes(to)
+  const isSelectedWeightOrVol = ['г', 'g', 'мл', 'ml'].includes(from)
+
+  if (isPiece && isSelectedWeightOrVol) {
+    const totalGrams = props.product.quantity * packWeight
+    const rem = Math.max(0, totalGrams - qty)
+    const unitLabel = ['мл', 'ml'].includes(from) ? 'мл' : 'г'
+    return {
+      deductedText: `-${qty} ${unitLabel}`,
+      remainingText: `залишиться ${Math.round(rem * 10) / 10} ${unitLabel}`,
+      willExceed: qty > totalGrams,
+    }
+  }
+
+  const isStoredWeight = ['кг', 'kg', 'г', 'g'].includes(to)
+  const isSelectedKgG = ['кг', 'kg', 'г', 'g'].includes(from)
+  if (isStoredWeight && isSelectedKgG) {
+    let totalGrams = props.product.quantity
+    if (to === 'кг' || to === 'kg') totalGrams *= 1000
+    let consumedGrams = qty
+    if (from === 'кг' || from === 'kg') consumedGrams *= 1000
+    const remGrams = Math.max(0, totalGrams - consumedGrams)
+    const remLabel =
+      remGrams >= 1000 && (to === 'кг' || to === 'kg')
+        ? `${Math.round((remGrams / 1000) * 100) / 100} кг`
+        : `${Math.round(remGrams * 10) / 10} г`
+    return {
+      deductedText: `-${qty} ${from}`,
+      remainingText: `залишиться ${remLabel}`,
+      willExceed: consumedGrams > totalGrams,
+    }
+  }
+
+  const isStoredVol = ['л', 'l', 'мл', 'ml'].includes(to)
+  const isSelectedLVol = ['л', 'l', 'мл', 'ml'].includes(from)
+  if (isStoredVol && isSelectedLVol) {
+    let totalMl = props.product.quantity
+    if (to === 'л' || to === 'l') totalMl *= 1000
+    let consumedMl = qty
+    if (from === 'л' || from === 'l') consumedMl *= 1000
+    const remMl = Math.max(0, totalMl - consumedMl)
+    const remLabel =
+      remMl >= 1000 && (to === 'л' || to === 'l')
+        ? `${Math.round((remMl / 1000) * 100) / 100} л`
+        : `${Math.round(remMl * 10) / 10} мл`
+    return {
+      deductedText: `-${qty} ${from}`,
+      remainingText: `залишиться ${remLabel}`,
+      willExceed: consumedMl > totalMl,
+    }
+  }
+
+  // Fallback / same unit
+  const rem = props.product.quantity - deductQty.value
+  return {
+    deductedText: `-${Math.round(deductQty.value * 100) / 100} ${props.product.unit}`,
+    remainingText: `залишиться ${Math.max(0, Math.round(rem * 100) / 100)} ${props.product.unit}`,
+    willExceed: deductQty.value > props.product.quantity,
+  }
 })
 
 // Real-time Nutrition Calculation
@@ -183,20 +287,14 @@ const nutritionPreview = computed(() => {
     } else {
       ratio = qty
     }
-  } else if (['шт', 'pcs'].includes(pUnit)) {
-    if (['шт', 'pcs'].includes(u)) {
-      ratio = qty
-    } else if (u === 'г' || u === 'g') {
-      ratio = qty / 100
-    } else {
-      ratio = qty
-    }
   } else {
+    // For all standard products (weight, volume, pieces, packs):
+    // props.product.calories is per 100g/100ml
     let grams = qty
     if (u === 'кг' || u === 'kg' || u === 'л' || u === 'l') {
       grams = qty * 1000
-    } else if (u === 'шт' || u === 'pcs') {
-      grams = qty * 100
+    } else if (u === 'шт' || u === 'pcs' || u === 'уп') {
+      grams = qty * getPackageGrams(props.product.name)
     }
     ratio = grams / 100
   }
@@ -400,7 +498,7 @@ function submit() {
 
           <!-- Stock deduction note -->
           <div class="text-[11px] px-2 py-1">
-            <div v-if="willExceed" class="flex items-center gap-1.5 text-amber-700 bg-amber-50/80 p-2 rounded-xl border border-amber-200/60">
+            <div v-if="stockPreview.willExceed" class="flex items-center gap-1.5 text-amber-700 bg-amber-50/80 p-2 rounded-xl border border-amber-200/60">
               <AlertCircle class="w-4 h-4 shrink-0 text-amber-600" />
               <span>
                 Кількість перевищує запас ({{ product.quantity }} {{ product.unit }}). Продукт буде списано повністю.
@@ -409,7 +507,7 @@ function submit() {
             <div v-else class="text-stone-500 flex items-center justify-between">
               <span>Списання з полиці:</span>
               <span class="font-medium text-stone-700">
-                -{{ Math.round(deductQty * 1000) / 1000 }} {{ product.unit }} (залишиться {{ remainingQty }} {{ product.unit }})
+                {{ stockPreview.deductedText }} ({{ stockPreview.remainingText }})
               </span>
             </div>
           </div>
