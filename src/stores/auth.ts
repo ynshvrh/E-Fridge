@@ -136,6 +136,14 @@ export const useAuthStore = defineStore('auth', () => {
     return api.put('/auth/password', { old_password: oldPassword, new_password: newPassword })
   }
 
+  async function deleteAccount() {
+    await api.delete('/auth/profile')
+    user.value = null
+    fridges.value = []
+    currentFridgeId.value = null
+    api.clearTokens()
+  }
+
   async function fetchFridgeDetails(fridgeId: string): Promise<Fridge> {
     const details = await api.get<Fridge>(`/fridges/${fridgeId}`)
     const idx = fridges.value.findIndex((f) => f.id === fridgeId)
@@ -183,6 +191,7 @@ export const useAuthStore = defineStore('auth', () => {
     selectFridge,
     updateProfile,
     updatePassword,
+    deleteAccount,
     fetchFridgeDetails,
     addFridgeMember,
     removeFridgeMember,
