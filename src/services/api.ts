@@ -1,6 +1,7 @@
 import type { APIResponse } from '@/types'
 
-const BASE_URL = '/api/v1'
+const API_BASE_URL = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '')
+const BASE_URL = `${API_BASE_URL}/api/v1`
 
 class ApiClient {
   private getAccessToken(): string | null {
@@ -56,10 +57,15 @@ class ApiClient {
       headers['X-Fridge-Id'] = fridgeId
     }
 
-    let response = await fetch(url, {
-      ...options,
-      headers,
-    })
+    let response: Response
+    try {
+      response = await fetch(url, {
+        ...options,
+        headers,
+      })
+    } catch (networkErr: any) {
+      throw new Error(`Помилка мережі: не вдалося з'єднатися з сервером (${networkErr.message || 'перевірте з\'єднання'})`)
+    }
 
     // Auto-refresh token if 401
     if (response.status === 401 && !endpoint.includes('/auth/login') && !endpoint.includes('/auth/refresh')) {
@@ -79,7 +85,13 @@ class ApiClient {
             body: JSON.stringify({ refresh_token: refreshToken }),
           })
 
-          const data: APIResponse<{ access_token: string; refresh_token: string }> = await refreshRes.json()
+          let data: APIResponse<{ access_token: string; refresh_token: string }>
+          try {
+            data = await refreshRes.json()
+          } catch {
+            throw new Error('Refresh failed: invalid server response')
+          }
+
           if (!refreshRes.ok || !data.success || !data.data) {
             throw new Error('Refresh failed')
           }
@@ -101,7 +113,13 @@ class ApiClient {
           try {
             headers['Authorization'] = `Bearer ${newToken}`
             const retryRes = await fetch(url, { ...options, headers })
-            const retryData: APIResponse<T> = await retryRes.json()
+            let retryData: APIResponse<T>
+            try {
+              retryData = await retryRes.json()
+            } catch {
+              reject(new Error(`Помилка сервера (${retryRes.status})`))
+              return
+            }
             if (!retryRes.ok || !retryData.success) {
               reject(new Error(retryData.error?.message || 'Request failed'))
             } else {
@@ -114,7 +132,16 @@ class ApiClient {
       })
     }
 
-    const data: APIResponse<T> = await response.json()
+    let data: APIResponse<T>
+    try {
+      data = await response.json()
+    } catch {
+      if (!response.ok) {
+        throw new Error(`Помилка сервера (${response.status}): бекенд недоступний або повертає неочікувану відповідь`)
+      }
+      throw new Error('Некоректна відповідь сервера (очікувався JSON)')
+    }
+
     if (!response.ok || !data.success) {
       throw new Error(data.error?.message || 'Request failed')
     }
