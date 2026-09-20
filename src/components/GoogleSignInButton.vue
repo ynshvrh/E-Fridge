@@ -12,7 +12,7 @@ const authStore = useAuthStore()
 const buttonRef = ref<HTMLDivElement | null>(null)
 const errorMessage = ref('')
 
-const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '941333995278-pgiki8amquhfbac7f72ca3dvjspppceo.apps.googleusercontent.com'
+const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '1014346445771-e4e4stcmdja10cljtmiq8sfrspso4djm.apps.googleusercontent.com'
 
 type GoogleCredentialResponse = { credential: string }
 
