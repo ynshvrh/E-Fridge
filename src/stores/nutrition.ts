@@ -65,15 +65,24 @@ export const useNutritionStore = defineStore('nutrition', () => {
     return result
   }
 
-  async function consumeMeal(productId: string, portions: number, mealType: string): Promise<CookResult> {
+  async function consumeMeal(
+    productId: string,
+    amount: number,
+    unit: string,
+    mealType: string,
+    portions?: number
+  ): Promise<CookResult> {
     const result = await api.post<CookResult>('/cooking/consume', {
       product_id: productId,
-      portions,
+      amount,
+      unit,
+      portions: portions ?? amount,
       meal_type: mealType,
     })
     await fetchDaily(currentDate.value)
     return result
   }
+
 
   return {
     currentDate,

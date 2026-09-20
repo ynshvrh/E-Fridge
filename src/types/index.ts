@@ -163,6 +163,14 @@ export interface CookResult {
   logged_meal?: NutritionLog
 }
 
+export interface ConsumeMealPayload {
+  product_id: string
+  amount: number
+  unit: string
+  meal_type: string
+  portions?: number
+}
+
 export interface AuthResult {
   user: User
   access_token: string

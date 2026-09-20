@@ -121,16 +121,15 @@ function showNotice(msg: string) {
   }, 4000)
 }
 
-async function handleEat(portions: number, mealType: string) {
+async function handleEat(payload: { amount: number; unit: string; mealType: string }) {
   if (!eatingProduct.value) return
   const prodName = eatingProduct.value.name
-  const unit = eatingProduct.value.unit
   try {
-    await nutritionStore.consumeMeal(eatingProduct.value.id, portions, mealType)
+    await nutritionStore.consumeMeal(eatingProduct.value.id, payload.amount, payload.unit, payload.mealType)
     await productStore.fetchProducts()
     isEatModalOpen.value = false
     eatingProduct.value = null
-    showNotice(`З'їдено ${portions} ${unit} "${prodName}". Записано у щоденник харчування!`)
+    showNotice(`З'їдено ${payload.amount} ${payload.unit} "${prodName}". Записано у щоденник харчування!`)
   } catch (err: any) {
     alert(err.message || 'Помилка при записі прийому їжі')
   }
