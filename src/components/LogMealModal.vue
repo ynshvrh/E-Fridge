@@ -145,7 +145,7 @@ function handleSubmit() {
             </button>
             <button
               type="submit"
-              class="flex-1 py-2 text-xs font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 rounded-xl shadow-sm shadow-violet-500/20 active:scale-95 transition-all cursor-pointer"
+              class="flex-1 py-2 text-xs font-semibold text-white bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 rounded-xl shadow-sm shadow-violet-500/20 active:scale-95 transition-all cursor-pointer"
             >
               Додати
             </button>

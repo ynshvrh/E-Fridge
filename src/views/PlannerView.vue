@@ -343,7 +343,7 @@ async function handleAddMealSubmit() {
           v-if="!isDayFullyGenerated"
           @click="handleGenerateDay"
           :disabled="isGeneratingDay"
-          class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-sm shadow-violet-500/20 active:scale-95 transition-all cursor-pointer disabled:opacity-50 whitespace-nowrap shrink-0"
+          class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white shadow-sm shadow-violet-500/20 active:scale-95 transition-all cursor-pointer disabled:opacity-50 whitespace-nowrap shrink-0"
         >
           <Sparkles class="w-4 h-4 shrink-0" :class="{ 'animate-spin': isGeneratingDay }" />
           <span>{{ isGeneratingDay ? 'ШІ складає меню на день...' : 'Згенерувати раціон на день' }}</span>
@@ -360,7 +360,7 @@ async function handleAddMealSubmit() {
     </div>
 
     <!-- Day КБЖВ Summary Bar -->
-    <div class="bg-gradient-to-r from-violet-500/10 via-purple-500/5 to-indigo-500/10 dark:from-[#121217] dark:to-zinc-900 rounded-3xl p-4 sm:p-5 border border-violet-200/60 dark:border-zinc-800 shadow-sm">
+    <div class="bg-gradient-to-r from-violet-500/10 via-purple-500/5 to-emerald-500/10 dark:from-[#121217] dark:to-zinc-900 rounded-3xl p-4 sm:p-5 border border-violet-200/60 dark:border-zinc-800 shadow-sm">
       <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-xl bg-violet-600/10 dark:bg-violet-500/20 text-violet-600 dark:text-violet-400 flex items-center justify-center font-bold">
@@ -385,7 +385,7 @@ async function handleAddMealSubmit() {
           </div>
           <div>
             <div class="text-xs text-zinc-500 dark:text-zinc-400">Вуглеводи</div>
-            <div class="text-base font-bold text-indigo-600 dark:text-indigo-400">{{ totalCarbs }} г</div>
+            <div class="text-base font-bold text-purple-600 dark:text-purple-400">{{ totalCarbs }} г</div>
           </div>
         </div>
 
@@ -613,7 +613,7 @@ async function handleAddMealSubmit() {
               <button
                 @click="handleGenerateSingleMeal('lunch')"
                 :disabled="generatingMealSlot === 'lunch'"
-                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-xs transition cursor-pointer disabled:opacity-50"
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white shadow-xs transition cursor-pointer disabled:opacity-50"
               >
                 <Sparkles class="w-3.5 h-3.5" :class="{ 'animate-spin': generatingMealSlot === 'lunch' }" />
                 {{ generatingMealSlot === 'lunch' ? 'ШІ думає...' : 'Згенерувати обід' }}
@@ -631,9 +631,9 @@ async function handleAddMealSubmit() {
 
       <!-- 3. Вечеря (Dinner) -->
       <div class="bg-white dark:bg-[#121217] rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-sm overflow-hidden transition hover:border-zinc-300 dark:hover:border-zinc-700">
-        <div class="px-5 py-3.5 bg-indigo-50/60 dark:bg-indigo-950/20 border-b border-indigo-100 dark:border-indigo-900/30 flex items-center justify-between">
+        <div class="px-5 py-3.5 bg-purple-50/60 dark:bg-purple-950/20 border-b border-purple-100 dark:border-purple-900/30 flex items-center justify-between">
           <div class="flex items-center gap-2.5">
-            <span class="w-8 h-8 rounded-lg bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 flex items-center justify-center">
+            <span class="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 flex items-center justify-center">
               <Moon class="w-4 h-4" />
             </span>
             <span class="font-bold text-zinc-900 dark:text-white text-base">Вечеря</span>
@@ -644,7 +644,7 @@ async function handleAddMealSubmit() {
               v-if="dinnerMeal"
               @click="handleGenerateSingleMeal('dinner')"
               :disabled="generatingMealSlot === 'dinner'"
-              class="inline-flex items-center gap-1.5 text-xs font-medium text-indigo-800 dark:text-indigo-300 hover:text-indigo-900 dark:hover:text-indigo-200 px-2.5 py-1 rounded-lg bg-indigo-100/70 dark:bg-indigo-900/40 hover:bg-indigo-200/80 transition cursor-pointer disabled:opacity-50"
+              class="inline-flex items-center gap-1.5 text-xs font-medium text-purple-800 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-200 px-2.5 py-1 rounded-lg bg-purple-100/70 dark:bg-purple-900/40 hover:bg-purple-200/80 transition cursor-pointer disabled:opacity-50"
               title="Перегенерувати лише вечерю за допомогою ШІ"
             >
               <RotateCcw class="w-3.5 h-3.5" :class="{ 'animate-spin': generatingMealSlot === 'dinner' }" />
@@ -689,7 +689,7 @@ async function handleAddMealSubmit() {
                 <span>• Б: {{ dinnerMeal.protein }}г</span>
                 <span>• Ж: {{ dinnerMeal.fat }}г</span>
                 <span>• В: {{ dinnerMeal.carbs }}г</span>
-                <span v-if="dinnerMeal.recipe_data?.ingredients?.length" class="text-indigo-600 dark:text-indigo-400">
+                <span v-if="dinnerMeal.recipe_data?.ingredients?.length" class="text-purple-600 dark:text-purple-400">
                   ({{ dinnerMeal.recipe_data.ingredients.length }} інгредієнтів)
                 </span>
               </div>
@@ -729,7 +729,7 @@ async function handleAddMealSubmit() {
               <button
                 @click="handleGenerateSingleMeal('dinner')"
                 :disabled="generatingMealSlot === 'dinner'"
-                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition cursor-pointer disabled:opacity-50"
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white transition cursor-pointer disabled:opacity-50"
               >
                 <Sparkles class="w-3.5 h-3.5" :class="{ 'animate-spin': generatingMealSlot === 'dinner' }" />
                 {{ generatingMealSlot === 'dinner' ? 'ШІ думає...' : 'Згенерувати вечерю' }}
@@ -906,7 +906,7 @@ async function handleAddMealSubmit() {
             </button>
             <button
               type="submit"
-              class="px-5 py-2.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-sm shadow-violet-500/20 active:scale-95 transition cursor-pointer"
+              class="px-5 py-2.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white shadow-sm shadow-violet-500/20 active:scale-95 transition cursor-pointer"
             >
               Додати
             </button>

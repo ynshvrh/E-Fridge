@@ -67,7 +67,7 @@ async function handleLogout() {
     <aside class="hidden md:flex flex-col w-64 lg:w-72 shrink-0 h-screen sticky top-0 bg-white dark:bg-[#121217] border-r border-zinc-200/80 dark:border-zinc-800 transition-colors z-30 select-none">
       <!-- Brand Logo -->
       <div class="p-5 flex items-center gap-3 cursor-pointer border-b border-zinc-100 dark:border-zinc-800/80" @click="currentTab = 'fridge'">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-violet-600 via-purple-600 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-violet-500/25 shrink-0">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-violet-600 via-purple-600 to-violet-500 text-white flex items-center justify-center shadow-md shadow-violet-500/25 shrink-0">
           <Refrigerator class="w-5 h-5" />
         </div>
         <div>
@@ -141,7 +141,7 @@ async function handleLogout() {
           :class="[
             'w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-semibold transition-all cursor-pointer text-left',
             currentTab === 'fridge'
-              ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-xs shadow-violet-500/25'
+              ? 'bg-gradient-to-r from-violet-600 to-purple-600 text-white shadow-xs shadow-violet-500/25'
               : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/70 hover:text-zinc-900 dark:hover:text-zinc-100'
           ]"
         >
@@ -155,7 +155,7 @@ async function handleLogout() {
           :class="[
             'w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-semibold transition-all cursor-pointer text-left',
             currentTab === 'nutrition'
-              ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-xs shadow-violet-500/25'
+              ? 'bg-gradient-to-r from-violet-600 to-purple-600 text-white shadow-xs shadow-violet-500/25'
               : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/70 hover:text-zinc-900 dark:hover:text-zinc-100'
           ]"
         >
@@ -169,7 +169,7 @@ async function handleLogout() {
           :class="[
             'w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-semibold transition-all cursor-pointer text-left',
             currentTab === 'chef'
-              ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-xs shadow-violet-500/25'
+              ? 'bg-gradient-to-r from-violet-600 to-purple-600 text-white shadow-xs shadow-violet-500/25'
               : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/70 hover:text-zinc-900 dark:hover:text-zinc-100'
           ]"
         >
@@ -193,7 +193,7 @@ async function handleLogout() {
           :class="[
             'w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-semibold transition-all cursor-pointer text-left',
             currentTab === 'planner'
-              ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-xs shadow-violet-500/25'
+              ? 'bg-gradient-to-r from-violet-600 to-purple-600 text-white shadow-xs shadow-violet-500/25'
               : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/70 hover:text-zinc-900 dark:hover:text-zinc-100'
           ]"
         >
@@ -207,7 +207,7 @@ async function handleLogout() {
           :class="[
             'w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-semibold transition-all cursor-pointer text-left',
             currentTab === 'shopping'
-              ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-xs shadow-violet-500/25'
+              ? 'bg-gradient-to-r from-violet-600 to-purple-600 text-white shadow-xs shadow-violet-500/25'
               : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/70 hover:text-zinc-900 dark:hover:text-zinc-100'
           ]"
         >
@@ -221,7 +221,7 @@ async function handleLogout() {
           :class="[
             'w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-semibold transition-all cursor-pointer text-left',
             currentTab === 'recipes'
-              ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-xs shadow-violet-500/25'
+              ? 'bg-gradient-to-r from-violet-600 to-purple-600 text-white shadow-xs shadow-violet-500/25'
               : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/70 hover:text-zinc-900 dark:hover:text-zinc-100'
           ]"
         >
@@ -239,7 +239,7 @@ async function handleLogout() {
           :class="[
             'w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-semibold transition-all cursor-pointer text-left',
             currentTab === 'settings'
-              ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-xs shadow-violet-500/25'
+              ? 'bg-gradient-to-r from-violet-600 to-purple-600 text-white shadow-xs shadow-violet-500/25'
               : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/70 hover:text-zinc-900 dark:hover:text-zinc-100'
           ]"
         >
@@ -295,7 +295,7 @@ async function handleLogout() {
         <div class="px-3 py-2 flex items-center justify-between gap-2 max-w-full">
           <!-- Brand Logo & Name -->
           <div class="flex items-center gap-2 cursor-pointer select-none shrink-0" @click="currentTab = 'fridge'">
-            <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-violet-600 via-purple-600 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-violet-500/25 shrink-0">
+            <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-violet-600 via-purple-600 to-violet-500 text-white flex items-center justify-center shadow-md shadow-violet-500/25 shrink-0">
               <Refrigerator class="w-4 h-4" />
             </div>
             <div>
@@ -442,7 +442,7 @@ async function handleLogout() {
         class="flex-1 min-w-0 flex flex-col items-center justify-center gap-0.5 py-1 px-1 rounded-xl transition text-[10px] cursor-pointer"
       >
         <div
-          class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-violet-600 via-purple-600 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-violet-600/30 transition-transform active:scale-95"
+          class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-violet-600 via-purple-600 to-violet-500 text-white flex items-center justify-center shadow-md shadow-violet-600/30 transition-transform active:scale-95"
           :class="{ 'ring-2 ring-violet-400 ring-offset-2 dark:ring-offset-zinc-950': currentTab === 'chef' }"
         >
           <Sparkles class="w-4 h-4 shrink-0" />
@@ -518,7 +518,7 @@ async function handleLogout() {
           <button
             type="button"
             @click="createFridge"
-            class="flex-1 py-2 px-3 text-xs font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 rounded-xl transition shadow-sm cursor-pointer"
+            class="flex-1 py-2 px-3 text-xs font-semibold text-white bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 rounded-xl transition shadow-sm cursor-pointer"
           >
             Створити
           </button>

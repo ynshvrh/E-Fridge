@@ -49,7 +49,7 @@ async function handleSubmit() {
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
       <!-- Brand Header -->
       <div class="flex justify-center mb-4">
-        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-600 flex items-center justify-center text-white shadow-sm shadow-violet-500/20">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-violet-600 to-purple-600 flex items-center justify-center text-white shadow-sm shadow-violet-500/20">
           <Refrigerator class="w-7 h-7" />
         </div>
       </div>
@@ -109,7 +109,7 @@ async function handleSubmit() {
             <button
               type="submit"
               :disabled="authStore.loading"
-              class="w-full py-2.5 px-4 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 active:scale-[0.99] text-white text-sm font-semibold rounded-2xl shadow-sm shadow-violet-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
+              class="w-full py-2.5 px-4 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 active:scale-[0.99] text-white text-sm font-semibold rounded-2xl shadow-sm shadow-violet-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
             >
               <span v-if="authStore.loading">Вхід...</span>
               <template v-else>

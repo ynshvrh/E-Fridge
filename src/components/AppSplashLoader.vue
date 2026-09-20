@@ -36,15 +36,15 @@ import { Refrigerator, Sparkles } from 'lucide-vue-next'
   align-items: center;
   justify-content: center;
   background-image:
-    radial-gradient(circle at 50% 35%, rgba(139, 92, 246, 0.14) 0%, transparent 55%),
-    radial-gradient(circle at 60% 60%, rgba(99, 102, 241, 0.12) 0%, transparent 50%);
+    radial-gradient(circle at 50% 35%, rgba(139, 92, 246, 0.18) 0%, transparent 55%),
+    radial-gradient(circle at 60% 60%, rgba(16, 185, 129, 0.10) 0%, transparent 50%);
 }
 
 :global(.dark) .splash-screen {
   background-color: #09090b;
   background-image:
-    radial-gradient(circle at 50% 35%, rgba(124, 58, 237, 0.22) 0%, transparent 55%),
-    radial-gradient(circle at 60% 60%, rgba(79, 70, 229, 0.18) 0%, transparent 50%);
+    radial-gradient(circle at 50% 35%, rgba(124, 58, 237, 0.28) 0%, transparent 55%),
+    radial-gradient(circle at 60% 60%, rgba(16, 185, 129, 0.12) 0%, transparent 50%);
 }
 
 .splash-content {
@@ -113,8 +113,8 @@ import { Refrigerator, Sparkles } from 'lucide-vue-next'
   position: absolute;
   top: -4px;
   right: -4px;
-  color: #f59e0b;
-  background: #fef3c7;
+  color: #10b981;
+  background: #ecfdf5;
   padding: 4px;
   border-radius: 50%;
   border: 1.5px solid #ffffff;
@@ -125,8 +125,8 @@ import { Refrigerator, Sparkles } from 'lucide-vue-next'
 }
 
 :global(.dark) .sparkle-badge {
-  background: #78350f;
-  color: #fbbf24;
+  background: #064e3b;
+  color: #34d399;
   border-color: #121217;
 }
 
@@ -174,7 +174,7 @@ import { Refrigerator, Sparkles } from 'lucide-vue-next'
   top: 0;
   bottom: 0;
   width: 50%;
-  background: linear-gradient(90deg, #8b5cf6, #6366f1);
+  background: linear-gradient(90deg, #7c3aed, #a855f7, #10b981);
   border-radius: 9999px;
   animation: slideLoading 1.4s ease-in-out infinite;
 }

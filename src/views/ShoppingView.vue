@@ -111,7 +111,7 @@ function showNotice(msg: string) {
 <template>
   <div class="space-y-3.5 sm:space-y-5">
     <!-- Header banner -->
-    <div class="bg-gradient-to-br from-violet-50/70 via-white to-indigo-50/40 dark:from-[#121217] dark:via-[#121217] dark:to-violet-950/20 p-3.5 sm:p-5 rounded-3xl border border-violet-100/70 dark:border-zinc-800 shadow-xs flex items-center justify-between flex-wrap gap-3 sm:gap-4">
+    <div class="bg-gradient-to-br from-violet-50/70 via-white to-emerald-50/30 dark:from-[#121217] dark:via-[#121217] dark:to-violet-950/20 p-3.5 sm:p-5 rounded-3xl border border-violet-100/70 dark:border-zinc-800 shadow-xs flex items-center justify-between flex-wrap gap-3 sm:gap-4">
       <div class="flex items-center gap-2.5 sm:gap-3">
         <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-violet-100/80 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 flex items-center justify-center shadow-xs shrink-0">
           <ShoppingCart class="w-4 h-4 sm:w-5 sm:h-5" />
@@ -181,7 +181,7 @@ function showNotice(msg: string) {
             <button
               type="submit"
               :disabled="!newItemName.trim() || isAdding"
-              class="py-2 px-4 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 shadow-xs shrink-0 disabled:opacity-40 cursor-pointer"
+              class="py-2 px-4 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 shadow-xs shrink-0 disabled:opacity-40 cursor-pointer"
             >
               <Plus class="w-3.5 h-3.5" />
               <span>Додати</span>
@@ -244,7 +244,7 @@ function showNotice(msg: string) {
                 @click="handleMoveToFridge(item)"
                 :disabled="movingItemId === item.id"
                 title="Позначити як куплене та перенести в холодильник"
-                class="px-3 py-1.5 text-xs font-medium bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 active:scale-95 text-white rounded-xl shadow-xs transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
+                class="px-3 py-1.5 text-xs font-medium bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 active:scale-95 text-white rounded-xl shadow-xs transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
               >
                 <Check class="w-3.5 h-3.5" />
                 <span>{{ movingItemId === item.id ? 'Додаємо...' : 'Куплено' }}</span>

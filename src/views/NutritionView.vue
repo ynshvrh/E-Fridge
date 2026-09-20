@@ -209,7 +209,7 @@ async function handleSaveGoals(goals: Goals) {
         </button>
         <button
           @click="showAddLogModal = true"
-          class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white text-xs font-semibold rounded-xl transition-all shadow-sm shadow-violet-500/20 active:scale-95 cursor-pointer"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white text-xs font-semibold rounded-xl transition-all shadow-sm shadow-violet-500/20 active:scale-95 cursor-pointer"
         >
           <Plus class="w-3.5 h-3.5" />
           <span>Додати їжу</span>
@@ -235,7 +235,7 @@ async function handleSaveGoals(goals: Goals) {
       <!-- Main Calorie Bar -->
       <div class="w-full bg-zinc-100 dark:bg-zinc-800/80 rounded-full h-3 overflow-hidden">
         <div
-          class="bg-gradient-to-r from-violet-600 to-indigo-600 h-3 rounded-full transition-all duration-500 shadow-xs"
+          class="bg-gradient-to-r from-violet-600 to-purple-600 h-3 rounded-full transition-all duration-500 shadow-xs"
           :style="{ width: `${calPercent}%` }"
         ></div>
       </div>
@@ -250,7 +250,7 @@ async function handleSaveGoals(goals: Goals) {
           </div>
           <div class="w-full bg-zinc-100 dark:bg-zinc-800/80 rounded-full h-1.5 overflow-hidden">
             <div
-              class="bg-blue-500 h-1.5 rounded-full transition-all duration-500"
+              class="bg-emerald-500 h-1.5 rounded-full transition-all duration-500"
               :style="{ width: `${proteinPercent}%` }"
             ></div>
           </div>

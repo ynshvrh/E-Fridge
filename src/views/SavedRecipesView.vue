@@ -101,9 +101,9 @@ function showNotice(msg: string) {
 <template>
   <div class="space-y-3.5 sm:space-y-5">
     <!-- Header banner -->
-    <div class="bg-gradient-to-br from-violet-500/10 via-purple-500/5 to-indigo-500/10 dark:from-[#121217] dark:via-[#121217] dark:to-zinc-900 p-3.5 sm:p-5 rounded-3xl border border-violet-200/60 dark:border-zinc-800 shadow-sm flex items-center justify-between flex-wrap gap-3 sm:gap-4">
+    <div class="bg-gradient-to-br from-violet-500/10 via-purple-500/5 to-emerald-500/10 dark:from-[#121217] dark:via-[#121217] dark:to-zinc-900 p-3.5 sm:p-5 rounded-3xl border border-violet-200/60 dark:border-zinc-800 shadow-sm flex items-center justify-between flex-wrap gap-3 sm:gap-4">
       <div class="flex items-center gap-2.5 sm:gap-3">
-        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-600 text-white flex items-center justify-center shadow-xs shrink-0">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-violet-600 to-purple-600 text-white flex items-center justify-center shadow-xs shrink-0">
           <BookHeart class="w-4 h-4 sm:w-5 sm:h-5" />
         </div>
         <div>
@@ -194,7 +194,7 @@ function showNotice(msg: string) {
               <button
                 @click="handleCook(recipe)"
                 :disabled="isCookingId === recipe.id"
-                class="px-4 py-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 active:scale-[0.99] text-white text-xs font-semibold rounded-xl shadow-sm shadow-violet-500/20 transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
+                class="px-4 py-2 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 active:scale-[0.99] text-white text-xs font-semibold rounded-xl shadow-sm shadow-violet-500/20 transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
               >
                 <CookingPot class="w-3.5 h-3.5" />
                 <span>{{ isCookingId === recipe.id ? 'Готується...' : 'Приготувати' }}</span>

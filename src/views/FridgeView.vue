@@ -136,7 +136,7 @@ async function handleEat(payload: { amount: number; unit: string; mealType: stri
 <template>
   <div class="space-y-3.5 sm:space-y-6">
     <!-- Welcome Greeting Card -->
-    <div class="bg-gradient-to-br from-violet-50/70 via-white to-indigo-50/40 dark:from-[#121217] dark:via-[#121217] dark:to-violet-950/20 p-3.5 sm:p-6 rounded-3xl border border-violet-100/60 dark:border-zinc-800 shadow-sm">
+    <div class="bg-gradient-to-br from-violet-50/70 via-white to-emerald-50/30 dark:from-[#121217] dark:via-[#121217] dark:to-emerald-950/10 p-3.5 sm:p-6 rounded-3xl border border-violet-100/60 dark:border-zinc-800 shadow-sm">
       <div class="flex items-center justify-between flex-wrap gap-2.5 sm:gap-3">
         <div>
           <h2 class="text-lg sm:text-xl font-semibold text-zinc-800 dark:text-zinc-100">
@@ -158,7 +158,7 @@ async function handleEat(payload: { amount: number; unit: string; mealType: stri
           <button
             type="button"
             @click="openAddProductModal"
-            class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white text-xs font-medium rounded-2xl shadow-sm transition-all active:scale-[0.98] cursor-pointer"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white text-xs font-medium rounded-2xl shadow-sm transition-all active:scale-[0.98] cursor-pointer"
           >
             <Plus class="w-4 h-4" />
             <span>Додати продукт</span>
@@ -239,7 +239,7 @@ async function handleEat(payload: { amount: number; unit: string; mealType: stri
           :class="[
             'px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all cursor-pointer',
             productStore.selectedCategory === 'all'
-              ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-xs'
+              ? 'bg-gradient-to-r from-violet-600 to-purple-600 text-white shadow-xs'
               : 'bg-white dark:bg-[#121217] border border-zinc-200/70 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800'
           ]"
         >
@@ -253,7 +253,7 @@ async function handleEat(payload: { amount: number; unit: string; mealType: stri
           :class="[
             'px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all cursor-pointer',
             productStore.selectedCategory === cat.id
-              ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-xs'
+              ? 'bg-gradient-to-r from-violet-600 to-purple-600 text-white shadow-xs'
               : 'bg-white dark:bg-[#121217] border border-zinc-200/70 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800'
           ]"
         >
@@ -323,7 +323,7 @@ async function handleEat(payload: { amount: number; unit: string; mealType: stri
       <button
         type="button"
         @click="openAddProductModal"
-        class="inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white text-xs font-medium rounded-xl shadow-sm transition-all mt-2 cursor-pointer"
+        class="inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white text-xs font-medium rounded-xl shadow-sm transition-all mt-2 cursor-pointer"
       >
         <Plus class="w-4 h-4" />
         <span>Додати продукт</span>

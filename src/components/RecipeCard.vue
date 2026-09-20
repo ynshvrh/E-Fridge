@@ -104,7 +104,7 @@ const emit = defineEmits<{
         @click="emit('cook', recipe)"
         :disabled="isCooking"
         title="Приготувати страву та списати продукти з холодильника"
-        class="py-1.5 px-2.5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 active:scale-95 text-white text-xs font-semibold rounded-xl shadow-2xs shadow-violet-500/20 transition-all inline-flex items-center justify-center gap-1.5 disabled:opacity-60 cursor-pointer shrink-0 whitespace-nowrap"
+        class="py-1.5 px-2.5 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 active:scale-95 text-white text-xs font-semibold rounded-xl shadow-2xs shadow-violet-500/20 transition-all inline-flex items-center justify-center gap-1.5 disabled:opacity-60 cursor-pointer shrink-0 whitespace-nowrap"
       >
         <CookingPot class="w-3.5 h-3.5" />
         <span>{{ isCooking ? 'Готується...' : 'Приготувати' }}</span>

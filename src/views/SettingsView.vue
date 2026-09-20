@@ -220,7 +220,7 @@ function clearNotices() {
   <div class="space-y-3.5 sm:space-y-5 max-w-4xl mx-auto pb-6 sm:pb-10">
     <!-- Header Banner -->
     <div
-      class="bg-gradient-to-br from-violet-50/70 via-white to-indigo-50/40 dark:from-[#121217] dark:via-[#121217] dark:to-violet-950/20 p-3.5 sm:p-5 rounded-3xl border border-violet-100/70 dark:border-zinc-800 shadow-xs flex items-center justify-between flex-wrap gap-2.5 sm:gap-3"
+      class="bg-gradient-to-br from-violet-50/70 via-white to-emerald-50/30 dark:from-[#121217] dark:via-[#121217] dark:to-violet-950/20 p-3.5 sm:p-5 rounded-3xl border border-violet-100/70 dark:border-zinc-800 shadow-xs flex items-center justify-between flex-wrap gap-2.5 sm:gap-3"
     >
       <div class="flex items-center gap-2.5 sm:gap-3">
         <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-violet-100/80 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 flex items-center justify-center shadow-xs shrink-0">
@@ -261,7 +261,7 @@ function clearNotices() {
         :class="[
           'px-4 py-2 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer',
           activeTab === 'profile'
-            ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-xs'
+            ? 'bg-gradient-to-r from-violet-600 to-purple-600 text-white shadow-xs'
             : 'bg-white dark:bg-[#121217] text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-800',
         ]"
       >
@@ -275,7 +275,7 @@ function clearNotices() {
         :class="[
           'px-4 py-2 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer',
           activeTab === 'fridge'
-            ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-xs'
+            ? 'bg-gradient-to-r from-violet-600 to-purple-600 text-white shadow-xs'
             : 'bg-white dark:bg-[#121217] text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-800',
         ]"
       >
@@ -289,7 +289,7 @@ function clearNotices() {
         :class="[
           'px-4 py-2 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer',
           activeTab === 'security'
-            ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-xs'
+            ? 'bg-gradient-to-r from-violet-600 to-purple-600 text-white shadow-xs'
             : 'bg-white dark:bg-[#121217] text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-800',
         ]"
       >
@@ -398,7 +398,7 @@ function clearNotices() {
           <button
             type="submit"
             :disabled="isSaving"
-            class="px-5 py-2.5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white rounded-xl shadow-xs font-medium transition-all cursor-pointer flex items-center gap-2"
+            class="px-5 py-2.5 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white rounded-xl shadow-xs font-medium transition-all cursor-pointer flex items-center gap-2"
           >
             <Loader2 v-if="isSaving" class="w-4 h-4 animate-spin" />
             <span>{{ isSaving ? 'Збереження...' : 'Зберегти зміни' }}</span>
@@ -454,7 +454,7 @@ function clearNotices() {
           />
           <button
             type="submit"
-            class="px-4 py-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white rounded-xl font-medium shadow-xs cursor-pointer"
+            class="px-4 py-2 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white rounded-xl font-medium shadow-xs cursor-pointer"
           >
             Запросити
           </button>
@@ -505,7 +505,7 @@ function clearNotices() {
           <button
             type="submit"
             :disabled="isSaving"
-            class="px-5 py-2.5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white rounded-xl shadow-xs font-medium transition-all cursor-pointer"
+            class="px-5 py-2.5 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white rounded-xl shadow-xs font-medium transition-all cursor-pointer"
           >
             {{ isSaving ? 'Оновлення...' : 'Змінити пароль' }}
           </button>
