@@ -28,10 +28,10 @@ const emit = defineEmits<{
     <!-- Header -->
     <div class="flex items-start justify-between gap-2">
       <div>
-        <h4 class="font-semibold text-stone-800 dark:text-stone-100 text-sm sm:text-base">
+        <h4 class="font-semibold text-zinc-800 dark:text-zinc-100 text-sm sm:text-base">
           {{ recipe.title }}
         </h4>
-        <p class="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
+        <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
           {{ recipe.description }}
         </p>
       </div>
@@ -40,7 +40,7 @@ const emit = defineEmits<{
           @click="emit('save', recipe)"
           :disabled="isSaved"
           class="px-2.5 py-1 rounded-xl border text-[11px] font-medium transition-all flex items-center gap-1 shadow-2xs cursor-pointer"
-          :class="isSaved ? 'text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/50 border-rose-200 dark:border-rose-900' : 'text-stone-600 dark:text-stone-300 hover:text-stone-800 dark:hover:text-stone-100 bg-white dark:bg-stone-800 hover:bg-stone-50 dark:hover:bg-stone-700 border-stone-200 dark:border-stone-700'"
+          :class="isSaved ? 'text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/50 border-rose-200 dark:border-rose-900' : 'text-zinc-600 dark:text-zinc-300 hover:text-zinc-800 dark:hover:text-zinc-100 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 border-zinc-200 dark:border-zinc-700'"
         >
           <Bookmark class="w-3.5 h-3.5" :class="{ 'fill-rose-500 text-rose-500': isSaved }" />
           <span>{{ isSaved ? 'Збережено' : 'Зберегти' }}</span>
@@ -52,32 +52,32 @@ const emit = defineEmits<{
     </div>
 
     <!-- Times & Macros -->
-    <div class="flex flex-wrap gap-2 text-[11px] text-stone-600 dark:text-stone-300">
-      <span class="inline-flex items-center gap-1 bg-white dark:bg-stone-800 px-2 py-1 rounded-lg border border-stone-200/60 dark:border-stone-700">
-        <Clock class="w-3 h-3 text-stone-400" />
+    <div class="flex flex-wrap gap-2 text-[11px] text-zinc-600 dark:text-zinc-300">
+      <span class="inline-flex items-center gap-1 bg-white dark:bg-zinc-800/80 px-2.5 py-1 rounded-xl border border-zinc-200/60 dark:border-zinc-700">
+        <Clock class="w-3 h-3 text-zinc-400" />
         {{ recipe.prep_time_mins + recipe.cook_time_mins }} хв
       </span>
-      <span class="inline-flex items-center gap-1 bg-white dark:bg-stone-800 px-2 py-1 rounded-lg border border-stone-200/60 dark:border-stone-700 font-medium text-emerald-700 dark:text-emerald-400">
-        <Flame class="w-3 h-3 text-emerald-500" />
+      <span class="inline-flex items-center gap-1 bg-white dark:bg-zinc-800/80 px-2.5 py-1 rounded-xl border border-zinc-200/60 dark:border-zinc-700 font-medium text-violet-700 dark:text-violet-400">
+        <Flame class="w-3 h-3 text-violet-500" />
         {{ recipe.calories }} ккал / порц.
       </span>
-      <span class="inline-flex items-center gap-1 bg-white dark:bg-stone-800 px-2 py-1 rounded-lg border border-stone-200/60 dark:border-stone-700">
+      <span class="inline-flex items-center gap-1 bg-white dark:bg-zinc-800/80 px-2.5 py-1 rounded-xl border border-zinc-200/60 dark:border-zinc-700">
         Б: {{ recipe.protein_grams }}г · Ж: {{ recipe.fat_grams }}г · В: {{ recipe.carbs_grams }}г
       </span>
     </div>
 
     <!-- Ingredients -->
     <div>
-      <div class="text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1.5">Інгредієнти:</div>
+      <div class="text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5">Інгредієнти:</div>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
         <div
           v-for="(ing, iIdx) in recipe.ingredients"
           :key="iIdx"
-          class="flex items-center justify-between text-xs p-1.5 bg-white dark:bg-stone-800 rounded-lg border border-stone-200/60 dark:border-stone-700"
+          class="flex items-center justify-between text-xs p-2 bg-white dark:bg-zinc-800/80 rounded-xl border border-zinc-200/60 dark:border-zinc-700"
         >
-          <span class="font-medium text-stone-700 dark:text-stone-200 truncate mr-2">{{ ing.name }}</span>
+          <span class="font-medium text-zinc-700 dark:text-zinc-200 truncate mr-2">{{ ing.name }}</span>
           <div class="flex items-center gap-1.5 shrink-0">
-            <span class="text-stone-500 dark:text-stone-400">{{ ing.quantity }} {{ ing.unit }}</span>
+            <span class="text-zinc-500 dark:text-zinc-400">{{ ing.quantity }} {{ ing.unit }}</span>
             <span
               v-if="ing.in_fridge"
               title="Є в холодильнику"
@@ -99,8 +99,8 @@ const emit = defineEmits<{
 
     <!-- Recipe Steps -->
     <div>
-      <div class="text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">Приготування:</div>
-      <ol class="space-y-1 text-xs text-stone-600 dark:text-stone-300 pl-4 list-decimal">
+      <div class="text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Приготування:</div>
+      <ol class="space-y-1 text-xs text-zinc-600 dark:text-zinc-300 pl-4 list-decimal">
         <li v-for="(step, sIdx) in recipe.steps" :key="sIdx">
           {{ step }}
         </li>
@@ -112,7 +112,7 @@ const emit = defineEmits<{
       <button
         @click="emit('cook', recipe)"
         :disabled="isCooking"
-        class="flex-1 py-2 px-3 bg-amber-600 hover:bg-amber-700 active:scale-[0.99] text-white text-xs font-medium rounded-xl shadow-xs transition-all flex items-center justify-center gap-1.5 disabled:opacity-60 cursor-pointer"
+        class="flex-1 py-2.5 px-4 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 active:scale-[0.99] text-white text-xs font-semibold rounded-xl shadow-sm shadow-violet-500/20 transition-all flex items-center justify-center gap-1.5 disabled:opacity-60 cursor-pointer"
       >
         <CookingPot class="w-3.5 h-3.5" />
         <span>{{ isCooking ? 'Приготування...' : 'Приготувати та списати' }}</span>
@@ -122,9 +122,9 @@ const emit = defineEmits<{
         v-if="recipe.ingredients.some(i => !i.in_fridge)"
         @click="emit('add-missing', recipe)"
         :disabled="isMissingAdded"
-        class="py-2 px-3 bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 text-xs font-medium rounded-xl transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+        class="py-2.5 px-4 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 text-xs font-medium rounded-xl transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
       >
-        <ShoppingCart class="w-3.5 h-3.5 text-stone-500" />
+        <ShoppingCart class="w-3.5 h-3.5 text-zinc-400" />
         <span>{{ isMissingAdded ? 'Вже в списку' : 'Купити відсутнє' }}</span>
       </button>
     </div>

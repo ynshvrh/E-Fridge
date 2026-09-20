@@ -111,26 +111,26 @@ function showNotice(msg: string) {
 <template>
   <div class="space-y-5">
     <!-- Header banner -->
-    <div class="bg-gradient-to-br from-emerald-50/80 via-white to-stone-50/50 p-5 rounded-3xl border border-emerald-100/70 shadow-sm flex items-center justify-between flex-wrap gap-4">
+    <div class="bg-gradient-to-br from-violet-50/70 via-white to-indigo-50/40 dark:from-[#121217] dark:via-[#121217] dark:to-violet-950/20 p-5 rounded-3xl border border-violet-100/70 dark:border-zinc-800 shadow-xs flex items-center justify-between flex-wrap gap-4">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl bg-emerald-100/80 text-emerald-700 flex items-center justify-center shadow-xs">
+        <div class="w-10 h-10 rounded-2xl bg-violet-100/80 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 flex items-center justify-center shadow-xs">
           <ShoppingCart class="w-5 h-5" />
         </div>
         <div>
-          <h2 class="text-base font-semibold text-stone-800">Список покупок</h2>
-          <p class="text-xs text-stone-500">Плануйте закупи та переносьте товари прямо у холодильник</p>
+          <h2 class="text-base font-semibold text-zinc-800 dark:text-zinc-100">Список покупок</h2>
+          <p class="text-xs text-zinc-500 dark:text-zinc-400">Плануйте закупи та переносьте товари прямо у холодильник</p>
         </div>
       </div>
 
       <!-- Stats pills -->
       <div class="flex items-center gap-2 text-xs">
-        <span class="px-2.5 py-1 bg-stone-100 text-stone-600 rounded-xl font-medium">
+        <span class="px-2.5 py-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-xl font-medium border border-zinc-200/60 dark:border-zinc-700/60">
           Всього: {{ shoppingStore.totalCount }}
         </span>
-        <span class="px-2.5 py-1 bg-amber-50 text-amber-700 rounded-xl font-medium">
+        <span class="px-2.5 py-1 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 rounded-xl font-medium border border-amber-200/60 dark:border-amber-800/60">
           Купити: {{ shoppingStore.leftCount }}
         </span>
-        <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-xl font-medium">
+        <span class="px-2.5 py-1 bg-violet-50 dark:bg-violet-950/40 text-violet-700 dark:text-violet-300 rounded-xl font-medium border border-violet-200/60 dark:border-violet-800/60">
           Куплено: {{ shoppingStore.boughtCount }}
         </span>
       </div>
@@ -139,14 +139,14 @@ function showNotice(msg: string) {
     <!-- Success notice banner -->
     <div
       v-if="successNotice"
-      class="bg-emerald-50 text-emerald-800 border border-emerald-200/80 px-4 py-2.5 rounded-2xl text-xs flex items-center gap-2 shadow-xs transition-all"
+      class="bg-violet-50 dark:bg-violet-950/40 text-violet-800 dark:text-violet-300 border border-violet-200/80 dark:border-violet-800/80 px-4 py-2.5 rounded-2xl text-xs flex items-center gap-2 shadow-xs transition-all"
     >
-      <CheckCircle2 class="w-4 h-4 text-emerald-600 shrink-0" />
+      <CheckCircle2 class="w-4 h-4 text-violet-600 dark:text-violet-400 shrink-0" />
       <span>{{ successNotice }}</span>
     </div>
 
     <!-- Quick Add Bar -->
-    <div class="bg-white p-4 rounded-3xl border border-stone-200/70 shadow-xs">
+    <div class="bg-white dark:bg-[#121217] p-4 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xs">
       <form @submit.prevent="handleAddItem" class="space-y-3">
         <div class="flex flex-col sm:flex-row gap-2">
           <!-- Item Name -->
@@ -155,7 +155,7 @@ function showNotice(msg: string) {
             type="text"
             placeholder="Назва товару (наприклад: Вівсяне молоко, Яйця...)"
             required
-            class="flex-1 px-3.5 py-2 text-xs sm:text-sm bg-stone-50 rounded-xl border border-stone-200 focus:outline-none focus:border-emerald-500 transition-all"
+            class="flex-1 px-3.5 py-2 text-xs sm:text-sm bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all"
           />
 
           <div class="flex items-center gap-2">
@@ -166,13 +166,13 @@ function showNotice(msg: string) {
               min="0.1"
               step="any"
               placeholder="К-сть"
-              class="w-20 px-3 py-2 text-xs sm:text-sm bg-stone-50 rounded-xl border border-stone-200 focus:outline-none focus:border-emerald-500 text-center"
+              class="w-20 px-3 py-2 text-xs sm:text-sm bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 text-center"
             />
 
             <!-- Unit -->
             <select
               v-model="newItemUnit"
-              class="px-2.5 py-2 text-xs sm:text-sm bg-stone-50 rounded-xl border border-stone-200 focus:outline-none focus:border-emerald-500"
+              class="px-2.5 py-2 text-xs sm:text-sm bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
             >
               <option v-for="u in units" :key="u" :value="u">{{ u }}</option>
             </select>
@@ -181,7 +181,7 @@ function showNotice(msg: string) {
             <button
               type="submit"
               :disabled="!newItemName.trim() || isAdding"
-              class="py-2 px-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-medium transition-colors flex items-center gap-1.5 shadow-xs shrink-0 disabled:opacity-40"
+              class="py-2 px-4 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 shadow-xs shrink-0 disabled:opacity-40 cursor-pointer"
             >
               <Plus class="w-3.5 h-3.5" />
               <span>Додати</span>
@@ -196,40 +196,41 @@ function showNotice(msg: string) {
       <!-- Unbought Items (To Buy) -->
       <div class="space-y-2">
         <div class="flex items-center justify-between px-1">
-          <h3 class="text-xs font-semibold text-stone-500 uppercase tracking-wider">
+          <h3 class="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
             До покупки ({{ shoppingStore.leftCount }})
           </h3>
           <button
             v-if="shoppingStore.items.length > 0"
+            type="button"
             @click="handleClearAll"
-            class="text-[11px] text-stone-400 hover:text-rose-600 transition-colors"
+            class="text-[11px] text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400 transition-colors cursor-pointer"
           >
             Очистити все
           </button>
         </div>
 
-        <div v-if="shoppingStore.items.filter(i => !i.is_bought).length === 0" class="bg-white rounded-3xl p-8 text-center border border-dashed border-stone-200">
-          <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-3">
+        <div v-if="shoppingStore.items.filter(i => !i.is_bought).length === 0" class="bg-white dark:bg-[#121217] rounded-3xl p-8 text-center border border-dashed border-zinc-200 dark:border-zinc-800">
+          <div class="w-12 h-12 rounded-2xl bg-violet-50 dark:bg-violet-950/50 text-violet-600 dark:text-violet-400 flex items-center justify-center mx-auto mb-3">
             <ShoppingBag class="w-6 h-6" />
           </div>
-          <p class="text-xs text-stone-600 font-medium">Немає товарів до покупки</p>
-          <p class="text-[11px] text-stone-400 mt-0.5">Додайте новий товар вище або запитайте в AI Шефа</p>
+          <p class="text-xs text-zinc-700 dark:text-zinc-300 font-medium">Немає товарів до покупки</p>
+          <p class="text-[11px] text-zinc-400 dark:text-zinc-500 mt-0.5">Додайте новий товар вище або запитайте в AI Шефа</p>
         </div>
 
         <div v-else class="space-y-1.5">
           <div
             v-for="item in shoppingStore.items.filter(i => !i.is_bought)"
             :key="item.id"
-            class="group bg-white p-3 rounded-2xl border border-stone-200/70 hover:border-emerald-200/80 shadow-xs flex items-center justify-between gap-3 transition-all"
+            class="group bg-white dark:bg-[#121217] p-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800 hover:border-violet-300 dark:hover:border-violet-700 shadow-xs flex items-center justify-between gap-3 transition-all"
           >
             <!-- Item info -->
             <div class="flex items-center gap-3 flex-1 min-w-0">
-              <div class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></div>
+              <div class="w-2 h-2 rounded-full bg-violet-600 dark:bg-violet-400 shrink-0"></div>
               <div class="truncate">
-                <span class="text-xs sm:text-sm font-medium text-stone-800 truncate block">
+                <span class="text-xs sm:text-sm font-medium text-zinc-800 dark:text-zinc-100 truncate block">
                   {{ item.name }}
                 </span>
-                <span class="text-[11px] text-stone-400">
+                <span class="text-[11px] text-zinc-400 dark:text-zinc-500">
                   {{ item.quantity }} {{ item.unit }}
                 </span>
               </div>
@@ -239,10 +240,11 @@ function showNotice(msg: string) {
             <div class="flex items-center gap-1.5 shrink-0">
               <!-- Buy & Move to Fridge -->
               <button
+                type="button"
                 @click="handleMoveToFridge(item)"
                 :disabled="movingItemId === item.id"
                 title="Позначити як куплене та перенести в холодильник"
-                class="px-3 py-1.5 text-xs font-medium bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-xl shadow-2xs transition-all flex items-center gap-1.5 disabled:opacity-50"
+                class="px-3 py-1.5 text-xs font-medium bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 active:scale-95 text-white rounded-xl shadow-xs transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
               >
                 <Check class="w-3.5 h-3.5" />
                 <span>{{ movingItemId === item.id ? 'Додаємо...' : 'Куплено' }}</span>
@@ -250,9 +252,10 @@ function showNotice(msg: string) {
 
               <!-- Delete -->
               <button
+                type="button"
                 @click="handleDeleteItem(item.id)"
                 title="Видалити"
-                class="p-1.5 text-stone-300 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-colors"
+                class="p-1.5 text-zinc-300 dark:text-zinc-600 hover:text-rose-500 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg transition-colors cursor-pointer"
               >
                 <Trash2 class="w-3.5 h-3.5" />
               </button>
@@ -264,12 +267,13 @@ function showNotice(msg: string) {
       <!-- Bought Items (Checked) -->
       <div v-if="shoppingStore.items.filter(i => i.is_bought).length > 0" class="pt-3 space-y-2">
         <div class="flex items-center justify-between px-1">
-          <h3 class="text-xs font-semibold text-stone-400 uppercase tracking-wider">
+          <h3 class="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
             Куплено ({{ shoppingStore.boughtCount }})
           </h3>
           <button
+            type="button"
             @click="handleClearBought"
-            class="text-[11px] text-stone-400 hover:text-rose-600 transition-colors"
+            class="text-[11px] text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400 transition-colors cursor-pointer"
           >
             Очистити куплене
           </button>
@@ -279,20 +283,21 @@ function showNotice(msg: string) {
           <div
             v-for="item in shoppingStore.items.filter(i => i.is_bought)"
             :key="item.id"
-            class="bg-stone-50/70 p-2.5 rounded-2xl border border-stone-200/50 flex items-center justify-between gap-3 opacity-75 hover:opacity-100 transition-all"
+            class="bg-zinc-50/80 dark:bg-zinc-900/60 p-2.5 rounded-2xl border border-zinc-200/60 dark:border-zinc-800/60 flex items-center justify-between gap-3 opacity-75 hover:opacity-100 transition-all"
           >
             <div class="flex items-center gap-3 flex-1 min-w-0">
               <button
+                type="button"
                 @click="handleToggleBought(item)"
-                class="w-5 h-5 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0"
+                class="w-5 h-5 rounded-lg bg-violet-600 text-white flex items-center justify-center shrink-0 cursor-pointer"
               >
                 <Check class="w-3.5 h-3.5 stroke-[3]" />
               </button>
               <div class="truncate">
-                <span class="text-xs line-through text-stone-400 font-normal truncate block">
+                <span class="text-xs line-through text-zinc-400 dark:text-zinc-500 font-normal truncate block">
                   {{ item.name }}
                 </span>
-                <span class="text-[10px] text-stone-400">
+                <span class="text-[10px] text-zinc-400 dark:text-zinc-500">
                   {{ item.quantity }} {{ item.unit }}
                 </span>
               </div>
@@ -301,10 +306,11 @@ function showNotice(msg: string) {
             <div class="flex items-center gap-1.5 shrink-0">
               <!-- Move to Fridge -->
               <button
+                type="button"
                 @click="handleMoveToFridge(item)"
                 :disabled="movingItemId === item.id"
                 title="Перенести в холодильник"
-                class="px-2 py-1 text-[11px] font-medium bg-emerald-100/70 hover:bg-emerald-200/70 text-emerald-800 rounded-lg transition-colors flex items-center gap-1"
+                class="px-2 py-1 text-[11px] font-medium bg-violet-100/80 hover:bg-violet-200/80 dark:bg-violet-950/50 dark:hover:bg-violet-900/60 text-violet-800 dark:text-violet-300 rounded-lg transition-colors flex items-center gap-1 cursor-pointer"
               >
                 <PackagePlus class="w-3 h-3" />
                 <span class="hidden sm:inline">В холодильник</span>
@@ -312,8 +318,9 @@ function showNotice(msg: string) {
 
               <!-- Delete -->
               <button
+                type="button"
                 @click="handleDeleteItem(item.id)"
-                class="p-1 text-stone-300 hover:text-rose-500 rounded-md transition-colors"
+                class="p-1 text-zinc-300 dark:text-zinc-600 hover:text-rose-500 dark:hover:text-rose-400 rounded-md transition-colors cursor-pointer"
               >
                 <Trash2 class="w-3 h-3" />
               </button>

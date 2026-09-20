@@ -178,29 +178,29 @@ async function handleAddMissingToShopping(recipe: Recipe) {
 </script>
 
 <template>
-  <div class="flex flex-col h-[calc(100vh-210px)] md:h-[calc(100vh-140px)] bg-white dark:bg-stone-900 rounded-3xl border border-stone-200/80 dark:border-stone-800 shadow-sm overflow-hidden">
+  <div class="flex flex-col h-[calc(100vh-210px)] md:h-[calc(100vh-140px)] bg-white dark:bg-[#121217] rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-sm overflow-hidden">
     <!-- Chat Header -->
-    <div class="px-4 py-3 sm:px-6 sm:py-4 bg-gradient-to-r from-teal-50/80 via-white to-emerald-50/50 dark:from-stone-900 dark:via-stone-900 dark:to-teal-950/30 border-b border-stone-200/80 dark:border-stone-800 flex items-center justify-between shrink-0">
+    <div class="px-4 py-3 sm:px-6 sm:py-4 bg-gradient-to-r from-violet-500/10 via-purple-500/5 to-indigo-500/10 dark:from-[#121217] dark:via-[#121217] dark:to-zinc-900 border-b border-zinc-200/80 dark:border-zinc-800 flex items-center justify-between shrink-0">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl bg-teal-600 text-white flex items-center justify-center shadow-xs">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-600 text-white flex items-center justify-center shadow-xs">
           <ChefHat class="w-5 h-5" />
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <h2 class="text-sm sm:text-base font-bold text-stone-800 dark:text-stone-100">AI Шеф-кухар</h2>
-            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <h2 class="text-sm sm:text-base font-bold text-zinc-800 dark:text-zinc-100">AI Шеф-кухар</h2>
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-violet-100 dark:bg-violet-950/60 text-violet-800 dark:text-violet-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse"></span>
               Готовий допомогти
             </span>
           </div>
-          <p class="text-[11px] sm:text-xs text-stone-500 dark:text-stone-400">Підбирає рецепти з продуктів вашого холодильника</p>
+          <p class="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400">Підбирає рецепти з продуктів вашого холодильника</p>
         </div>
       </div>
 
       <button
         @click="chefStore.clearMessages"
         title="Очистити історію діалогу"
-        class="p-2 text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-xl transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-medium"
+        class="p-2 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-medium"
       >
         <RotateCcw class="w-4 h-4" />
         <span class="hidden sm:inline">Очистити</span>
@@ -231,12 +231,12 @@ async function handleAddMissingToShopping(recipe: Recipe) {
         v-if="chefStore.messages.length === 0"
         class="h-full flex flex-col items-center justify-center text-center max-w-md mx-auto space-y-4 py-8"
       >
-        <div class="w-14 h-14 rounded-3xl bg-teal-50 dark:bg-teal-950/40 text-teal-600 dark:text-teal-400 flex items-center justify-center shadow-xs">
+        <div class="w-14 h-14 rounded-3xl bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400 flex items-center justify-center shadow-xs">
           <Sparkles class="w-7 h-7" />
         </div>
         <div>
-          <h3 class="text-base font-bold text-stone-800 dark:text-stone-100">Чим вам допомогти сьогодні?</h3>
-          <p class="text-xs text-stone-500 dark:text-stone-400 mt-1 leading-relaxed">
+          <h3 class="text-base font-bold text-zinc-800 dark:text-zinc-100">Чим вам допомогти сьогодні?</h3>
+          <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">
             Я можу створити страву з продуктів, які вже є у вашому холодильнику, розрахувати КБЖВ або підказати відсутні інгредієнти.
           </p>
         </div>
@@ -247,10 +247,10 @@ async function handleAddMissingToShopping(recipe: Recipe) {
             v-for="prompt in quickPrompts"
             :key="prompt"
             @click="send(prompt)"
-            class="text-left px-4 py-2.5 rounded-2xl bg-stone-50 dark:bg-stone-800/80 hover:bg-teal-50 dark:hover:bg-teal-950/30 border border-stone-200/80 dark:border-stone-700 text-xs text-stone-700 dark:text-stone-200 font-medium transition-all shadow-2xs cursor-pointer flex items-center justify-between group"
+            class="text-left px-4 py-2.5 rounded-2xl bg-zinc-50 dark:bg-zinc-900/80 hover:bg-violet-50 dark:hover:bg-violet-950/30 border border-zinc-200/80 dark:border-zinc-800 text-xs text-zinc-700 dark:text-zinc-200 font-medium transition-all shadow-2xs cursor-pointer flex items-center justify-between group"
           >
             <span>{{ prompt }}</span>
-            <Sparkles class="w-3.5 h-3.5 text-stone-400 group-hover:text-teal-600 transition-colors shrink-0 ml-2" />
+            <Sparkles class="w-3.5 h-3.5 text-zinc-400 group-hover:text-violet-600 transition-colors shrink-0 ml-2" />
           </button>
         </div>
       </div>
@@ -264,7 +264,7 @@ async function handleAddMissingToShopping(recipe: Recipe) {
         <!-- Assistant Avatar -->
         <div
           v-if="msg.role === 'assistant'"
-          class="w-8 h-8 rounded-2xl bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-xs mt-1"
+          class="w-8 h-8 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-600 text-white flex items-center justify-center shrink-0 shadow-xs mt-1"
         >
           <Bot class="w-4 h-4" />
         </div>
@@ -279,7 +279,7 @@ async function handleAddMissingToShopping(recipe: Recipe) {
           <!-- User Bubble -->
           <div
             v-if="msg.role === 'user'"
-            class="bg-emerald-600 text-white text-xs sm:text-sm px-4 py-2.5 rounded-2xl rounded-tr-xs shadow-xs leading-relaxed"
+            class="bg-gradient-to-r from-violet-600 to-indigo-600 text-white text-xs sm:text-sm px-4 py-2.5 rounded-2xl rounded-tr-xs shadow-xs leading-relaxed"
           >
             {{ msg.content }}
           </div>
@@ -287,9 +287,9 @@ async function handleAddMissingToShopping(recipe: Recipe) {
           <!-- Assistant Bubble -->
           <div
             v-else
-            class="bg-stone-50 dark:bg-stone-800/90 border border-stone-200/80 dark:border-stone-700 p-4 sm:p-5 rounded-3xl rounded-tl-xs shadow-xs space-y-4 w-full"
+            class="bg-zinc-50 dark:bg-zinc-900/90 border border-zinc-200/80 dark:border-zinc-800 p-4 sm:p-5 rounded-3xl rounded-tl-xs shadow-xs space-y-4 w-full"
           >
-            <div class="text-xs sm:text-sm text-stone-800 dark:text-stone-100 leading-relaxed whitespace-pre-line">
+            <div class="text-xs sm:text-sm text-zinc-800 dark:text-zinc-100 leading-relaxed whitespace-pre-line">
               {{ msg.content }}
             </div>
 
@@ -308,17 +308,17 @@ async function handleAddMissingToShopping(recipe: Recipe) {
             <!-- Shopping Suggestions -->
             <div
               v-if="msg.shopping_suggestions && msg.shopping_suggestions.length > 0"
-              class="bg-emerald-50/60 dark:bg-emerald-950/40 border border-emerald-200/70 dark:border-emerald-800 rounded-2xl p-3.5 space-y-2.5"
+              class="bg-violet-50/60 dark:bg-violet-950/30 border border-violet-200/70 dark:border-violet-800/60 rounded-2xl p-3.5 space-y-2.5"
             >
               <div class="flex items-center justify-between gap-2 flex-wrap">
-                <div class="text-xs font-semibold text-emerald-900 dark:text-emerald-200 flex items-center gap-1.5">
-                  <PlusCircle class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                <div class="text-xs font-semibold text-violet-900 dark:text-violet-200 flex items-center gap-1.5">
+                  <PlusCircle class="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" />
                   <span>Рекомендовано докупити:</span>
                 </div>
                 <button
                   @click="handleAddSuggestionsToShopping(msg.shopping_suggestions, 'sug_' + index)"
                   :disabled="addedToShoppingTitles.has('sug_' + index)"
-                  class="text-[11px] font-medium text-emerald-700 dark:text-emerald-300 hover:text-emerald-800 bg-white dark:bg-stone-800 border border-emerald-200 dark:border-emerald-700 px-2.5 py-1 rounded-xl flex items-center gap-1 transition-colors cursor-pointer shadow-2xs"
+                  class="text-[11px] font-medium text-violet-700 dark:text-violet-300 hover:text-violet-800 bg-white dark:bg-zinc-800 border border-violet-200 dark:border-zinc-700 px-2.5 py-1 rounded-xl flex items-center gap-1 transition-colors cursor-pointer shadow-2xs"
                 >
                   <ShoppingCart class="w-3 h-3" />
                   <span>{{ addedToShoppingTitles.has('sug_' + index) ? 'Додано' : 'Додати всі в список' }}</span>
@@ -328,7 +328,7 @@ async function handleAddMissingToShopping(recipe: Recipe) {
                 <span
                   v-for="(sug, sIdx) in msg.shopping_suggestions"
                   :key="sIdx"
-                  class="text-[11px] px-2.5 py-1 bg-white dark:bg-stone-800 border border-emerald-200/60 dark:border-stone-700 text-stone-700 dark:text-stone-300 rounded-xl font-medium"
+                  class="text-[11px] px-2.5 py-1 bg-white dark:bg-zinc-800 border border-violet-200/60 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 rounded-xl font-medium"
                 >
                   {{ sug.name }} ({{ sug.quantity }} {{ sug.unit }})
                 </span>
@@ -340,18 +340,18 @@ async function handleAddMissingToShopping(recipe: Recipe) {
         <!-- User Avatar -->
         <div
           v-if="msg.role === 'user'"
-          class="w-8 h-8 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs mt-1"
+          class="w-8 h-8 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white flex items-center justify-center shrink-0 shadow-xs mt-1"
         >
           <UserIcon class="w-4 h-4" />
         </div>
       </div>
 
       <!-- Thinking indicator -->
-      <div v-if="chefStore.loading" class="flex items-center gap-3 text-stone-500 dark:text-stone-400 text-xs p-2">
-        <div class="w-8 h-8 rounded-2xl bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+      <div v-if="chefStore.loading" class="flex items-center gap-3 text-zinc-500 dark:text-zinc-400 text-xs p-2">
+        <div class="w-8 h-8 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-600 text-white flex items-center justify-center shrink-0 shadow-xs">
           <Loader2 class="w-4 h-4 animate-spin" />
         </div>
-        <div class="bg-stone-100 dark:bg-stone-800 px-4 py-2.5 rounded-2xl rounded-tl-xs flex items-center gap-2">
+        <div class="bg-zinc-100 dark:bg-zinc-800 px-4 py-2.5 rounded-2xl rounded-tl-xs flex items-center gap-2">
           <span class="animate-pulse">E-Chef формує рецепт та перевіряє продукти...</span>
         </div>
       </div>
@@ -360,21 +360,21 @@ async function handleAddMissingToShopping(recipe: Recipe) {
     <!-- Quick Prompts Bar (above input when there are messages) -->
     <div
       v-if="chefStore.messages.length > 0"
-      class="px-4 py-2 bg-stone-50/70 dark:bg-stone-900/80 border-t border-stone-100 dark:border-stone-800/80 flex items-center gap-1.5 overflow-x-auto scrollbar-none shrink-0"
+      class="px-4 py-2 bg-zinc-50/70 dark:bg-zinc-900/80 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center gap-1.5 overflow-x-auto scrollbar-none shrink-0"
     >
       <button
         v-for="prompt in quickPrompts"
         :key="prompt"
         @click="send(prompt)"
         :disabled="chefStore.loading"
-        class="px-3 py-1 bg-white dark:bg-stone-800 border border-stone-200/70 dark:border-stone-700 rounded-xl text-[11px] text-stone-600 dark:text-stone-300 hover:bg-teal-50 dark:hover:bg-teal-950/30 hover:text-teal-700 transition-all whitespace-nowrap shadow-2xs cursor-pointer shrink-0"
+        class="px-3 py-1 bg-white dark:bg-zinc-800 border border-zinc-200/70 dark:border-zinc-700 rounded-xl text-[11px] text-zinc-600 dark:text-zinc-300 hover:bg-violet-50 dark:hover:bg-violet-950/30 hover:text-violet-700 dark:hover:text-violet-300 transition-all whitespace-nowrap shadow-2xs cursor-pointer shrink-0"
       >
         {{ prompt }}
       </button>
     </div>
 
     <!-- Chat Input Footer -->
-    <div class="p-3 sm:p-4 bg-white dark:bg-stone-900 border-t border-stone-200/80 dark:border-stone-800 shrink-0">
+    <div class="p-3 sm:p-4 bg-white dark:bg-[#121217] border-t border-zinc-200/80 dark:border-zinc-800 shrink-0">
       <form @submit.prevent="send()" class="flex items-center gap-2">
         <div class="relative flex-1">
           <input
@@ -383,13 +383,13 @@ async function handleAddMissingToShopping(recipe: Recipe) {
             placeholder="Запитайте щось у Шефа (наприклад: що приготувати з яєць та помідорів?)..."
             :disabled="chefStore.loading"
             @keydown="handleKeydown"
-            class="w-full pl-4 pr-10 py-3 text-xs sm:text-sm bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-stone-100 rounded-2xl border border-stone-200 dark:border-stone-700 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all placeholder:text-stone-400 dark:placeholder:text-stone-500"
+            class="w-full pl-4 pr-10 py-3 text-xs sm:text-sm bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-2xl border border-zinc-200 dark:border-zinc-700 focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
           />
         </div>
         <button
           type="submit"
           :disabled="!inputMessage.trim() || chefStore.loading"
-          class="p-3 bg-teal-600 hover:bg-teal-700 disabled:opacity-40 text-white rounded-2xl shadow-xs transition-all cursor-pointer shrink-0 flex items-center justify-center"
+          class="p-3 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 disabled:opacity-40 text-white rounded-2xl shadow-sm shadow-violet-500/20 active:scale-95 transition-all cursor-pointer shrink-0 flex items-center justify-center"
         >
           <Loader2 v-if="chefStore.loading" class="w-4 h-4 animate-spin" />
           <Send v-else class="w-4 h-4" />

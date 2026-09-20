@@ -138,24 +138,24 @@ function handleBackToForm() {
   <div class="min-h-full flex flex-col justify-center py-12 px-4 sm:px-6">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
       <div class="flex justify-center mb-4">
-        <div class="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-100/80 flex items-center justify-center text-emerald-600 shadow-sm">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-600 flex items-center justify-center text-white shadow-sm shadow-violet-500/20">
           <Refrigerator class="w-7 h-7" />
         </div>
       </div>
-      <h2 class="text-center text-2xl font-semibold text-stone-800 tracking-tight">
+      <h2 class="text-center text-2xl font-bold text-zinc-800 dark:text-zinc-100 tracking-tight">
         {{ step === 'form' ? 'Створити акаунт' : 'Підтвердження пошти' }}
       </h2>
-      <p class="mt-1 text-center text-sm text-stone-500">
+      <p class="mt-1 text-center text-sm text-zinc-500 dark:text-zinc-400">
         {{ step === 'form' ? 'Приєднуйтесь до E-Fridge та контролюйте ваші продукти' : 'Залишився один крок для активації акаунту' }}
       </p>
     </div>
 
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-      <div class="bg-white py-8 px-6 sm:px-8 shadow-sm border border-stone-200/60 rounded-3xl">
+      <div class="bg-white dark:bg-[#121217] py-8 px-6 sm:px-8 shadow-sm border border-zinc-200/80 dark:border-zinc-800 rounded-3xl">
         <!-- Error alert -->
         <div
           v-if="errorMessage"
-          class="mb-5 flex items-center gap-2.5 p-3.5 rounded-2xl bg-rose-50/80 border border-rose-100 text-rose-700 text-sm"
+          class="mb-5 flex items-center gap-2.5 p-3.5 rounded-2xl bg-rose-50/80 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 text-rose-700 dark:text-rose-300 text-sm"
         >
           <AlertCircle class="w-4 h-4 shrink-0" />
           <span>{{ errorMessage }}</span>
@@ -164,7 +164,7 @@ function handleBackToForm() {
         <!-- Success alert -->
         <div
           v-if="successMessage"
-          class="mb-5 flex items-center gap-2.5 p-3.5 rounded-2xl bg-emerald-50/80 border border-emerald-100 text-emerald-700 text-sm"
+          class="mb-5 flex items-center gap-2.5 p-3.5 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-sm"
         >
           <CheckCircle2 class="w-4 h-4 shrink-0" />
           <span>{{ successMessage }}</span>
@@ -173,9 +173,9 @@ function handleBackToForm() {
         <!-- STEP 1: Registration Form -->
         <form v-if="step === 'form'" @submit.prevent="handleInitiateRegister" class="space-y-4">
           <div>
-            <label class="block text-xs font-medium text-stone-600 mb-1.5 ml-1">Ім'я</label>
+            <label class="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5 ml-1">Ім'я</label>
             <div class="relative">
-              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
+              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400">
                 <UserIcon class="w-4 h-4" />
               </div>
               <input
@@ -183,15 +183,15 @@ function handleBackToForm() {
                 type="text"
                 required
                 placeholder="Ваше ім'я"
-                class="w-full pl-10 pr-4 py-2.5 bg-stone-50/60 hover:bg-stone-50 focus:bg-white text-stone-800 text-sm rounded-2xl border border-stone-200/80 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                class="w-full pl-10 pr-4 py-2.5 bg-zinc-50 dark:bg-zinc-900 focus:bg-white dark:focus:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm rounded-2xl border border-zinc-200 dark:border-zinc-700 focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
               />
             </div>
           </div>
 
           <div>
-            <label class="block text-xs font-medium text-stone-600 mb-1.5 ml-1">Email</label>
+            <label class="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5 ml-1">Email</label>
             <div class="relative">
-              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
+              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400">
                 <Mail class="w-4 h-4" />
               </div>
               <input
@@ -199,15 +199,15 @@ function handleBackToForm() {
                 type="email"
                 required
                 placeholder="name@example.com"
-                class="w-full pl-10 pr-4 py-2.5 bg-stone-50/60 hover:bg-stone-50 focus:bg-white text-stone-800 text-sm rounded-2xl border border-stone-200/80 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                class="w-full pl-10 pr-4 py-2.5 bg-zinc-50 dark:bg-zinc-900 focus:bg-white dark:focus:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm rounded-2xl border border-zinc-200 dark:border-zinc-700 focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
               />
             </div>
           </div>
 
           <div>
-            <label class="block text-xs font-medium text-stone-600 mb-1.5 ml-1">Пароль</label>
+            <label class="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5 ml-1">Пароль</label>
             <div class="relative">
-              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
+              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400">
                 <Lock class="w-4 h-4" />
               </div>
               <input
@@ -215,15 +215,15 @@ function handleBackToForm() {
                 type="password"
                 required
                 placeholder="Мінімум 8 символів"
-                class="w-full pl-10 pr-4 py-2.5 bg-stone-50/60 hover:bg-stone-50 focus:bg-white text-stone-800 text-sm rounded-2xl border border-stone-200/80 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                class="w-full pl-10 pr-4 py-2.5 bg-zinc-50 dark:bg-zinc-900 focus:bg-white dark:focus:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm rounded-2xl border border-zinc-200 dark:border-zinc-700 focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
               />
             </div>
           </div>
 
           <div>
-            <label class="block text-xs font-medium text-stone-600 mb-1.5 ml-1">Підтвердження паролю</label>
+            <label class="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5 ml-1">Підтвердження паролю</label>
             <div class="relative">
-              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
+              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400">
                 <Lock class="w-4 h-4" />
               </div>
               <input
@@ -231,7 +231,7 @@ function handleBackToForm() {
                 type="password"
                 required
                 placeholder="Повторіть пароль"
-                class="w-full pl-10 pr-4 py-2.5 bg-stone-50/60 hover:bg-stone-50 focus:bg-white text-stone-800 text-sm rounded-2xl border border-stone-200/80 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                class="w-full pl-10 pr-4 py-2.5 bg-zinc-50 dark:bg-zinc-900 focus:bg-white dark:focus:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm rounded-2xl border border-zinc-200 dark:border-zinc-700 focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
               />
             </div>
           </div>
@@ -240,7 +240,7 @@ function handleBackToForm() {
             <button
               type="submit"
               :disabled="authStore.loading"
-              class="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white text-sm font-medium rounded-2xl shadow-sm transition-all flex items-center justify-center gap-2 disabled:opacity-60"
+              class="w-full py-2.5 px-4 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 active:scale-[0.99] text-white text-sm font-semibold rounded-2xl shadow-sm shadow-violet-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
             >
               <span v-if="authStore.loading">Надсилання коду...</span>
               <template v-else>
@@ -256,17 +256,17 @@ function handleBackToForm() {
         <!-- STEP 2: Email Verification Code -->
         <div v-else class="space-y-5">
           <div class="text-center">
-            <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 mb-3 border border-emerald-100">
+            <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400 mb-3 border border-violet-200/80 dark:border-violet-800">
               <Mail class="w-6 h-6" />
             </div>
-            <p class="text-sm text-stone-600 leading-relaxed">
+            <p class="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
               Ми надіслали лист із 6-значним кодом на адресу:<br />
-              <span class="font-semibold text-stone-800">{{ email }}</span>
+              <span class="font-semibold text-zinc-800 dark:text-zinc-100">{{ email }}</span>
             </p>
             <button
               type="button"
               @click="handleBackToForm"
-              class="mt-1 text-xs text-emerald-700 hover:underline inline-flex items-center gap-1 font-medium"
+              class="mt-1 text-xs text-violet-600 dark:text-violet-400 hover:underline inline-flex items-center gap-1 font-semibold cursor-pointer"
             >
               <ArrowLeft class="w-3 h-3" />
               <span>Змінити адресу</span>
@@ -276,16 +276,16 @@ function handleBackToForm() {
           <!-- Dev mode helper badge -->
           <div
             v-if="devCode"
-            class="p-3 rounded-2xl bg-amber-50/90 border border-amber-200/80 flex items-center justify-between text-xs text-amber-900"
+            class="p-3 rounded-2xl bg-amber-50/90 dark:bg-amber-950/40 border border-amber-200/80 dark:border-amber-900/40 flex items-center justify-between text-xs text-amber-900 dark:text-amber-200"
           >
             <div class="flex items-center gap-2">
               <KeyRound class="w-4 h-4 text-amber-600 shrink-0" />
-              <span>Тестовий код: <strong class="tracking-widest font-mono text-sm font-bold text-amber-950">{{ devCode }}</strong></span>
+              <span>Тестовий код: <strong class="tracking-widest font-mono text-sm font-bold text-amber-950 dark:text-amber-100">{{ devCode }}</strong></span>
             </div>
             <button
               type="button"
               @click="handlePasteDevCode"
-              class="px-2 py-1 bg-amber-200/70 hover:bg-amber-200 text-amber-900 font-medium rounded-lg text-[11px] transition-colors"
+              class="px-2 py-1 bg-amber-200/70 hover:bg-amber-200 dark:bg-amber-900/60 dark:hover:bg-amber-800 text-amber-900 dark:text-amber-100 font-medium rounded-lg text-[11px] transition-colors cursor-pointer"
             >
               Вставити
             </button>
@@ -293,7 +293,7 @@ function handleBackToForm() {
 
           <form @submit.prevent="handleConfirmCode" class="space-y-4">
             <div>
-              <label class="block text-xs font-medium text-stone-600 mb-1.5 text-center">Код підтвердження</label>
+              <label class="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5 text-center">Код підтвердження</label>
               <div class="relative">
                 <input
                   v-model="verificationCode"
@@ -303,7 +303,7 @@ function handleBackToForm() {
                   maxlength="6"
                   required
                   placeholder="123456"
-                  class="w-full text-center tracking-[0.5em] font-mono text-xl py-3 px-4 bg-stone-50/60 hover:bg-stone-50 focus:bg-white text-stone-800 rounded-2xl border border-stone-200/80 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all font-semibold"
+                  class="w-full text-center tracking-[0.5em] font-mono text-xl py-3 px-4 bg-zinc-50 dark:bg-zinc-900 focus:bg-white dark:focus:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-2xl border border-zinc-200 dark:border-zinc-700 focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all font-semibold"
                 />
               </div>
             </div>
@@ -311,7 +311,7 @@ function handleBackToForm() {
             <button
               type="submit"
               :disabled="authStore.loading || verificationCode.length < 6"
-              class="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white text-sm font-medium rounded-2xl shadow-sm transition-all flex items-center justify-center gap-2 disabled:opacity-60"
+              class="w-full py-2.5 px-4 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 active:scale-[0.99] text-white text-sm font-semibold rounded-2xl shadow-sm shadow-violet-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
             >
               <span v-if="authStore.loading">Підтвердження...</span>
               <template v-else>
@@ -322,8 +322,8 @@ function handleBackToForm() {
           </form>
 
           <!-- Resend section -->
-          <div class="pt-2 text-center text-xs text-stone-500">
-            <span v-if="resendCooldown > 0" class="text-stone-400">
+          <div class="pt-2 text-center text-xs text-zinc-500 dark:text-zinc-400">
+            <span v-if="resendCooldown > 0" class="text-zinc-400 dark:text-zinc-500">
               Надіслати код повторно через {{ resendCooldown }} с
             </span>
             <button
@@ -331,7 +331,7 @@ function handleBackToForm() {
               type="button"
               :disabled="authStore.loading"
               @click="handleResendCode"
-              class="text-emerald-700 font-medium hover:underline inline-flex items-center gap-1.5"
+              class="text-violet-600 dark:text-violet-400 font-semibold hover:underline inline-flex items-center gap-1.5 cursor-pointer"
             >
               <RefreshCw class="w-3.5 h-3.5" :class="{ 'animate-spin': authStore.loading }" />
               <span>Надіслати код повторно</span>
@@ -339,11 +339,11 @@ function handleBackToForm() {
           </div>
         </div>
 
-        <div class="mt-6 text-center text-xs text-stone-500">
+        <div class="mt-6 text-center text-xs text-zinc-500 dark:text-zinc-400">
           Вже маєте акаунт?
           <router-link
             :to="{ name: 'login' }"
-            class="text-emerald-700 font-medium hover:underline ml-1"
+            class="text-violet-600 dark:text-violet-400 font-semibold hover:underline ml-1"
           >
             Увійти
           </router-link>

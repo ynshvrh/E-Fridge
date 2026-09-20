@@ -51,86 +51,86 @@ function handleSubmit() {
 
 <template>
   <Teleport to="body">
-    <div class="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-      <div class="bg-white dark:bg-stone-900 rounded-3xl p-5 sm:p-6 w-full max-w-sm max-h-[92vh] overflow-y-auto shadow-2xl border border-stone-200/80 dark:border-stone-800 my-auto space-y-4">
-        <div class="flex items-center justify-between pb-3 border-b border-stone-100 dark:border-stone-800">
+    <div class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+      <div class="bg-white dark:bg-[#121217] rounded-3xl p-5 sm:p-6 w-full max-w-sm max-h-[92vh] overflow-y-auto shadow-2xl border border-zinc-200 dark:border-zinc-800 my-auto space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-zinc-100 dark:border-zinc-800">
           <div class="flex items-center gap-2">
-            <div class="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+            <div class="w-8 h-8 rounded-xl bg-violet-50 dark:bg-violet-950/50 text-violet-600 dark:text-violet-400 flex items-center justify-center">
               <Utensils class="w-4 h-4" />
             </div>
-            <h3 class="text-base font-semibold text-stone-800 dark:text-stone-100">Додати прийом їжі</h3>
+            <h3 class="text-base font-semibold text-zinc-800 dark:text-zinc-100">Додати прийом їжі</h3>
           </div>
-          <button @click="emit('close')" class="text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 cursor-pointer">
+          <button @click="emit('close')" class="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 cursor-pointer">
             <X class="w-5 h-5" />
           </button>
         </div>
 
         <form @submit.prevent="handleSubmit" class="space-y-3.5 text-xs">
           <div>
-            <label class="block font-medium text-stone-700 dark:text-stone-300 mb-1">Прийом їжі</label>
+            <label class="block font-medium text-zinc-700 dark:text-zinc-300 mb-1">Прийом їжі</label>
             <select
               v-model="foodMealType"
-              class="w-full px-3 py-2 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-stone-100 rounded-xl border border-stone-200 dark:border-stone-700 focus:outline-emerald-500"
+              class="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
             >
               <option v-for="m in mealTypes" :key="m.id" :value="m.id">{{ m.label }}</option>
             </select>
           </div>
 
           <div>
-            <label class="block font-medium text-stone-700 dark:text-stone-300 mb-1">Назва страви / продукту *</label>
+            <label class="block font-medium text-zinc-700 dark:text-zinc-300 mb-1">Назва страви / продукту *</label>
             <input
               v-model="foodName"
               type="text"
               required
               placeholder="Наприклад: Вівсянка з бананом"
-              class="w-full px-3 py-2 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-stone-100 rounded-xl border border-stone-200 dark:border-stone-700 focus:outline-emerald-500"
+              class="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
             />
           </div>
 
           <div class="grid grid-cols-2 gap-2">
             <div>
-              <label class="block font-medium text-stone-700 dark:text-stone-300 mb-1">Кількість *</label>
+              <label class="block font-medium text-zinc-700 dark:text-zinc-300 mb-1">Кількість *</label>
               <input
                 v-model.number="foodQty"
                 type="number"
                 min="0.1"
                 step="any"
                 required
-                class="w-full px-3 py-2 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-stone-100 rounded-xl border border-stone-200 dark:border-stone-700 focus:outline-emerald-500"
+                class="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
               />
             </div>
             <div>
-              <label class="block font-medium text-stone-700 dark:text-stone-300 mb-1">Одиниця</label>
+              <label class="block font-medium text-zinc-700 dark:text-zinc-300 mb-1">Одиниця</label>
               <select
                 v-model="foodUnit"
-                class="w-full px-3 py-2 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-stone-100 rounded-xl border border-stone-200 dark:border-stone-700 focus:outline-emerald-500"
+                class="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
               >
                 <option v-for="u in unitOptions" :key="u" :value="u">{{ u }}</option>
               </select>
             </div>
           </div>
 
-          <p class="text-[11px] text-stone-400 dark:text-stone-500 leading-relaxed">
+          <p class="text-[11px] text-zinc-400 dark:text-zinc-500 leading-relaxed">
             💡 Залиште калорії та БЖВ порожніми — система розрахує їх автоматично за назвою страви.
           </p>
 
-          <div class="p-2.5 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/70 dark:border-stone-700">
+          <div class="p-2.5 bg-zinc-50 dark:bg-zinc-900/60 rounded-xl border border-zinc-200/80 dark:border-zinc-800">
             <div class="grid grid-cols-4 gap-1.5">
               <div>
-                <label class="block text-[10px] text-stone-500 dark:text-stone-400 mb-0.5">Ккал</label>
-                <input v-model.number="foodCalories" type="number" class="w-full px-1.5 py-1 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-xs text-center rounded border border-stone-200 dark:border-stone-700" />
+                <label class="block text-[10px] text-zinc-500 dark:text-zinc-400 mb-0.5">Ккал</label>
+                <input v-model.number="foodCalories" type="number" class="w-full px-1.5 py-1 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 text-xs text-center rounded border border-zinc-200 dark:border-zinc-700" />
               </div>
               <div>
-                <label class="block text-[10px] text-stone-500 dark:text-stone-400 mb-0.5">Білки</label>
-                <input v-model.number="foodProtein" type="number" step="0.1" class="w-full px-1.5 py-1 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-xs text-center rounded border border-stone-200 dark:border-stone-700" />
+                <label class="block text-[10px] text-zinc-500 dark:text-zinc-400 mb-0.5">Білки</label>
+                <input v-model.number="foodProtein" type="number" step="0.1" class="w-full px-1.5 py-1 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 text-xs text-center rounded border border-zinc-200 dark:border-zinc-700" />
               </div>
               <div>
-                <label class="block text-[10px] text-stone-500 dark:text-stone-400 mb-0.5">Жири</label>
-                <input v-model.number="foodFat" type="number" step="0.1" class="w-full px-1.5 py-1 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-xs text-center rounded border border-stone-200 dark:border-stone-700" />
+                <label class="block text-[10px] text-zinc-500 dark:text-zinc-400 mb-0.5">Жири</label>
+                <input v-model.number="foodFat" type="number" step="0.1" class="w-full px-1.5 py-1 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 text-xs text-center rounded border border-zinc-200 dark:border-zinc-700" />
               </div>
               <div>
-                <label class="block text-[10px] text-stone-500 dark:text-stone-400 mb-0.5">Вугл.</label>
-                <input v-model.number="foodCarbs" type="number" step="0.1" class="w-full px-1.5 py-1 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-xs text-center rounded border border-stone-200 dark:border-stone-700" />
+                <label class="block text-[10px] text-zinc-500 dark:text-zinc-400 mb-0.5">Вугл.</label>
+                <input v-model.number="foodCarbs" type="number" step="0.1" class="w-full px-1.5 py-1 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 text-xs text-center rounded border border-zinc-200 dark:border-zinc-700" />
               </div>
             </div>
           </div>
@@ -139,13 +139,13 @@ function handleSubmit() {
             <button
               type="button"
               @click="emit('close')"
-              class="flex-1 py-2 text-xs font-medium text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-xl transition-colors cursor-pointer"
+              class="flex-1 py-2 text-xs font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors cursor-pointer"
             >
               Скасувати
             </button>
             <button
               type="submit"
-              class="flex-1 py-2 text-xs font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-xs transition-colors cursor-pointer"
+              class="flex-1 py-2 text-xs font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 rounded-xl shadow-sm shadow-violet-500/20 active:scale-95 transition-all cursor-pointer"
             >
               Додати
             </button>

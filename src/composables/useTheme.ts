@@ -1,33 +1,51 @@
 import { ref, computed } from 'vue'
 
-type Theme = 'light' | 'dark'
+export type Theme = 'light' | 'dark'
 
-const currentTheme = ref<Theme>('light')
-const isDark = computed(() => currentTheme.value === 'dark')
-
-export function useTheme() {
-  function initTheme() {
+function getInitialTheme(): Theme {
+  if (typeof window === 'undefined') return 'light'
+  try {
     const saved = localStorage.getItem('e_fridge_theme') as Theme | null
     if (saved === 'dark' || saved === 'light') {
-      setTheme(saved)
-    } else {
-      // Default to light for clean default experience
-      setTheme('light')
+      return saved
     }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  } catch {
+    return 'light'
   }
+}
 
+const currentTheme = ref<Theme>(getInitialTheme())
+const isDark = computed(() => currentTheme.value === 'dark')
+
+function applyThemeToDom(theme: Theme) {
+  if (typeof document === 'undefined') return
+  if (theme === 'dark') {
+    document.documentElement.classList.add('dark')
+  } else {
+    document.documentElement.classList.remove('dark')
+  }
+}
+
+// Immediately apply theme upon module load
+applyThemeToDom(currentTheme.value)
+
+export function useTheme() {
   function setTheme(theme: Theme) {
     currentTheme.value = theme
-    localStorage.setItem('e_fridge_theme', theme)
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
+    try {
+      localStorage.setItem('e_fridge_theme', theme)
+    } catch {}
+    applyThemeToDom(theme)
   }
 
   function toggleTheme() {
     setTheme(currentTheme.value === 'dark' ? 'light' : 'dark')
+  }
+
+  function initTheme() {
+    const theme = getInitialTheme()
+    setTheme(theme)
   }
 
   return {
@@ -38,3 +56,4 @@ export function useTheme() {
     initTheme,
   }
 }
+

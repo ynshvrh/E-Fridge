@@ -284,13 +284,13 @@ async function handleAddMealSubmit() {
     </div>
 
     <!-- Center Date Navigation Header -->
-    <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+    <div class="bg-white dark:bg-[#121217] rounded-3xl p-4 sm:p-5 border border-zinc-200/80 dark:border-zinc-800 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
       <!-- Left side: Today helper -->
       <div class="flex items-center gap-2">
         <button
           v-if="!isToday"
           @click="goToToday"
-          class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900 border border-emerald-200 dark:border-emerald-800 transition"
+          class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-violet-50 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 hover:bg-violet-100 dark:hover:bg-violet-900/40 border border-violet-200 dark:border-violet-800 transition cursor-pointer"
         >
           Повернутися до сьогодні
         </button>
@@ -300,17 +300,17 @@ async function handleAddMealSubmit() {
       <div class="flex items-center gap-3">
         <button
           @click="prevDay"
-          class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition"
+          class="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300 transition cursor-pointer"
           title="Попередній день"
         >
           <ChevronLeft class="w-5 h-5" />
         </button>
 
         <div class="text-center min-w-[200px] sm:min-w-[260px]">
-          <div class="text-xs uppercase tracking-wider text-slate-400 font-semibold mb-0.5">
+          <div class="text-xs uppercase tracking-wider text-zinc-400 dark:text-zinc-500 font-semibold mb-0.5">
             План харчування на
           </div>
-          <div class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white flex items-center justify-center gap-2">
+          <div class="text-lg sm:text-xl font-bold text-zinc-900 dark:text-white flex items-center justify-center gap-2">
             <span>{{ displayDateString }}</span>
             <input
               type="date"
@@ -320,7 +320,7 @@ async function handleAddMealSubmit() {
             />
             <label
               for="date-picker-input"
-              class="cursor-pointer p-1 text-slate-400 hover:text-emerald-600 transition"
+              class="cursor-pointer p-1 text-zinc-400 hover:text-violet-600 dark:hover:text-violet-400 transition"
               title="Обрати дату в календарі"
             >
               <CalendarDays class="w-4 h-4" />
@@ -330,7 +330,7 @@ async function handleAddMealSubmit() {
 
         <button
           @click="nextDay"
-          class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition"
+          class="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300 transition cursor-pointer"
           title="Наступний день"
         >
           <ChevronRight class="w-5 h-5" />
@@ -343,53 +343,53 @@ async function handleAddMealSubmit() {
           v-if="!isDayFullyGenerated"
           @click="handleGenerateDay"
           :disabled="isGeneratingDay"
-          class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm transition disabled:opacity-50"
+          class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-sm shadow-violet-500/20 active:scale-95 transition-all cursor-pointer disabled:opacity-50"
         >
           <Sparkles class="w-4 h-4" :class="{ 'animate-spin': isGeneratingDay }" />
           {{ isGeneratingDay ? 'ШІ складає меню на день...' : 'Згенерувати раціон на день' }}
         </button>
         <div
           v-else
-          class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800"
+          class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-violet-50 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 border border-violet-200 dark:border-violet-800"
           title="Генерація на весь день дозволена 1 раз на день. Ви можете перегенерувати окрему страву."
         >
-          <CheckCircle2 class="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+          <CheckCircle2 class="w-4 h-4 text-violet-600 dark:text-violet-400" />
           <span>Раціон на день згенеровано (1/1)</span>
         </div>
       </div>
     </div>
 
     <!-- Day КБЖВ Summary Bar -->
-    <div class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-slate-900 dark:to-slate-800/80 rounded-2xl p-4 sm:p-5 border border-emerald-100 dark:border-slate-800 shadow-sm">
+    <div class="bg-gradient-to-r from-violet-500/10 via-purple-500/5 to-indigo-500/10 dark:from-[#121217] dark:to-zinc-900 rounded-3xl p-4 sm:p-5 border border-violet-200/60 dark:border-zinc-800 shadow-sm">
       <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-emerald-600/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
+          <div class="w-10 h-10 rounded-xl bg-violet-600/10 dark:bg-violet-500/20 text-violet-600 dark:text-violet-400 flex items-center justify-center font-bold">
             <Flame class="w-5 h-5" />
           </div>
           <div>
-            <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">Загалом за день</div>
-            <div class="text-xl font-bold text-slate-900 dark:text-white">
-              {{ totalCalories }} <span class="text-xs font-normal text-slate-500">ккал</span>
+            <div class="text-xs text-zinc-500 dark:text-zinc-400 font-medium">Загалом за день</div>
+            <div class="text-xl font-bold text-zinc-900 dark:text-white">
+              {{ totalCalories }} <span class="text-xs font-normal text-zinc-500">ккал</span>
             </div>
           </div>
         </div>
 
         <div class="grid grid-cols-3 gap-6 sm:gap-8 text-center sm:text-right">
           <div>
-            <div class="text-xs text-slate-500 dark:text-slate-400">Білки</div>
-            <div class="text-base font-bold text-emerald-600 dark:text-emerald-400">{{ totalProtein }} г</div>
+            <div class="text-xs text-zinc-500 dark:text-zinc-400">Білки</div>
+            <div class="text-base font-bold text-violet-600 dark:text-violet-400">{{ totalProtein }} г</div>
           </div>
           <div>
-            <div class="text-xs text-slate-500 dark:text-slate-400">Жири</div>
+            <div class="text-xs text-zinc-500 dark:text-zinc-400">Жири</div>
             <div class="text-base font-bold text-amber-600 dark:text-amber-400">{{ totalFat }} г</div>
           </div>
           <div>
-            <div class="text-xs text-slate-500 dark:text-slate-400">Вуглеводи</div>
-            <div class="text-base font-bold text-sky-600 dark:text-sky-400">{{ totalCarbs }} г</div>
+            <div class="text-xs text-zinc-500 dark:text-zinc-400">Вуглеводи</div>
+            <div class="text-base font-bold text-indigo-600 dark:text-indigo-400">{{ totalCarbs }} г</div>
           </div>
         </div>
 
-        <div class="text-xs font-semibold text-slate-500 bg-white dark:bg-slate-800 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700">
+        <div class="text-xs font-semibold text-zinc-600 dark:text-zinc-300 bg-white dark:bg-zinc-800 px-3.5 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-700 shadow-xs">
           {{ completedCount }} з {{ dayMeals.length }} страв спожито
         </div>
       </div>
@@ -398,13 +398,13 @@ async function handleAddMealSubmit() {
     <!-- 3 Daily Meal Slots -->
     <div class="space-y-4">
       <!-- 1. Сніданок (Breakfast) -->
-      <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden transition hover:border-slate-300 dark:hover:border-slate-700">
-        <div class="px-5 py-3.5 bg-amber-50/50 dark:bg-amber-950/20 border-b border-amber-100 dark:border-amber-900/30 flex items-center justify-between">
+      <div class="bg-white dark:bg-[#121217] rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-sm overflow-hidden transition hover:border-zinc-300 dark:hover:border-zinc-700">
+        <div class="px-5 py-3.5 bg-amber-50/60 dark:bg-amber-950/20 border-b border-amber-100 dark:border-amber-900/30 flex items-center justify-between">
           <div class="flex items-center gap-2.5">
             <span class="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 flex items-center justify-center">
               <Coffee class="w-4 h-4" />
             </span>
-            <span class="font-bold text-slate-900 dark:text-white text-base">Сніданок</span>
+            <span class="font-bold text-zinc-900 dark:text-white text-base">Сніданок</span>
           </div>
 
           <div class="flex items-center gap-2">
@@ -412,7 +412,7 @@ async function handleAddMealSubmit() {
               v-if="breakfastMeal"
               @click="handleGenerateSingleMeal('breakfast')"
               :disabled="generatingMealSlot === 'breakfast'"
-              class="inline-flex items-center gap-1.5 text-xs font-medium text-amber-800 dark:text-amber-300 hover:text-amber-900 dark:hover:text-amber-200 px-2.5 py-1 rounded-lg bg-amber-100/70 dark:bg-amber-900/40 hover:bg-amber-200/80 transition disabled:opacity-50"
+              class="inline-flex items-center gap-1.5 text-xs font-medium text-amber-800 dark:text-amber-300 hover:text-amber-900 dark:hover:text-amber-200 px-2.5 py-1 rounded-lg bg-amber-100/70 dark:bg-amber-900/40 hover:bg-amber-200/80 transition cursor-pointer disabled:opacity-50"
               title="Перегенерувати лише сніданок за допомогою ШІ"
             >
               <RotateCcw class="w-3.5 h-3.5" :class="{ 'animate-spin': generatingMealSlot === 'breakfast' }" />
@@ -421,7 +421,7 @@ async function handleAddMealSubmit() {
             <button
               v-else
               @click="openAddModal('breakfast')"
-              class="text-xs text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 px-2 py-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
+              class="text-xs text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 px-2 py-1 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
             >
               + Вручну
             </button>
@@ -437,10 +437,10 @@ async function handleAddMealSubmit() {
           >
             <div class="space-y-1.5 flex-1">
               <div class="flex items-center gap-2 flex-wrap">
-                <h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition">
+                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-violet-600 dark:group-hover:text-violet-400 transition">
                   {{ breakfastMeal.recipe_title }}
                 </h3>
-                <span class="inline-flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">
+                <span class="inline-flex items-center gap-1 text-xs text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded-full">
                   <Clock class="w-3 h-3" />
                   {{ breakfastMeal.recipe_data?.prep_time_minutes || 15 }} хв
                 </span>
@@ -452,12 +452,12 @@ async function handleAddMealSubmit() {
                 </span>
               </div>
 
-              <div class="flex items-center gap-3 text-xs font-medium text-slate-500 dark:text-slate-400 flex-wrap">
-                <span class="text-slate-900 dark:text-white font-bold">{{ breakfastMeal.calories }} ккал</span>
+              <div class="flex items-center gap-3 text-xs font-medium text-zinc-500 dark:text-zinc-400 flex-wrap">
+                <span class="text-zinc-900 dark:text-white font-bold">{{ breakfastMeal.calories }} ккал</span>
                 <span>• Б: {{ breakfastMeal.protein }}г</span>
                 <span>• Ж: {{ breakfastMeal.fat }}г</span>
                 <span>• В: {{ breakfastMeal.carbs }}г</span>
-                <span v-if="breakfastMeal.recipe_data?.ingredients?.length" class="text-emerald-600 dark:text-emerald-400">
+                <span v-if="breakfastMeal.recipe_data?.ingredients?.length" class="text-violet-600 dark:text-violet-400">
                   ({{ breakfastMeal.recipe_data.ingredients.length }} інгредієнтів)
                 </span>
               </div>
@@ -467,22 +467,22 @@ async function handleAddMealSubmit() {
             <div class="flex items-center gap-2 shrink-0 pt-2 sm:pt-0" @click.stop>
               <button
                 @click="openRecipeModal(breakfastMeal)"
-                class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 transition"
+                class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-violet-50 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 hover:bg-violet-100 dark:hover:bg-violet-900/40 transition cursor-pointer"
               >
                 Рецепт
               </button>
 
               <button
                 @click="handleEatMeal(breakfastMeal)"
-                class="p-2 text-slate-400 hover:text-emerald-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                class="p-2 text-zinc-400 hover:text-violet-600 dark:hover:text-violet-400 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition cursor-pointer"
                 title="Записати в щоденник як з'їдене"
               >
-                <CheckCircle2 class="w-4 h-4" :class="{ 'text-emerald-600': breakfastMeal.is_completed }" />
+                <CheckCircle2 class="w-4 h-4" :class="{ 'text-violet-600 dark:text-violet-400': breakfastMeal.is_completed }" />
               </button>
 
               <button
                 @click="handleDeleteMeal(breakfastMeal.id)"
-                class="p-2 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                class="p-2 text-zinc-400 hover:text-rose-600 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition cursor-pointer"
                 title="Видалити"
               >
                 <Trash2 class="w-4 h-4" />
@@ -491,20 +491,20 @@ async function handleAddMealSubmit() {
           </div>
 
           <!-- Empty slot -->
-          <div v-else class="text-center py-6 text-slate-400 space-y-3">
+          <div v-else class="text-center py-6 text-zinc-400 space-y-3">
             <p class="text-sm">Сніданок ще не заплановано</p>
             <div class="flex items-center justify-center gap-2">
               <button
                 @click="handleGenerateSingleMeal('breakfast')"
                 :disabled="generatingMealSlot === 'breakfast'"
-                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-600 text-white hover:bg-amber-700 transition disabled:opacity-50"
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-amber-600 text-white hover:bg-amber-700 transition cursor-pointer disabled:opacity-50"
               >
                 <Sparkles class="w-3.5 h-3.5" :class="{ 'animate-spin': generatingMealSlot === 'breakfast' }" />
                 {{ generatingMealSlot === 'breakfast' ? 'ШІ думає...' : 'Згенерувати сніданок' }}
               </button>
               <button
                 @click="openAddModal('breakfast')"
-                class="px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition"
+                class="px-3 py-1.5 rounded-xl text-xs font-medium border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300 transition cursor-pointer"
               >
                 + Додати вручну
               </button>
@@ -514,13 +514,13 @@ async function handleAddMealSubmit() {
       </div>
 
       <!-- 2. Обід (Lunch) -->
-      <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden transition hover:border-slate-300 dark:hover:border-slate-700">
-        <div class="px-5 py-3.5 bg-emerald-50/50 dark:bg-emerald-950/20 border-b border-emerald-100 dark:border-emerald-900/30 flex items-center justify-between">
+      <div class="bg-white dark:bg-[#121217] rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-sm overflow-hidden transition hover:border-zinc-300 dark:hover:border-zinc-700">
+        <div class="px-5 py-3.5 bg-violet-50/60 dark:bg-violet-950/20 border-b border-violet-100 dark:border-violet-900/30 flex items-center justify-between">
           <div class="flex items-center gap-2.5">
-            <span class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 flex items-center justify-center">
+            <span class="w-8 h-8 rounded-lg bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300 flex items-center justify-center">
               <Sun class="w-4 h-4" />
             </span>
-            <span class="font-bold text-slate-900 dark:text-white text-base">Обід</span>
+            <span class="font-bold text-zinc-900 dark:text-white text-base">Обід</span>
           </div>
 
           <div class="flex items-center gap-2">
@@ -528,7 +528,7 @@ async function handleAddMealSubmit() {
               v-if="lunchMeal"
               @click="handleGenerateSingleMeal('lunch')"
               :disabled="generatingMealSlot === 'lunch'"
-              class="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-800 dark:text-emerald-300 hover:text-emerald-900 dark:hover:text-emerald-200 px-2.5 py-1 rounded-lg bg-emerald-100/70 dark:bg-emerald-900/40 hover:bg-emerald-200/80 transition disabled:opacity-50"
+              class="inline-flex items-center gap-1.5 text-xs font-medium text-violet-800 dark:text-violet-300 hover:text-violet-900 dark:hover:text-violet-200 px-2.5 py-1 rounded-lg bg-violet-100/70 dark:bg-violet-900/40 hover:bg-violet-200/80 transition cursor-pointer disabled:opacity-50"
               title="Перегенерувати лише обід за допомогою ШІ"
             >
               <RotateCcw class="w-3.5 h-3.5" :class="{ 'animate-spin': generatingMealSlot === 'lunch' }" />
@@ -537,7 +537,7 @@ async function handleAddMealSubmit() {
             <button
               v-else
               @click="openAddModal('lunch')"
-              class="text-xs text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 px-2 py-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
+              class="text-xs text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 px-2 py-1 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
             >
               + Вручну
             </button>
@@ -553,10 +553,10 @@ async function handleAddMealSubmit() {
           >
             <div class="space-y-1.5 flex-1">
               <div class="flex items-center gap-2 flex-wrap">
-                <h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition">
+                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-violet-600 dark:group-hover:text-violet-400 transition">
                   {{ lunchMeal.recipe_title }}
                 </h3>
-                <span class="inline-flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">
+                <span class="inline-flex items-center gap-1 text-xs text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded-full">
                   <Clock class="w-3 h-3" />
                   {{ lunchMeal.recipe_data?.prep_time_minutes || 30 }} хв
                 </span>
@@ -568,12 +568,12 @@ async function handleAddMealSubmit() {
                 </span>
               </div>
 
-              <div class="flex items-center gap-3 text-xs font-medium text-slate-500 dark:text-slate-400 flex-wrap">
-                <span class="text-slate-900 dark:text-white font-bold">{{ lunchMeal.calories }} ккал</span>
+              <div class="flex items-center gap-3 text-xs font-medium text-zinc-500 dark:text-zinc-400 flex-wrap">
+                <span class="text-zinc-900 dark:text-white font-bold">{{ lunchMeal.calories }} ккал</span>
                 <span>• Б: {{ lunchMeal.protein }}г</span>
                 <span>• Ж: {{ lunchMeal.fat }}г</span>
                 <span>• В: {{ lunchMeal.carbs }}г</span>
-                <span v-if="lunchMeal.recipe_data?.ingredients?.length" class="text-emerald-600 dark:text-emerald-400">
+                <span v-if="lunchMeal.recipe_data?.ingredients?.length" class="text-violet-600 dark:text-violet-400">
                   ({{ lunchMeal.recipe_data.ingredients.length }} інгредієнтів)
                 </span>
               </div>
@@ -583,22 +583,22 @@ async function handleAddMealSubmit() {
             <div class="flex items-center gap-2 shrink-0 pt-2 sm:pt-0" @click.stop>
               <button
                 @click="openRecipeModal(lunchMeal)"
-                class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 transition"
+                class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-violet-50 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 hover:bg-violet-100 dark:hover:bg-violet-900/40 transition cursor-pointer"
               >
                 Рецепт
               </button>
 
               <button
                 @click="handleEatMeal(lunchMeal)"
-                class="p-2 text-slate-400 hover:text-emerald-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                class="p-2 text-zinc-400 hover:text-violet-600 dark:hover:text-violet-400 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition cursor-pointer"
                 title="Записати в щоденник як з'їдене"
               >
-                <CheckCircle2 class="w-4 h-4" :class="{ 'text-emerald-600': lunchMeal.is_completed }" />
+                <CheckCircle2 class="w-4 h-4" :class="{ 'text-violet-600 dark:text-violet-400': lunchMeal.is_completed }" />
               </button>
 
               <button
                 @click="handleDeleteMeal(lunchMeal.id)"
-                class="p-2 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                class="p-2 text-zinc-400 hover:text-rose-600 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition cursor-pointer"
                 title="Видалити"
               >
                 <Trash2 class="w-4 h-4" />
@@ -607,20 +607,20 @@ async function handleAddMealSubmit() {
           </div>
 
           <!-- Empty slot -->
-          <div v-else class="text-center py-6 text-slate-400 space-y-3">
+          <div v-else class="text-center py-6 text-zinc-400 space-y-3">
             <p class="text-sm">Обід ще не заплановано</p>
             <div class="flex items-center justify-center gap-2">
               <button
                 @click="handleGenerateSingleMeal('lunch')"
                 :disabled="generatingMealSlot === 'lunch'"
-                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-700 transition disabled:opacity-50"
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-xs transition cursor-pointer disabled:opacity-50"
               >
                 <Sparkles class="w-3.5 h-3.5" :class="{ 'animate-spin': generatingMealSlot === 'lunch' }" />
                 {{ generatingMealSlot === 'lunch' ? 'ШІ думає...' : 'Згенерувати обід' }}
               </button>
               <button
                 @click="openAddModal('lunch')"
-                class="px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition"
+                class="px-3 py-1.5 rounded-xl text-xs font-medium border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300 transition cursor-pointer"
               >
                 + Додати вручну
               </button>
@@ -630,13 +630,13 @@ async function handleAddMealSubmit() {
       </div>
 
       <!-- 3. Вечеря (Dinner) -->
-      <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden transition hover:border-slate-300 dark:hover:border-slate-700">
-        <div class="px-5 py-3.5 bg-indigo-50/50 dark:bg-indigo-950/20 border-b border-indigo-100 dark:border-indigo-900/30 flex items-center justify-between">
+      <div class="bg-white dark:bg-[#121217] rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-sm overflow-hidden transition hover:border-zinc-300 dark:hover:border-zinc-700">
+        <div class="px-5 py-3.5 bg-indigo-50/60 dark:bg-indigo-950/20 border-b border-indigo-100 dark:border-indigo-900/30 flex items-center justify-between">
           <div class="flex items-center gap-2.5">
             <span class="w-8 h-8 rounded-lg bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 flex items-center justify-center">
               <Moon class="w-4 h-4" />
             </span>
-            <span class="font-bold text-slate-900 dark:text-white text-base">Вечеря</span>
+            <span class="font-bold text-zinc-900 dark:text-white text-base">Вечеря</span>
           </div>
 
           <div class="flex items-center gap-2">
@@ -644,7 +644,7 @@ async function handleAddMealSubmit() {
               v-if="dinnerMeal"
               @click="handleGenerateSingleMeal('dinner')"
               :disabled="generatingMealSlot === 'dinner'"
-              class="inline-flex items-center gap-1.5 text-xs font-medium text-indigo-800 dark:text-indigo-300 hover:text-indigo-900 dark:hover:text-indigo-200 px-2.5 py-1 rounded-lg bg-indigo-100/70 dark:bg-indigo-900/40 hover:bg-indigo-200/80 transition disabled:opacity-50"
+              class="inline-flex items-center gap-1.5 text-xs font-medium text-indigo-800 dark:text-indigo-300 hover:text-indigo-900 dark:hover:text-indigo-200 px-2.5 py-1 rounded-lg bg-indigo-100/70 dark:bg-indigo-900/40 hover:bg-indigo-200/80 transition cursor-pointer disabled:opacity-50"
               title="Перегенерувати лише вечерю за допомогою ШІ"
             >
               <RotateCcw class="w-3.5 h-3.5" :class="{ 'animate-spin': generatingMealSlot === 'dinner' }" />
@@ -653,7 +653,7 @@ async function handleAddMealSubmit() {
             <button
               v-else
               @click="openAddModal('dinner')"
-              class="text-xs text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 px-2 py-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
+              class="text-xs text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 px-2 py-1 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
             >
               + Вручну
             </button>
@@ -669,10 +669,10 @@ async function handleAddMealSubmit() {
           >
             <div class="space-y-1.5 flex-1">
               <div class="flex items-center gap-2 flex-wrap">
-                <h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition">
+                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-violet-600 dark:group-hover:text-violet-400 transition">
                   {{ dinnerMeal.recipe_title }}
                 </h3>
-                <span class="inline-flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">
+                <span class="inline-flex items-center gap-1 text-xs text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded-full">
                   <Clock class="w-3 h-3" />
                   {{ dinnerMeal.recipe_data?.prep_time_minutes || 20 }} хв
                 </span>
@@ -684,12 +684,12 @@ async function handleAddMealSubmit() {
                 </span>
               </div>
 
-              <div class="flex items-center gap-3 text-xs font-medium text-slate-500 dark:text-slate-400 flex-wrap">
-                <span class="text-slate-900 dark:text-white font-bold">{{ dinnerMeal.calories }} ккал</span>
+              <div class="flex items-center gap-3 text-xs font-medium text-zinc-500 dark:text-zinc-400 flex-wrap">
+                <span class="text-zinc-900 dark:text-white font-bold">{{ dinnerMeal.calories }} ккал</span>
                 <span>• Б: {{ dinnerMeal.protein }}г</span>
                 <span>• Ж: {{ dinnerMeal.fat }}г</span>
                 <span>• В: {{ dinnerMeal.carbs }}г</span>
-                <span v-if="dinnerMeal.recipe_data?.ingredients?.length" class="text-emerald-600 dark:text-emerald-400">
+                <span v-if="dinnerMeal.recipe_data?.ingredients?.length" class="text-indigo-600 dark:text-indigo-400">
                   ({{ dinnerMeal.recipe_data.ingredients.length }} інгредієнтів)
                 </span>
               </div>
@@ -699,22 +699,22 @@ async function handleAddMealSubmit() {
             <div class="flex items-center gap-2 shrink-0 pt-2 sm:pt-0" @click.stop>
               <button
                 @click="openRecipeModal(dinnerMeal)"
-                class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 transition"
+                class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-violet-50 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 hover:bg-violet-100 dark:hover:bg-violet-900/40 transition cursor-pointer"
               >
                 Рецепт
               </button>
 
               <button
                 @click="handleEatMeal(dinnerMeal)"
-                class="p-2 text-slate-400 hover:text-emerald-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                class="p-2 text-zinc-400 hover:text-violet-600 dark:hover:text-violet-400 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition cursor-pointer"
                 title="Записати в щоденник як з'їдене"
               >
-                <CheckCircle2 class="w-4 h-4" :class="{ 'text-emerald-600': dinnerMeal.is_completed }" />
+                <CheckCircle2 class="w-4 h-4" :class="{ 'text-violet-600 dark:text-violet-400': dinnerMeal.is_completed }" />
               </button>
 
               <button
                 @click="handleDeleteMeal(dinnerMeal.id)"
-                class="p-2 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                class="p-2 text-zinc-400 hover:text-rose-600 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition cursor-pointer"
                 title="Видалити"
               >
                 <Trash2 class="w-4 h-4" />
@@ -723,20 +723,20 @@ async function handleAddMealSubmit() {
           </div>
 
           <!-- Empty slot -->
-          <div v-else class="text-center py-6 text-slate-400 space-y-3">
+          <div v-else class="text-center py-6 text-zinc-400 space-y-3">
             <p class="text-sm">Вечеря ще не запланована</p>
             <div class="flex items-center justify-center gap-2">
               <button
                 @click="handleGenerateSingleMeal('dinner')"
                 :disabled="generatingMealSlot === 'dinner'"
-                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition disabled:opacity-50"
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition cursor-pointer disabled:opacity-50"
               >
                 <Sparkles class="w-3.5 h-3.5" :class="{ 'animate-spin': generatingMealSlot === 'dinner' }" />
                 {{ generatingMealSlot === 'dinner' ? 'ШІ думає...' : 'Згенерувати вечерю' }}
               </button>
               <button
                 @click="openAddModal('dinner')"
-                class="px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition"
+                class="px-3 py-1.5 rounded-xl text-xs font-medium border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300 transition cursor-pointer"
               >
                 + Додати вручну
               </button>
@@ -747,31 +747,31 @@ async function handleAddMealSubmit() {
 
       <!-- Other meals (e.g. snack) if any -->
       <div v-if="otherMeals.length > 0" class="space-y-3 pt-2">
-        <h4 class="text-xs uppercase font-semibold text-slate-400 tracking-wider">
+        <h4 class="text-xs uppercase font-semibold text-zinc-400 tracking-wider">
           Додаткові прийоми їжі
         </h4>
         <div
           v-for="om in otherMeals"
           :key="om.id"
-          class="bg-white dark:bg-slate-900 rounded-xl p-4 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-4 cursor-pointer"
+          class="bg-white dark:bg-[#121217] rounded-2xl p-4 border border-zinc-200/80 dark:border-zinc-800 flex items-center justify-between gap-4 cursor-pointer"
           @click="openRecipeModal(om)"
         >
           <div>
-            <h5 class="font-bold text-slate-900 dark:text-white">{{ om.recipe_title }}</h5>
-            <div class="text-xs text-slate-500">
+            <h5 class="font-bold text-zinc-900 dark:text-white">{{ om.recipe_title }}</h5>
+            <div class="text-xs text-zinc-500 dark:text-zinc-400">
               {{ om.calories }} ккал • Б: {{ om.protein }}г • Ж: {{ om.fat }}г • В: {{ om.carbs }}г
             </div>
           </div>
           <div class="flex items-center gap-2" @click.stop>
             <button
               @click="handleEatMeal(om)"
-              class="p-2 text-slate-400 hover:text-emerald-600 rounded-lg"
+              class="p-2 text-zinc-400 hover:text-violet-600 dark:hover:text-violet-400 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
             >
-              <CheckCircle2 class="w-4 h-4" :class="{ 'text-emerald-600': om.is_completed }" />
+              <CheckCircle2 class="w-4 h-4" :class="{ 'text-violet-600 dark:text-violet-400': om.is_completed }" />
             </button>
             <button
               @click="handleDeleteMeal(om.id)"
-              class="p-2 text-slate-400 hover:text-rose-600 rounded-lg"
+              class="p-2 text-zinc-400 hover:text-rose-600 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
             >
               <Trash2 class="w-4 h-4" />
             </button>
@@ -794,22 +794,22 @@ async function handleAddMealSubmit() {
       class="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
       @click.self="isAddModalOpen = false"
     >
-      <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200 dark:border-slate-800 animate-in fade-in zoom-in-95 duration-150">
+      <div class="bg-white dark:bg-[#121217] rounded-3xl max-w-md w-full p-6 shadow-xl border border-zinc-200 dark:border-zinc-800 animate-in fade-in zoom-in-95 duration-150">
         <div class="flex items-center justify-between mb-4">
-          <h3 class="text-lg font-bold text-slate-900 dark:text-white">Додати страву до плану</h3>
-          <button @click="isAddModalOpen = false" class="text-slate-400 hover:text-slate-600">
+          <h3 class="text-lg font-bold text-zinc-900 dark:text-white">Додати страву до плану</h3>
+          <button @click="isAddModalOpen = false" class="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 cursor-pointer">
             <X class="w-5 h-5" />
           </button>
         </div>
 
         <form @submit.prevent="handleAddMealSubmit" class="space-y-4">
           <div>
-            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+            <label class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
               Прийом їжі
             </label>
             <select
               v-model="addMealType"
-              class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              class="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-xs focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
             >
               <option value="breakfast">Сніданок</option>
               <option value="lunch">Обід</option>
@@ -819,7 +819,7 @@ async function handleAddMealSubmit() {
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+            <label class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
               Назва страви
             </label>
             <input
@@ -827,24 +827,24 @@ async function handleAddMealSubmit() {
               v-model="addTitle"
               required
               placeholder="Наприклад: Вівсянка з бананом"
-              class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              class="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-xs focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
             />
           </div>
 
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
                 Калорії (ккал)
               </label>
               <input
                 type="number"
                 v-model.number="addCalories"
                 placeholder="400"
-                class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-xs focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
               />
             </div>
             <div>
-              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
                 Білки (г)
               </label>
               <input
@@ -852,14 +852,14 @@ async function handleAddMealSubmit() {
                 step="0.1"
                 v-model.number="addProtein"
                 placeholder="20"
-                class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-xs focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
               />
             </div>
           </div>
 
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
                 Жири (г)
               </label>
               <input
@@ -867,11 +867,11 @@ async function handleAddMealSubmit() {
                 step="0.1"
                 v-model.number="addFat"
                 placeholder="15"
-                class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-xs focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
               />
             </div>
             <div>
-              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
                 Вуглеводи (г)
               </label>
               <input
@@ -879,20 +879,20 @@ async function handleAddMealSubmit() {
                 step="0.1"
                 v-model.number="addCarbs"
                 placeholder="50"
-                class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-xs focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
               />
             </div>
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+            <label class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
               Нотатки (необов'язково)
             </label>
             <textarea
               v-model="addNotes"
               rows="2"
               placeholder="Швидкі поради з приготування..."
-              class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              class="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-xs focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
             ></textarea>
           </div>
 
@@ -900,13 +900,13 @@ async function handleAddMealSubmit() {
             <button
               type="button"
               @click="isAddModalOpen = false"
-              class="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+              class="px-4 py-2.5 rounded-xl text-xs font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition cursor-pointer"
             >
               Скасувати
             </button>
             <button
               type="submit"
-              class="px-4 py-2 rounded-xl text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm"
+              class="px-5 py-2.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-sm shadow-violet-500/20 active:scale-95 transition cursor-pointer"
             >
               Додати
             </button>

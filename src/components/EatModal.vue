@@ -328,42 +328,43 @@ function submit() {
 
 <template>
   <Teleport to="body">
-    <div class="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-      <div class="bg-white dark:bg-stone-900 rounded-3xl p-5 sm:p-6 w-full max-w-md max-h-[92vh] overflow-y-auto shadow-2xl border border-stone-200/80 dark:border-stone-800 my-auto space-y-4">
+    <div class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto animate-in fade-in duration-200">
+      <div class="bg-white dark:bg-[#121217] rounded-3xl p-5 sm:p-6 w-full max-w-md max-h-[92vh] overflow-y-auto shadow-2xl border border-zinc-200/80 dark:border-zinc-800 my-auto space-y-4 animate-in zoom-in-95 duration-200">
       <!-- Header -->
-      <div class="flex items-center justify-between pb-3 border-b border-stone-100 mb-4">
+      <div class="flex items-center justify-between pb-3 border-b border-zinc-100 dark:border-zinc-800 mb-4">
         <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+          <div class="w-8 h-8 rounded-xl bg-violet-50 dark:bg-violet-950/60 text-violet-600 dark:text-violet-400 flex items-center justify-center">
             <Utensils class="w-4 h-4" />
           </div>
           <div>
-            <h3 class="text-base font-semibold text-stone-800">З'їсти продукт</h3>
-            <p class="text-[11px] text-stone-400">Оберіть кількість та одиницю виміру</p>
+            <h3 class="text-base font-semibold text-zinc-800 dark:text-zinc-100">З'їсти продукт</h3>
+            <p class="text-[11px] text-zinc-400 dark:text-zinc-500">Оберіть кількість та одиницю виміру</p>
           </div>
         </div>
         <button
+          type="button"
           @click="emit('close')"
-          class="p-1.5 rounded-xl text-stone-400 hover:text-stone-600 hover:bg-stone-100 transition-colors"
+          class="p-1.5 rounded-xl text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
         >
           <X class="w-5 h-5" />
         </button>
       </div>
 
       <!-- Product Brief Info -->
-      <div class="p-3 bg-stone-50/80 rounded-2xl border border-stone-100 mb-4">
+      <div class="p-3 bg-zinc-50/80 dark:bg-zinc-900/80 rounded-2xl border border-zinc-100 dark:border-zinc-800 mb-4">
         <div class="flex items-start justify-between gap-2">
           <div>
-            <p class="text-sm font-semibold text-stone-800 leading-snug">{{ product.name }}</p>
-            <div class="flex items-center gap-2 mt-1 text-xs text-stone-500">
+            <p class="text-sm font-semibold text-zinc-800 dark:text-zinc-100 leading-snug">{{ product.name }}</p>
+            <div class="flex items-center gap-2 mt-1 text-xs text-zinc-500 dark:text-zinc-400">
               <span class="inline-flex items-center gap-1">
-                <Scale class="w-3.5 h-3.5 text-stone-400" />
-                В наявності: <strong class="text-stone-700 font-medium">{{ product.quantity }} {{ product.unit }}</strong>
+                <Scale class="w-3.5 h-3.5 text-zinc-400" />
+                В наявності: <strong class="text-zinc-700 dark:text-zinc-200 font-medium">{{ product.quantity }} {{ product.unit }}</strong>
               </span>
             </div>
           </div>
           <span
             v-if="product.calories > 0"
-            class="text-[11px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-100/60 whitespace-nowrap"
+            class="text-[11px] font-medium text-violet-700 dark:text-violet-300 bg-violet-50 dark:bg-violet-950/40 px-2 py-0.5 rounded-lg border border-violet-100/60 dark:border-violet-800/60 whitespace-nowrap"
           >
             {{ product.calories }} ккал / {{ baseUnitLabel }}
           </span>
@@ -373,7 +374,7 @@ function submit() {
       <form @submit.prevent="submit" class="space-y-4">
         <!-- Meal Type Selector -->
         <div>
-          <label class="block text-xs font-medium text-stone-600 mb-1.5">Прийом їжі</label>
+          <label class="block text-xs font-medium text-zinc-600 dark:text-zinc-300 mb-1.5">Прийом їжі</label>
           <div class="grid grid-cols-4 gap-1.5">
             <button
               v-for="item in mealTypes"
@@ -381,10 +382,10 @@ function submit() {
               type="button"
               @click="mealType = item.id as any"
               :class="[
-                'py-2 px-1 text-xs font-medium rounded-xl border transition-all text-center',
+                'py-2 px-1 text-xs font-medium rounded-xl border transition-all text-center cursor-pointer',
                 mealType === item.id
-                  ? 'bg-emerald-50 border-emerald-500 text-emerald-800 shadow-xs'
-                  : 'bg-stone-50 border-stone-200/80 text-stone-600 hover:bg-stone-100'
+                  ? 'bg-violet-50 dark:bg-violet-950/60 border-violet-500 text-violet-800 dark:text-violet-300 shadow-xs font-semibold'
+                  : 'bg-zinc-50 dark:bg-zinc-900 border-zinc-200/80 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800'
               ]"
             >
               {{ item.label }}
@@ -395,19 +396,19 @@ function submit() {
         <!-- Quantity & Unit Selection -->
         <div>
           <div class="flex items-center justify-between mb-1.5">
-            <label class="block text-xs font-medium text-stone-600">Скільки з'їдено</label>
+            <label class="block text-xs font-medium text-zinc-600 dark:text-zinc-300">Скільки з'їдено</label>
             <!-- Unit Switcher Tabs -->
-            <div class="flex items-center bg-stone-100 p-0.5 rounded-lg border border-stone-200/60">
+            <div class="flex items-center bg-zinc-100 dark:bg-zinc-900 p-0.5 rounded-lg border border-zinc-200/60 dark:border-zinc-800">
               <button
                 v-for="u in availableUnits"
                 :key="u.id"
                 type="button"
                 @click="selectUnit(u)"
                 :class="[
-                  'px-2.5 py-1 text-xs font-medium rounded-md transition-all',
+                  'px-2.5 py-1 text-xs font-medium rounded-md transition-all cursor-pointer',
                   selectedUnit === u.id
-                    ? 'bg-white text-emerald-700 shadow-xs'
-                    : 'text-stone-500 hover:text-stone-800'
+                    ? 'bg-white dark:bg-zinc-800 text-violet-700 dark:text-violet-300 shadow-xs font-semibold'
+                    : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200'
                 ]"
               >
                 {{ u.label }}
@@ -420,7 +421,7 @@ function submit() {
             <button
               type="button"
               @click="adjustAmount(-currentStep)"
-              class="w-10 h-10 rounded-xl border border-stone-200 flex items-center justify-center text-stone-500 hover:bg-stone-100 active:scale-95 transition-all"
+              class="w-10 h-10 rounded-xl border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 active:scale-95 transition-all cursor-pointer"
             >
               <Minus class="w-4 h-4" />
             </button>
@@ -431,16 +432,16 @@ function submit() {
                 step="any"
                 min="0.01"
                 required
-                class="w-full text-center font-semibold text-stone-800 py-2 bg-stone-50 text-base rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                class="w-full text-center font-semibold text-zinc-800 dark:text-zinc-100 py-2 bg-zinc-50 dark:bg-zinc-900 text-base rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
               />
-              <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-stone-400">
+              <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-zinc-400 dark:text-zinc-500">
                 {{ selectedUnit }}
               </span>
             </div>
             <button
               type="button"
               @click="adjustAmount(currentStep)"
-              class="w-10 h-10 rounded-xl border border-stone-200 flex items-center justify-center text-stone-500 hover:bg-stone-100 active:scale-95 transition-all"
+              class="w-10 h-10 rounded-xl border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 active:scale-95 transition-all cursor-pointer"
             >
               <Plus class="w-4 h-4" />
             </button>
@@ -454,10 +455,10 @@ function submit() {
               type="button"
               @click="amount = preset"
               :class="[
-                'px-2.5 py-1 text-[11px] font-medium rounded-lg border transition-all',
+                'px-2.5 py-1 text-[11px] font-medium rounded-lg border transition-all cursor-pointer',
                 amount === preset
-                  ? 'bg-emerald-100/70 text-emerald-800 border-emerald-300'
-                  : 'bg-stone-50 text-stone-600 border-stone-200 hover:bg-stone-100'
+                  ? 'bg-violet-100/80 text-violet-800 dark:bg-violet-950/70 dark:text-violet-300 border-violet-300 dark:border-violet-700'
+                  : 'bg-zinc-50 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800'
               ]"
             >
               {{ preset }} {{ selectedUnit }}
@@ -465,7 +466,7 @@ function submit() {
             <button
               type="button"
               @click="setAllAvailable"
-              class="px-2.5 py-1 text-[11px] font-medium rounded-lg border border-amber-200 bg-amber-50 text-amber-800 hover:bg-amber-100 transition-all ml-auto"
+              class="px-2.5 py-1 text-[11px] font-medium rounded-lg border border-amber-200 dark:border-amber-800/70 bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-all ml-auto cursor-pointer"
             >
               Все що є ({{ Math.round(maxStockInSelectedUnit * 100) / 100 }} {{ selectedUnit }})
             </button>
@@ -477,37 +478,37 @@ function submit() {
           <!-- Nutrition Breakdown Card -->
           <div
             v-if="nutritionPreview"
-            class="p-3 rounded-2xl bg-gradient-to-r from-emerald-50/80 to-teal-50/60 border border-emerald-100/80 flex items-center justify-between"
+            class="p-3 rounded-2xl bg-gradient-to-r from-violet-50/80 to-indigo-50/60 dark:from-violet-950/30 dark:to-indigo-950/20 border border-violet-100/80 dark:border-zinc-800 flex items-center justify-between"
           >
             <div class="flex items-center gap-2">
-              <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
+              <div class="w-7 h-7 rounded-lg bg-violet-100 dark:bg-violet-900/50 text-violet-700 dark:text-violet-300 flex items-center justify-center">
                 <Flame class="w-4 h-4" />
               </div>
               <div>
-                <p class="text-xs font-bold text-emerald-900 leading-tight">
+                <p class="text-xs font-bold text-violet-900 dark:text-violet-200 leading-tight">
                   +{{ nutritionPreview.calories }} ккал
                 </p>
-                <p class="text-[10px] text-emerald-700/80">до щоденника харчування</p>
+                <p class="text-[10px] text-violet-700/80 dark:text-violet-400/80">до щоденника харчування</p>
               </div>
             </div>
-            <div class="flex items-center gap-2 text-[11px] text-stone-600 font-medium">
-              <span>Б: <strong class="text-stone-800">{{ nutritionPreview.protein }}г</strong></span>
-              <span>Ж: <strong class="text-stone-800">{{ nutritionPreview.fat }}г</strong></span>
-              <span>В: <strong class="text-stone-800">{{ nutritionPreview.carbs }}г</strong></span>
+            <div class="flex items-center gap-2 text-[11px] text-zinc-600 dark:text-zinc-300 font-medium">
+              <span>Б: <strong class="text-zinc-800 dark:text-zinc-100">{{ nutritionPreview.protein }}г</strong></span>
+              <span>Ж: <strong class="text-zinc-800 dark:text-zinc-100">{{ nutritionPreview.fat }}г</strong></span>
+              <span>В: <strong class="text-zinc-800 dark:text-zinc-100">{{ nutritionPreview.carbs }}г</strong></span>
             </div>
           </div>
 
           <!-- Stock deduction note -->
           <div class="text-[11px] px-2 py-1">
-            <div v-if="stockPreview.willExceed" class="flex items-center gap-1.5 text-amber-700 bg-amber-50/80 p-2 rounded-xl border border-amber-200/60">
-              <AlertCircle class="w-4 h-4 shrink-0 text-amber-600" />
+            <div v-if="stockPreview.willExceed" class="flex items-center gap-1.5 text-amber-700 dark:text-amber-400 bg-amber-50/80 dark:bg-amber-950/40 p-2 rounded-xl border border-amber-200/60 dark:border-amber-900/60">
+              <AlertCircle class="w-4 h-4 shrink-0 text-amber-600 dark:text-amber-400" />
               <span>
                 Кількість перевищує запас ({{ product.quantity }} {{ product.unit }}). Продукт буде списано повністю.
               </span>
             </div>
-            <div v-else class="text-stone-500 flex items-center justify-between">
+            <div v-else class="text-zinc-500 dark:text-zinc-400 flex items-center justify-between">
               <span>Списання з полиці:</span>
-              <span class="font-medium text-stone-700">
+              <span class="font-medium text-zinc-700 dark:text-zinc-200">
                 {{ stockPreview.deductedText }} ({{ stockPreview.remainingText }})
               </span>
             </div>
@@ -519,13 +520,13 @@ function submit() {
           <button
             type="button"
             @click="emit('close')"
-            class="flex-1 py-2.5 px-4 text-xs font-medium text-stone-600 hover:bg-stone-100 rounded-xl transition-colors"
+            class="flex-1 py-2.5 px-4 text-xs font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors cursor-pointer"
           >
             Скасувати
           </button>
           <button
             type="submit"
-            class="flex-1 py-2.5 px-4 text-xs font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-xs transition-colors flex items-center justify-center gap-1.5"
+            class="flex-1 py-2.5 px-4 text-xs font-medium text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 rounded-xl shadow-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
           >
             <Check class="w-4 h-4" />
             <span>З'їсти та записати</span>

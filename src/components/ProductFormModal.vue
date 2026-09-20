@@ -221,37 +221,38 @@ function save() {
 
 <template>
   <Teleport to="body">
-    <div class="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-      <div class="bg-white dark:bg-stone-900 rounded-3xl p-5 sm:p-6 w-full max-w-lg max-h-[92vh] overflow-y-auto shadow-2xl border border-stone-200/80 dark:border-stone-800 my-auto space-y-4">
+    <div class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto animate-in fade-in duration-200">
+      <div class="bg-white dark:bg-[#121217] rounded-3xl p-5 sm:p-6 w-full max-w-lg max-h-[92vh] overflow-y-auto shadow-2xl border border-zinc-200/80 dark:border-zinc-800 my-auto space-y-4 animate-in zoom-in-95 duration-200">
       <!-- Modal Header -->
-      <div class="flex items-center justify-between pb-3 border-b border-stone-100 mb-4">
+      <div class="flex items-center justify-between pb-3 border-b border-zinc-100 dark:border-zinc-800 mb-4">
         <div>
-          <h3 class="text-base font-semibold text-stone-800">
+          <h3 class="text-base font-semibold text-zinc-800 dark:text-zinc-100">
             {{ isEditing ? 'Редагувати продукт' : 'Додати продукт у холодильник' }}
           </h3>
-          <p v-if="!isEditing" class="text-xs text-stone-400 mt-0.5">Оберіть зручний спосіб додавання</p>
+          <p v-if="!isEditing" class="text-xs text-zinc-400 dark:text-zinc-500 mt-0.5">Оберіть зручний спосіб додавання</p>
         </div>
         <button
+          type="button"
           @click="emit('close')"
-          class="p-1.5 rounded-xl text-stone-400 hover:text-stone-600 hover:bg-stone-100 transition-colors"
+          class="p-1.5 rounded-xl text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
         >
           <X class="w-5 h-5" />
         </button>
       </div>
 
       <!-- 3 Navigation Tabs (only for new product) -->
-      <div v-if="!isEditing" class="grid grid-cols-3 gap-1.5 p-1 bg-stone-100/80 rounded-2xl mb-5">
+      <div v-if="!isEditing" class="grid grid-cols-3 gap-1.5 p-1 bg-zinc-100/90 dark:bg-zinc-900 rounded-2xl mb-5">
         <button
           type="button"
           @click="activeMode = 'barcode'"
           :class="[
-            'py-2 px-2 text-xs font-medium rounded-xl flex items-center justify-center gap-1.5 transition-all',
+            'py-2 px-2 text-xs font-medium rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer',
             activeMode === 'barcode'
-              ? 'bg-white text-stone-800 shadow-xs'
-              : 'text-stone-500 hover:text-stone-700'
+              ? 'bg-white dark:bg-zinc-800 text-violet-700 dark:text-violet-300 shadow-xs'
+              : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200'
           ]"
         >
-          <Barcode class="w-3.5 h-3.5 text-stone-600" />
+          <Barcode class="w-3.5 h-3.5" />
           <span>Штрих-код</span>
         </button>
 
@@ -259,13 +260,13 @@ function save() {
           type="button"
           @click="activeMode = 'ai'"
           :class="[
-            'py-2 px-2 text-xs font-medium rounded-xl flex items-center justify-center gap-1.5 transition-all',
+            'py-2 px-2 text-xs font-medium rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer',
             activeMode === 'ai'
-              ? 'bg-white text-teal-800 shadow-xs'
-              : 'text-stone-500 hover:text-stone-700'
+              ? 'bg-white dark:bg-zinc-800 text-violet-700 dark:text-violet-300 shadow-xs'
+              : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200'
           ]"
         >
-          <Sparkles class="w-3.5 h-3.5 text-teal-600" />
+          <Sparkles class="w-3.5 h-3.5 text-amber-500" />
           <span>Через ШІ</span>
         </button>
 
@@ -273,13 +274,13 @@ function save() {
           type="button"
           @click="activeMode = 'manual'"
           :class="[
-            'py-2 px-2 text-xs font-medium rounded-xl flex items-center justify-center gap-1.5 transition-all',
+            'py-2 px-2 text-xs font-medium rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer',
             activeMode === 'manual'
-              ? 'bg-white text-stone-800 shadow-xs'
-              : 'text-stone-500 hover:text-stone-700'
+              ? 'bg-white dark:bg-zinc-800 text-violet-700 dark:text-violet-300 shadow-xs'
+              : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200'
           ]"
         >
-          <SlidersHorizontal class="w-3.5 h-3.5 text-stone-600" />
+          <SlidersHorizontal class="w-3.5 h-3.5 text-zinc-500" />
           <span>Вручну</span>
         </button>
       </div>
@@ -287,20 +288,20 @@ function save() {
       <!-- MODE 1: BARCODE -->
       <div v-if="activeMode === 'barcode' && !isEditing" class="space-y-4">
         <div>
-          <label class="block text-xs font-medium text-stone-600 mb-1.5">Штрих-код товару</label>
+          <label class="block text-xs font-medium text-zinc-600 dark:text-zinc-300 mb-1.5">Штрих-код товару</label>
           <div class="flex gap-2">
             <input
               v-model="barcodeInput"
               type="text"
               placeholder="Введіть код з упаковки (наприклад: 3017620422003)"
-              class="flex-1 px-3.5 py-2.5 bg-stone-50 text-xs rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+              class="flex-1 px-3.5 py-2.5 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-xs rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
               @keyup.enter.prevent="handleBarcodeLookup"
             />
             <button
               type="button"
               @click="handleBarcodeLookup"
               :disabled="isLookingUpBarcode || !barcodeInput.trim()"
-              class="px-4 py-2.5 bg-stone-800 hover:bg-stone-900 disabled:opacity-50 text-white text-xs font-medium rounded-xl flex items-center gap-1.5 transition-colors shrink-0"
+              class="px-4 py-2.5 bg-zinc-800 hover:bg-zinc-900 dark:bg-zinc-700 dark:hover:bg-zinc-600 disabled:opacity-50 text-white text-xs font-medium rounded-xl flex items-center gap-1.5 transition-colors shrink-0 cursor-pointer"
             >
               <Loader2 v-if="isLookingUpBarcode" class="w-3.5 h-3.5 animate-spin" />
               <Search v-else class="w-3.5 h-3.5" />
@@ -310,27 +311,27 @@ function save() {
         </div>
 
         <!-- Error State -->
-        <div v-if="barcodeError" class="p-3.5 bg-rose-50 border border-rose-200/80 rounded-2xl text-xs space-y-2">
-          <div class="flex items-center gap-1.5 text-rose-800 font-medium">
-            <AlertCircle class="w-4 h-4 shrink-0 text-rose-600" />
+        <div v-if="barcodeError" class="p-3.5 bg-rose-50 dark:bg-rose-950/40 border border-rose-200/80 dark:border-rose-900/60 rounded-2xl text-xs space-y-2">
+          <div class="flex items-center gap-1.5 text-rose-800 dark:text-rose-300 font-medium">
+            <AlertCircle class="w-4 h-4 shrink-0 text-rose-600 dark:text-rose-400" />
             <span>{{ barcodeError }}</span>
           </div>
-          <p class="text-rose-600/90 text-[11px]">
+          <p class="text-rose-600/90 dark:text-rose-400/80 text-[11px]">
             Локальні товари можуть бути відсутні у міжнародній базі OpenFoodFacts. Спробуйте розпізнати продукт через ШІ або введіть дані вручну.
           </p>
           <div class="flex gap-2 pt-1">
             <button
               type="button"
               @click="activeMode = 'ai'"
-              class="px-3 py-1.5 bg-white border border-rose-200 text-teal-700 rounded-xl text-xs font-medium hover:bg-teal-50 transition-colors flex items-center gap-1"
+              class="px-3 py-1.5 bg-white dark:bg-zinc-900 border border-violet-200 dark:border-violet-800 text-violet-700 dark:text-violet-300 rounded-xl text-xs font-medium hover:bg-violet-50 dark:hover:bg-violet-950/50 transition-colors flex items-center gap-1 cursor-pointer"
             >
-              <Sparkles class="w-3 h-3 text-teal-600" />
+              <Sparkles class="w-3 h-3 text-amber-500" />
               <span>Спробувати через ШІ</span>
             </button>
             <button
               type="button"
               @click="activeMode = 'manual'"
-              class="px-3 py-1.5 bg-white border border-rose-200 text-stone-700 rounded-xl text-xs font-medium hover:bg-stone-50 transition-colors"
+              class="px-3 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 rounded-xl text-xs font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
             >
               Заповнити вручну
             </button>
@@ -338,58 +339,58 @@ function save() {
         </div>
 
         <!-- Resolved Result Card -->
-        <div v-if="barcodeResolved" class="p-4 bg-emerald-50/50 border border-emerald-200/70 rounded-2xl space-y-3">
+        <div v-if="barcodeResolved" class="p-4 bg-violet-50/50 dark:bg-violet-950/20 border border-violet-200/70 dark:border-violet-800/60 rounded-2xl space-y-3">
           <div class="flex items-start justify-between gap-3">
             <div>
-              <div class="flex items-center gap-1.5 text-emerald-700 text-xs font-semibold">
-                <CheckCircle2 class="w-4 h-4 text-emerald-600 shrink-0" />
+              <div class="flex items-center gap-1.5 text-violet-700 dark:text-violet-400 text-xs font-semibold">
+                <CheckCircle2 class="w-4 h-4 text-violet-600 dark:text-violet-400 shrink-0" />
                 <span>Знайдено в OpenFoodFacts</span>
               </div>
-              <h4 class="text-sm font-semibold text-stone-800 mt-1">{{ name }}</h4>
-              <p v-if="barcodeResolved.brands" class="text-[11px] text-stone-500">Бренд: {{ barcodeResolved.brands }}</p>
+              <h4 class="text-sm font-semibold text-zinc-800 dark:text-zinc-100 mt-1">{{ name }}</h4>
+              <p v-if="barcodeResolved.brands" class="text-[11px] text-zinc-500 dark:text-zinc-400">Бренд: {{ barcodeResolved.brands }}</p>
             </div>
           </div>
 
           <!-- Quick editable fields for quantity and expiry -->
-          <div class="grid grid-cols-3 gap-2 pt-2 border-t border-emerald-100">
+          <div class="grid grid-cols-3 gap-2 pt-2 border-t border-violet-100 dark:border-violet-900/40">
             <div>
-              <label class="block text-[11px] text-stone-600 mb-1">Кількість</label>
+              <label class="block text-[11px] text-zinc-600 dark:text-zinc-400 mb-1">Кількість</label>
               <input
                 v-model.number="quantity"
                 type="number"
                 step="any"
                 min="0.01"
-                class="w-full px-2.5 py-1.5 bg-white text-xs rounded-xl border border-stone-200"
+                class="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-xs rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
               />
             </div>
             <div>
-              <label class="block text-[11px] text-stone-600 mb-1">Одиниця</label>
-              <select v-model="unit" class="w-full px-2.5 py-1.5 bg-white text-xs rounded-xl border border-stone-200">
+              <label class="block text-[11px] text-zinc-600 dark:text-zinc-400 mb-1">Одиниця</label>
+              <select v-model="unit" class="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-xs rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500">
                 <option v-for="u in units" :key="u" :value="u">{{ u }}</option>
               </select>
             </div>
             <div>
-              <label class="block text-[11px] text-stone-600 mb-1">Придатний до</label>
+              <label class="block text-[11px] text-zinc-600 dark:text-zinc-400 mb-1">Придатний до</label>
               <input
                 v-model="expiryDate"
                 type="date"
-                class="w-full px-2.5 py-1.5 bg-white text-xs rounded-xl border border-stone-200"
+                class="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-xs rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
               />
             </div>
           </div>
 
           <!-- Nutrition summary pills -->
           <div class="flex flex-wrap gap-1.5 text-[11px]">
-            <span class="px-2 py-0.5 bg-white rounded-lg border border-stone-200 text-stone-700">
+            <span class="px-2 py-0.5 bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300">
               {{ calories || 0 }} ккал
             </span>
-            <span class="px-2 py-0.5 bg-white rounded-lg border border-stone-200 text-stone-700">
+            <span class="px-2 py-0.5 bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300">
               Б: {{ protein || 0 }}г
             </span>
-            <span class="px-2 py-0.5 bg-white rounded-lg border border-stone-200 text-stone-700">
+            <span class="px-2 py-0.5 bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300">
               Ж: {{ fat || 0 }}г
             </span>
-            <span class="px-2 py-0.5 bg-white rounded-lg border border-stone-200 text-stone-700">
+            <span class="px-2 py-0.5 bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300">
               В: {{ carbs || 0 }}г
             </span>
           </div>
@@ -397,7 +398,7 @@ function save() {
           <button
             type="button"
             @click="save"
-            class="w-full py-2.5 px-4 text-xs font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-xs transition-colors"
+            class="w-full py-2.5 px-4 text-xs font-medium text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 rounded-xl shadow-xs transition-colors cursor-pointer"
           >
             Додати в холодильник
           </button>
@@ -407,20 +408,20 @@ function save() {
       <!-- MODE 2: AI ASSISTANT -->
       <div v-else-if="activeMode === 'ai' && !isEditing" class="space-y-4">
         <div>
-          <label class="block text-xs font-medium text-stone-600 mb-1.5">Введіть продукт звичайною мовою</label>
+          <label class="block text-xs font-medium text-zinc-600 dark:text-zinc-300 mb-1.5">Введіть продукт звичайною мовою</label>
           <div class="space-y-2">
             <input
               v-model="aiPrompt"
               type="text"
               placeholder="Наприклад: Куряче філе 500г, або Сир Маасдам 250г..."
-              class="w-full px-3.5 py-2.5 bg-stone-50 text-xs rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+              class="w-full px-3.5 py-2.5 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-xs rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
               @keyup.enter.prevent="handleAIEstimate"
             />
             <button
               type="button"
               @click="handleAIEstimate"
               :disabled="isEstimatingAI || !aiPrompt.trim()"
-              class="w-full py-2.5 px-4 bg-teal-600 hover:bg-teal-700 disabled:opacity-50 text-white text-xs font-medium rounded-xl flex items-center justify-center gap-1.5 transition-colors shadow-xs"
+              class="w-full py-2.5 px-4 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 disabled:opacity-50 text-white text-xs font-medium rounded-xl flex items-center justify-center gap-1.5 transition-colors shadow-xs cursor-pointer"
             >
               <Loader2 v-if="isEstimatingAI" class="w-3.5 h-3.5 animate-spin" />
               <Sparkles v-else class="w-3.5 h-3.5" />
@@ -429,66 +430,66 @@ function save() {
           </div>
         </div>
 
-        <div v-if="aiError" class="p-3 bg-rose-50 border border-rose-200 text-rose-800 rounded-2xl text-xs flex items-center gap-1.5">
-          <AlertCircle class="w-4 h-4 text-rose-600 shrink-0" />
+        <div v-if="aiError" class="p-3 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 text-rose-800 dark:text-rose-300 rounded-2xl text-xs flex items-center gap-1.5">
+          <AlertCircle class="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0" />
           <span>{{ aiError }}</span>
         </div>
 
         <!-- AI Resolved Result Card -->
-        <div v-if="aiResolved" class="p-4 bg-teal-50/60 border border-teal-200/80 rounded-2xl space-y-3">
+        <div v-if="aiResolved" class="p-4 bg-violet-50/50 dark:bg-violet-950/20 border border-violet-200/80 dark:border-violet-800/60 rounded-2xl space-y-3">
           <div class="flex items-start justify-between gap-2">
             <div>
-              <div class="flex items-center gap-1 text-teal-700 text-xs font-semibold">
-                <CheckCircle2 class="w-3.5 h-3.5 text-teal-600 shrink-0" />
+              <div class="flex items-center gap-1 text-violet-700 dark:text-violet-400 text-xs font-semibold">
+                <CheckCircle2 class="w-3.5 h-3.5 text-violet-600 dark:text-violet-400 shrink-0" />
                 <span>Розпізнано за допомогою ШІ</span>
               </div>
-              <h4 class="text-sm font-semibold text-stone-800 mt-1">{{ name }}</h4>
+              <h4 class="text-sm font-semibold text-zinc-800 dark:text-zinc-100 mt-1">{{ name }}</h4>
             </div>
-            <span class="text-[11px] px-2 py-0.5 bg-white rounded-lg border border-teal-200 text-teal-800 font-medium">
+            <span class="text-[11px] px-2 py-0.5 bg-white dark:bg-zinc-900 rounded-lg border border-violet-200 dark:border-violet-800 text-violet-800 dark:text-violet-300 font-medium">
               {{ availableCategories.find(c => c.id === category)?.label || category }}
             </span>
           </div>
 
           <!-- Quick tweak -->
-          <div class="grid grid-cols-3 gap-2 pt-2 border-t border-teal-100">
+          <div class="grid grid-cols-3 gap-2 pt-2 border-t border-violet-100 dark:border-violet-900/40">
             <div>
-              <label class="block text-[11px] text-stone-600 mb-1">Кількість</label>
+              <label class="block text-[11px] text-zinc-600 dark:text-zinc-400 mb-1">Кількість</label>
               <input
                 v-model.number="quantity"
                 type="number"
                 step="any"
                 min="0.01"
-                class="w-full px-2.5 py-1.5 bg-white text-xs rounded-xl border border-stone-200"
+                class="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-xs rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
               />
             </div>
             <div>
-              <label class="block text-[11px] text-stone-600 mb-1">Одиниця</label>
-              <select v-model="unit" class="w-full px-2.5 py-1.5 bg-white text-xs rounded-xl border border-stone-200">
+              <label class="block text-[11px] text-zinc-600 dark:text-zinc-400 mb-1">Одиниця</label>
+              <select v-model="unit" class="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-xs rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500">
                 <option v-for="u in units" :key="u" :value="u">{{ u }}</option>
               </select>
             </div>
             <div>
-              <label class="block text-[11px] text-stone-600 mb-1">Придатний до</label>
+              <label class="block text-[11px] text-zinc-600 dark:text-zinc-400 mb-1">Придатний до</label>
               <input
                 v-model="expiryDate"
                 type="date"
-                class="w-full px-2.5 py-1.5 bg-white text-xs rounded-xl border border-stone-200"
+                class="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-xs rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
               />
             </div>
           </div>
 
           <!-- Nutrition pills -->
           <div class="flex flex-wrap gap-1.5 text-[11px]">
-            <span class="px-2 py-0.5 bg-white rounded-lg border border-teal-200 text-teal-900 font-medium">
+            <span class="px-2 py-0.5 bg-white dark:bg-zinc-900 rounded-lg border border-violet-200 dark:border-violet-800 text-violet-900 dark:text-violet-300 font-medium">
               {{ calories || 0 }} ккал
             </span>
-            <span class="px-2 py-0.5 bg-white rounded-lg border border-stone-200 text-stone-700">
+            <span class="px-2 py-0.5 bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300">
               Б: {{ protein || 0 }}г
             </span>
-            <span class="px-2 py-0.5 bg-white rounded-lg border border-stone-200 text-stone-700">
+            <span class="px-2 py-0.5 bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300">
               Ж: {{ fat || 0 }}г
             </span>
-            <span class="px-2 py-0.5 bg-white rounded-lg border border-stone-200 text-stone-700">
+            <span class="px-2 py-0.5 bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300">
               В: {{ carbs || 0 }}г
             </span>
           </div>
@@ -496,7 +497,7 @@ function save() {
           <button
             type="button"
             @click="save"
-            class="w-full py-2.5 px-4 text-xs font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-xs transition-colors"
+            class="w-full py-2.5 px-4 text-xs font-medium text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 rounded-xl shadow-xs transition-colors cursor-pointer"
           >
             Додати в холодильник
           </button>
@@ -506,22 +507,22 @@ function save() {
       <!-- MODE 3: MANUAL FORM (also used when editing) -->
       <form v-else @submit.prevent="save" class="space-y-3.5">
         <div>
-          <label class="block text-xs font-medium text-stone-600 mb-1">Назва продукту *</label>
+          <label class="block text-xs font-medium text-zinc-600 dark:text-zinc-300 mb-1">Назва продукту *</label>
           <input
             v-model="name"
             type="text"
             required
             placeholder="Наприклад: Сир Моцарела"
-            class="w-full px-3.5 py-2.5 bg-stone-50 text-sm rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+            class="w-full px-3.5 py-2.5 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
           />
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-medium text-stone-600 mb-1">Категорія</label>
+            <label class="block text-xs font-medium text-zinc-600 dark:text-zinc-300 mb-1">Категорія</label>
             <select
               v-model="category"
-              class="w-full px-3.5 py-2.5 bg-stone-50 text-sm rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+              class="w-full px-3.5 py-2.5 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
             >
               <option v-for="cat in availableCategories" :key="cat.id" :value="cat.id">
                 {{ cat.label }}
@@ -530,33 +531,33 @@ function save() {
           </div>
 
           <div>
-            <label class="block text-xs font-medium text-stone-600 mb-1">Термін придатності</label>
+            <label class="block text-xs font-medium text-zinc-600 dark:text-zinc-300 mb-1">Термін придатності</label>
             <input
               v-model="expiryDate"
               type="date"
-              class="w-full px-3.5 py-2.5 bg-stone-50 text-sm rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+              class="w-full px-3.5 py-2.5 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
             />
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-medium text-stone-600 mb-1">Кількість *</label>
+            <label class="block text-xs font-medium text-zinc-600 dark:text-zinc-300 mb-1">Кількість *</label>
             <input
               v-model.number="quantity"
               type="number"
               step="any"
               min="0.01"
               required
-              class="w-full px-3.5 py-2.5 bg-stone-50 text-sm rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+              class="w-full px-3.5 py-2.5 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
             />
           </div>
 
           <div>
-            <label class="block text-xs font-medium text-stone-600 mb-1">Одиниця</label>
+            <label class="block text-xs font-medium text-zinc-600 dark:text-zinc-300 mb-1">Одиниця</label>
             <select
               v-model="unit"
-              class="w-full px-3.5 py-2.5 bg-stone-50 text-sm rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+              class="w-full px-3.5 py-2.5 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
             >
               <option v-for="u in units" :key="u" :value="u">
                 {{ u }}
@@ -566,78 +567,78 @@ function save() {
         </div>
 
         <div>
-          <label class="block text-xs font-medium text-stone-600 mb-1">Нотатки / Опис</label>
+          <label class="block text-xs font-medium text-zinc-600 dark:text-zinc-300 mb-1">Нотатки / Опис</label>
           <input
             v-model="notes"
             type="text"
             placeholder="Нижня полиця, відкрита упаковка тощо"
-            class="w-full px-3.5 py-2 bg-stone-50 text-sm rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+            class="w-full px-3.5 py-2 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
           />
         </div>
 
         <!-- Optional Nutrition Section -->
-        <div class="pt-2 border-t border-stone-100">
+        <div class="pt-2 border-t border-zinc-100 dark:border-zinc-800">
           <div class="flex items-center justify-between py-1">
             <button
               type="button"
               @click="showNutrition = !showNutrition"
-              class="flex items-center gap-1.5 text-xs font-medium text-stone-600 hover:text-stone-800 transition-colors"
+              class="flex items-center gap-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors cursor-pointer"
             >
               <span>Поживна цінність (КБЖВ на 100г)</span>
-              <component :is="showNutrition ? ChevronUp : ChevronDown" class="w-3.5 h-3.5 text-stone-400" />
+              <component :is="showNutrition ? ChevronUp : ChevronDown" class="w-3.5 h-3.5 text-zinc-400" />
             </button>
 
             <button
               type="button"
               @click="handleManualEstimate"
               :disabled="isEstimatingManual || !name.trim()"
-              class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-xl text-teal-700 bg-teal-50 hover:bg-teal-100 border border-teal-200/60 disabled:opacity-40 disabled:pointer-events-none transition-all"
+              class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-xl text-violet-700 dark:text-violet-300 bg-violet-50 dark:bg-violet-950/40 hover:bg-violet-100 dark:hover:bg-violet-900/60 border border-violet-200/60 dark:border-violet-800/60 disabled:opacity-40 disabled:pointer-events-none transition-all cursor-pointer"
               title="Оцінити КБЖВ автоматично за назвою продукту"
             >
-              <Loader2 v-if="isEstimatingManual" class="w-3.5 h-3.5 animate-spin text-teal-600" />
-              <Sparkles v-else class="w-3.5 h-3.5 text-teal-600" />
+              <Loader2 v-if="isEstimatingManual" class="w-3.5 h-3.5 animate-spin text-violet-600 dark:text-violet-400" />
+              <Sparkles v-else class="w-3.5 h-3.5 text-amber-500" />
               <span>Оцінка ШІ</span>
             </button>
           </div>
 
           <div v-if="showNutrition" class="grid grid-cols-4 gap-2 mt-2 pt-2">
             <div>
-              <label class="block text-[11px] text-stone-500 mb-0.5">Ккал</label>
+              <label class="block text-[11px] text-zinc-500 dark:text-zinc-400 mb-0.5">Ккал</label>
               <input
                 v-model.number="calories"
                 type="number"
                 placeholder="0"
-                class="w-full px-2 py-1.5 bg-stone-50 text-xs rounded-lg border border-stone-200 focus:outline-none focus:border-emerald-500"
+                class="w-full px-2 py-1.5 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-xs rounded-lg border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
               />
             </div>
             <div>
-              <label class="block text-[11px] text-stone-500 mb-0.5">Білки (г)</label>
+              <label class="block text-[11px] text-zinc-500 dark:text-zinc-400 mb-0.5">Білки (г)</label>
               <input
                 v-model.number="protein"
                 type="number"
                 step="0.1"
                 placeholder="0"
-                class="w-full px-2 py-1.5 bg-stone-50 text-xs rounded-lg border border-stone-200 focus:outline-none focus:border-emerald-500"
+                class="w-full px-2 py-1.5 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-xs rounded-lg border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
               />
             </div>
             <div>
-              <label class="block text-[11px] text-stone-500 mb-0.5">Жири (г)</label>
+              <label class="block text-[11px] text-zinc-500 dark:text-zinc-400 mb-0.5">Жири (г)</label>
               <input
                 v-model.number="fat"
                 type="number"
                 step="0.1"
                 placeholder="0"
-                class="w-full px-2 py-1.5 bg-stone-50 text-xs rounded-lg border border-stone-200 focus:outline-none focus:border-emerald-500"
+                class="w-full px-2 py-1.5 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-xs rounded-lg border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
               />
             </div>
             <div>
-              <label class="block text-[11px] text-stone-500 mb-0.5">Вуглев. (г)</label>
+              <label class="block text-[11px] text-zinc-500 dark:text-zinc-400 mb-0.5">Вуглев. (г)</label>
               <input
                 v-model.number="carbs"
                 type="number"
                 step="0.1"
                 placeholder="0"
-                class="w-full px-2 py-1.5 bg-stone-50 text-xs rounded-lg border border-stone-200 focus:outline-none focus:border-emerald-500"
+                class="w-full px-2 py-1.5 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-xs rounded-lg border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
               />
             </div>
           </div>
@@ -647,13 +648,13 @@ function save() {
           <button
             type="button"
             @click="emit('close')"
-            class="flex-1 py-2.5 px-4 text-xs font-medium text-stone-600 hover:bg-stone-100 rounded-xl transition-colors"
+            class="flex-1 py-2.5 px-4 text-xs font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors cursor-pointer"
           >
             Скасувати
           </button>
           <button
             type="submit"
-            class="flex-1 py-2.5 px-4 text-xs font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-xs transition-colors"
+            class="flex-1 py-2.5 px-4 text-xs font-medium text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 rounded-xl shadow-xs transition-all cursor-pointer"
           >
             {{ isEditing ? 'Зберегти зміни' : 'Додати продукт' }}
           </button>

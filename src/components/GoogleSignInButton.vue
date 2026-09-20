@@ -63,9 +63,11 @@ function initGoogleSignIn() {
       callback: handleCredentialResponse,
     })
 
+    const isDark = document.documentElement.classList.contains('dark')
+
     gsi.renderButton(buttonRef.value, {
       type: 'standard',
-      theme: 'outline',
+      theme: isDark ? 'filled_black' : 'outline',
       size: 'large',
       text: props.mode === 'register' ? 'signup_with' : 'signin_with',
       shape: 'pill',
@@ -101,13 +103,13 @@ onMounted(() => {
 <template>
   <div v-if="clientId" class="mt-5 w-full">
     <div class="relative flex items-center justify-center my-4">
-      <div class="border-t border-stone-200/80 w-full"></div>
-      <span class="bg-white px-3 text-[11px] font-medium text-stone-400 uppercase tracking-wider absolute">
+      <div class="border-t border-zinc-200 dark:border-zinc-800 w-full"></div>
+      <span class="bg-white dark:bg-[#121217] px-3 text-[11px] font-medium text-zinc-400 dark:text-zinc-500 uppercase tracking-wider absolute">
         або
       </span>
     </div>
 
-    <div v-if="errorMessage" class="mb-3 text-xs text-rose-600 text-center">
+    <div v-if="errorMessage" class="mb-3 text-xs text-rose-600 dark:text-rose-400 text-center">
       {{ errorMessage }}
     </div>
 

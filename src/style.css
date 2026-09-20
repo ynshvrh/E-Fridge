@@ -3,15 +3,30 @@
 @tailwind utilities;
 
 @layer base {
+  html, body {
+    background-color: #fafafa;
+    color: #18181b;
+  }
+
+  html.dark, html.dark body {
+    background-color: #09090b;
+    color: #f4f4f5;
+  }
+
   ::selection {
-    background-color: #a4c2ad;
-    color: #1a2e20;
+    background-color: #ddd6fe;
+    color: #4c1d95;
+  }
+
+  .dark ::selection {
+    background-color: #7c3aed;
+    color: #ffffff;
   }
 
   /* Beautiful styled selects across the entire application */
   select {
     appearance: none;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.75' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2371717a' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.75' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
     background-position: right 0.75rem center;
     background-repeat: no-repeat;
     background-size: 1.25em 1.25em;
@@ -20,7 +35,7 @@
   }
 
   .dark select {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.75' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23a1a1aa' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.75' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
   }
 
   /* Custom subtle scrollbars */
@@ -34,15 +49,19 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgba(156, 163, 175, 0.4);
+    background: rgba(161, 161, 170, 0.4);
     border-radius: 9999px;
   }
 
   .dark ::-webkit-scrollbar-thumb {
-    background: rgba(148, 163, 184, 0.3);
+    background: rgba(82, 82, 91, 0.5);
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(156, 163, 175, 0.7);
+    background: rgba(161, 161, 170, 0.7);
+  }
+
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: rgba(113, 113, 122, 0.8);
   }
 }

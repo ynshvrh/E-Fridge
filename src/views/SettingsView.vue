@@ -2,6 +2,7 @@
 import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { useTheme } from '@/composables/useTheme'
 import {
   Settings,
   User as UserIcon,
@@ -12,11 +13,14 @@ import {
   Trash2,
   AlertTriangle,
   Loader2,
-  ShieldAlert
+  ShieldAlert,
+  Sun,
+  Moon
 } from 'lucide-vue-next'
 
 const router = useRouter()
 const authStore = useAuthStore()
+const { isDark, setTheme } = useTheme()
 
 type Tab = 'profile' | 'fridge' | 'security'
 const activeTab = ref<Tab>('profile')
@@ -216,15 +220,15 @@ function clearNotices() {
   <div class="space-y-5 max-w-4xl mx-auto pb-10">
     <!-- Header Banner -->
     <div
-      class="bg-gradient-to-br from-stone-50 via-white to-emerald-50/40 dark:from-stone-900 dark:via-stone-900 dark:to-emerald-950/20 p-5 rounded-3xl border border-stone-200/70 dark:border-stone-800 shadow-xs flex items-center justify-between flex-wrap gap-3"
+      class="bg-gradient-to-br from-violet-50/70 via-white to-indigo-50/40 dark:from-[#121217] dark:via-[#121217] dark:to-violet-950/20 p-5 rounded-3xl border border-violet-100/70 dark:border-zinc-800 shadow-xs flex items-center justify-between flex-wrap gap-3"
     >
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 flex items-center justify-center shadow-xs">
-          <Settings class="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+        <div class="w-10 h-10 rounded-2xl bg-violet-100/80 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 flex items-center justify-center shadow-xs">
+          <Settings class="w-5 h-5 text-violet-600 dark:text-violet-400" />
         </div>
         <div>
-          <h2 class="text-base font-semibold text-stone-800 dark:text-stone-100">Налаштування профілю</h2>
-          <p class="text-xs text-stone-500 dark:text-stone-400">Керуйте персональними даними, дієтою, паролем та доступом</p>
+          <h2 class="text-base font-semibold text-zinc-800 dark:text-zinc-100">Налаштування профілю</h2>
+          <p class="text-xs text-zinc-500 dark:text-zinc-400">Керуйте персональними даними, дієтою, темою інтерфейсу та доступом</p>
         </div>
       </div>
     </div>
@@ -232,32 +236,33 @@ function clearNotices() {
     <!-- Notices -->
     <div
       v-if="successNotice"
-      class="p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs flex items-center justify-between"
+      class="p-3.5 rounded-2xl bg-violet-50 dark:bg-violet-950/40 border border-violet-200 dark:border-violet-800 text-violet-800 dark:text-violet-300 text-xs flex items-center justify-between shadow-xs transition-all"
     >
       <div class="flex items-center gap-2">
-        <CheckCircle2 class="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+        <CheckCircle2 class="w-4 h-4 text-violet-600 dark:text-violet-400 shrink-0" />
         <span>{{ successNotice }}</span>
       </div>
-      <button @click="successNotice = null"><X class="w-4 h-4" /></button>
+      <button type="button" @click="successNotice = null" class="cursor-pointer"><X class="w-4 h-4" /></button>
     </div>
 
     <div
       v-if="errorNotice"
-      class="p-3.5 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-300 text-xs flex items-center justify-between"
+      class="p-3.5 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-300 text-xs flex items-center justify-between shadow-xs transition-all"
     >
       <span>{{ errorNotice }}</span>
-      <button @click="errorNotice = null"><X class="w-4 h-4" /></button>
+      <button type="button" @click="errorNotice = null" class="cursor-pointer"><X class="w-4 h-4" /></button>
     </div>
 
     <!-- Navigation Tabs -->
-    <div class="flex items-center gap-2 border-b border-stone-200/80 dark:border-stone-800 pb-2 overflow-x-auto scrollbar-none">
+    <div class="flex items-center gap-2 border-b border-zinc-200/80 dark:border-zinc-800 pb-2 overflow-x-auto scrollbar-none">
       <button
+        type="button"
         @click="activeTab = 'profile'"
         :class="[
           'px-4 py-2 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer',
           activeTab === 'profile'
-            ? 'bg-emerald-600 text-white shadow-xs'
-            : 'bg-white dark:bg-stone-900 text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 border border-stone-200/60 dark:border-stone-800',
+            ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-xs'
+            : 'bg-white dark:bg-[#121217] text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-800',
         ]"
       >
         <UserIcon class="w-3.5 h-3.5" />
@@ -265,12 +270,13 @@ function clearNotices() {
       </button>
 
       <button
+        type="button"
         @click="activeTab = 'fridge'"
         :class="[
           'px-4 py-2 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer',
           activeTab === 'fridge'
-            ? 'bg-emerald-600 text-white shadow-xs'
-            : 'bg-white dark:bg-stone-900 text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 border border-stone-200/60 dark:border-stone-800',
+            ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-xs'
+            : 'bg-white dark:bg-[#121217] text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-800',
         ]"
       >
         <Users class="w-3.5 h-3.5" />
@@ -278,12 +284,13 @@ function clearNotices() {
       </button>
 
       <button
+        type="button"
         @click="activeTab = 'security'"
         :class="[
           'px-4 py-2 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer',
           activeTab === 'security'
-            ? 'bg-emerald-600 text-white shadow-xs'
-            : 'bg-white dark:bg-stone-900 text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 border border-stone-200/60 dark:border-stone-800',
+            ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-xs'
+            : 'bg-white dark:bg-[#121217] text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-800',
         ]"
       >
         <KeyRound class="w-3.5 h-3.5" />
@@ -292,21 +299,67 @@ function clearNotices() {
     </div>
 
     <!-- Tab 1: Profile & Diet -->
-    <div v-if="activeTab === 'profile'" class="bg-white dark:bg-stone-900 p-6 rounded-3xl border border-stone-200/80 dark:border-stone-800 shadow-xs space-y-5">
+    <div v-if="activeTab === 'profile'" class="bg-white dark:bg-[#121217] p-6 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xs space-y-6">
+      <!-- Theme Switcher in Profile -->
+      <div>
+        <label class="block font-medium text-zinc-700 dark:text-zinc-300 text-xs mb-2">Тема інтерфейсу</label>
+        <div class="grid grid-cols-2 gap-3 max-w-sm">
+          <button
+            type="button"
+            @click="setTheme('light')"
+            :class="[
+              'p-3 rounded-2xl border flex items-center gap-2.5 transition-all text-left cursor-pointer',
+              !isDark
+                ? 'border-violet-600 bg-violet-50/60 dark:bg-violet-950/40 text-violet-900 dark:text-violet-200 ring-2 ring-violet-500/20 shadow-xs'
+                : 'border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-700'
+            ]"
+          >
+            <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
+              <Sun class="w-4 h-4" />
+            </div>
+            <div>
+              <div class="font-semibold text-xs text-zinc-900 dark:text-zinc-100">Світла</div>
+              <div class="text-[10px] text-zinc-400">Денний режим</div>
+            </div>
+          </button>
+
+          <button
+            type="button"
+            @click="setTheme('dark')"
+            :class="[
+              'p-3 rounded-2xl border flex items-center gap-2.5 transition-all text-left cursor-pointer',
+              isDark
+                ? 'border-violet-600 bg-violet-50/60 dark:bg-violet-950/40 text-violet-900 dark:text-violet-200 ring-2 ring-violet-500/20 shadow-xs'
+                : 'border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-700'
+            ]"
+          >
+            <div class="w-8 h-8 rounded-xl bg-violet-950/80 text-violet-400 flex items-center justify-center shrink-0">
+              <Moon class="w-4 h-4" />
+            </div>
+            <div>
+              <div class="font-semibold text-xs text-zinc-900 dark:text-zinc-100">Темна</div>
+              <div class="text-[10px] text-zinc-400">Нічний режим</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <div class="border-t border-zinc-100 dark:border-zinc-800"></div>
+
       <form @submit.prevent="handleSaveProfile" class="space-y-4 text-xs">
         <div>
-          <label class="block font-medium text-stone-700 dark:text-stone-300 mb-1">Ваше ім'я *</label>
+          <label class="block font-medium text-zinc-700 dark:text-zinc-300 mb-1">Ваше ім'я *</label>
           <input
             v-model="name"
             type="text"
             required
             placeholder="Введіть ваше ім'я"
-            class="w-full px-3.5 py-2.5 bg-stone-50 dark:bg-stone-800 text-sm text-stone-900 dark:text-stone-100 rounded-xl border border-stone-200 dark:border-stone-700 focus:outline-emerald-500"
+            class="w-full px-3.5 py-2.5 bg-zinc-50 dark:bg-zinc-900 text-sm text-zinc-900 dark:text-zinc-100 rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
           />
         </div>
 
         <div>
-          <label class="block font-medium text-stone-700 dark:text-stone-300 mb-1.5">Дієтичні обмеження та особливості</label>
+          <label class="block font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">Дієтичні обмеження та особливості</label>
           <div class="flex flex-wrap gap-1.5 mb-2">
             <button
               v-for="preset in dietaryPresets"
@@ -316,8 +369,8 @@ function clearNotices() {
               :class="[
                 'px-2.5 py-1 rounded-lg text-xs font-medium border transition-all cursor-pointer',
                 isPresetActive(preset)
-                  ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-500 text-emerald-800 dark:text-emerald-300'
-                  : 'bg-stone-50 dark:bg-stone-800 border-stone-200 dark:border-stone-700 text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-700',
+                  ? 'bg-violet-50 dark:bg-violet-950/40 border-violet-500 text-violet-800 dark:text-violet-300'
+                  : 'bg-zinc-50 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-700',
               ]"
             >
               {{ preset }}
@@ -327,15 +380,15 @@ function clearNotices() {
             v-model="dietaryProfile"
             type="text"
             placeholder="Або введіть власні: алергія на горіхи, без солі..."
-            class="w-full px-3.5 py-2 bg-stone-50 dark:bg-stone-800 text-xs text-stone-900 dark:text-stone-100 rounded-xl border border-stone-200 dark:border-stone-700 focus:outline-emerald-500"
+            class="w-full px-3.5 py-2 bg-zinc-50 dark:bg-zinc-900 text-xs text-zinc-900 dark:text-zinc-100 rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
           />
         </div>
 
         <div>
-          <label class="block font-medium text-stone-700 dark:text-stone-300 mb-1">Улюблена кухня</label>
+          <label class="block font-medium text-zinc-700 dark:text-zinc-300 mb-1">Улюблена кухня</label>
           <select
             v-model="cuisine"
-            class="w-full px-3.5 py-2.5 bg-stone-50 dark:bg-stone-800 text-xs text-stone-900 dark:text-stone-100 rounded-xl border border-stone-200 dark:border-stone-700 focus:outline-emerald-500"
+            class="w-full px-3.5 py-2.5 bg-zinc-50 dark:bg-zinc-900 text-xs text-zinc-900 dark:text-zinc-100 rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
           >
             <option v-for="c in cuisines" :key="c.id" :value="c.id">{{ c.label }}</option>
           </select>
@@ -345,7 +398,7 @@ function clearNotices() {
           <button
             type="submit"
             :disabled="isSaving"
-            class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-xs font-medium transition-all cursor-pointer flex items-center gap-2"
+            class="px-5 py-2.5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white rounded-xl shadow-xs font-medium transition-all cursor-pointer flex items-center gap-2"
           >
             <Loader2 v-if="isSaving" class="w-4 h-4 animate-spin" />
             <span>{{ isSaving ? 'Збереження...' : 'Зберегти зміни' }}</span>
@@ -355,10 +408,10 @@ function clearNotices() {
     </div>
 
     <!-- Tab 2: Fridge & Members -->
-    <div v-if="activeTab === 'fridge'" class="bg-white dark:bg-stone-900 p-6 rounded-3xl border border-stone-200/80 dark:border-stone-800 shadow-xs space-y-5">
+    <div v-if="activeTab === 'fridge'" class="bg-white dark:bg-[#121217] p-6 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xs space-y-5">
       <div>
-        <h3 class="text-sm font-semibold text-stone-800 dark:text-stone-100">Поточний холодильник: {{ authStore.currentFridge?.name }}</h3>
-        <p class="text-xs text-stone-400 mt-0.5">Учасники мають спільний доступ до продуктів та списку покупок</p>
+        <h3 class="text-sm font-semibold text-zinc-800 dark:text-zinc-100">Поточний холодильник: {{ authStore.currentFridge?.name }}</h3>
+        <p class="text-xs text-zinc-400 mt-0.5">Учасники мають спільний доступ до продуктів та списку покупок</p>
       </div>
 
       <!-- Members List -->
@@ -366,20 +419,21 @@ function clearNotices() {
         <div
           v-for="mem in authStore.currentFridge?.members || []"
           :key="mem.id"
-          class="p-3 bg-stone-50 dark:bg-stone-800/60 rounded-2xl border border-stone-200/70 dark:border-stone-700 flex items-center justify-between text-xs"
+          class="p-3 bg-zinc-50 dark:bg-zinc-800/60 rounded-2xl border border-zinc-200/70 dark:border-zinc-700 flex items-center justify-between text-xs"
         >
           <div>
-            <div class="font-medium text-stone-800 dark:text-stone-100">{{ mem.name }}</div>
-            <div class="text-[11px] text-stone-400">{{ mem.email }}</div>
+            <div class="font-medium text-zinc-800 dark:text-zinc-100">{{ mem.name }}</div>
+            <div class="text-[11px] text-zinc-400">{{ mem.email }}</div>
           </div>
           <div class="flex items-center gap-2">
-            <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 rounded-md font-medium text-[10px]">
+            <span class="px-2 py-0.5 bg-violet-100 dark:bg-violet-950/60 text-violet-800 dark:text-violet-300 rounded-md font-medium text-[10px]">
               {{ mem.role === 'owner' ? 'Власник' : 'Учасник' }}
             </span>
             <button
               v-if="mem.role !== 'owner' && authStore.currentFridge?.role === 'owner'"
+              type="button"
               @click="handleRemoveMember(mem.id)"
-              class="p-1 text-stone-400 hover:text-rose-600 transition-colors cursor-pointer"
+              class="p-1 text-zinc-400 hover:text-rose-600 transition-colors cursor-pointer"
             >
               <Trash2 class="w-3.5 h-3.5" />
             </button>
@@ -388,19 +442,19 @@ function clearNotices() {
       </div>
 
       <!-- Invite form -->
-      <div class="pt-3 border-t border-stone-100 dark:border-stone-800">
-        <h4 class="text-xs font-semibold text-stone-700 dark:text-stone-300 mb-2">Запросити учасника за email</h4>
+      <div class="pt-3 border-t border-zinc-100 dark:border-zinc-800">
+        <h4 class="text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Запросити учасника за email</h4>
         <form @submit.prevent="handleInviteMember" class="flex flex-col sm:flex-row gap-2 text-xs">
           <input
             v-model="inviteEmail"
             type="email"
             placeholder="Введіть email користувача..."
             required
-            class="flex-1 px-3 py-2 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-stone-100 rounded-xl border border-stone-200 dark:border-stone-700"
+            class="flex-1 px-3 py-2 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
           />
           <button
             type="submit"
-            class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-medium shadow-2xs cursor-pointer"
+            class="px-4 py-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white rounded-xl font-medium shadow-xs cursor-pointer"
           >
             Запросити
           </button>
@@ -411,47 +465,47 @@ function clearNotices() {
     <!-- Tab 3: Security & Danger Zone -->
     <div v-if="activeTab === 'security'" class="space-y-6">
       <!-- Change Password -->
-      <div class="bg-white dark:bg-stone-900 p-6 rounded-3xl border border-stone-200/80 dark:border-stone-800 shadow-xs space-y-4">
+      <div class="bg-white dark:bg-[#121217] p-6 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xs space-y-4">
         <div>
-          <h3 class="text-sm font-semibold text-stone-800 dark:text-stone-100">Зміна пароля</h3>
-          <p class="text-xs text-stone-500 dark:text-stone-400">Оновіть свій пароль для безпеки облікового запису</p>
+          <h3 class="text-sm font-semibold text-zinc-800 dark:text-zinc-100">Зміна пароля</h3>
+          <p class="text-xs text-zinc-500 dark:text-zinc-400">Оновіть свій пароль для безпеки облікового запису</p>
         </div>
 
         <form @submit.prevent="handleChangePassword" class="space-y-3.5 text-xs max-w-sm">
           <div>
-            <label class="block font-medium text-stone-700 dark:text-stone-300 mb-1">Поточний пароль *</label>
+            <label class="block font-medium text-zinc-700 dark:text-zinc-300 mb-1">Поточний пароль *</label>
             <input
               v-model="oldPassword"
               type="password"
               required
-              class="w-full px-3.5 py-2.5 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-stone-100 rounded-xl border border-stone-200 dark:border-stone-700"
+              class="w-full px-3.5 py-2.5 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
             />
           </div>
 
           <div>
-            <label class="block font-medium text-stone-700 dark:text-stone-300 mb-1">Новий пароль (від 8 символів) *</label>
+            <label class="block font-medium text-zinc-700 dark:text-zinc-300 mb-1">Новий пароль (від 8 символів) *</label>
             <input
               v-model="newPassword"
               type="password"
               required
-              class="w-full px-3.5 py-2.5 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-stone-100 rounded-xl border border-stone-200 dark:border-stone-700"
+              class="w-full px-3.5 py-2.5 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
             />
           </div>
 
           <div>
-            <label class="block font-medium text-stone-700 dark:text-stone-300 mb-1">Підтвердження нового пароля *</label>
+            <label class="block font-medium text-zinc-700 dark:text-zinc-300 mb-1">Підтвердження нового пароля *</label>
             <input
               v-model="confirmPassword"
               type="password"
               required
-              class="w-full px-3.5 py-2.5 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-stone-100 rounded-xl border border-stone-200 dark:border-stone-700"
+              class="w-full px-3.5 py-2.5 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
             />
           </div>
 
           <button
             type="submit"
             :disabled="isSaving"
-            class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-xs font-medium transition-all cursor-pointer"
+            class="px-5 py-2.5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white rounded-xl shadow-xs font-medium transition-all cursor-pointer"
           >
             {{ isSaving ? 'Оновлення...' : 'Змінити пароль' }}
           </button>
@@ -470,7 +524,7 @@ function clearNotices() {
           </div>
         </div>
 
-        <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+        <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
           Після видалення профілю будуть назавжди видалені всі ваші створені холодильники, списки продуктів, щоденник калорій, плани харчування та історія діалогів із шефом. Цю дію неможливо скасувати.
         </p>
 
@@ -491,34 +545,34 @@ function clearNotices() {
     <Teleport to="body">
       <div
         v-if="showDeleteModal"
-        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-xs animate-in fade-in duration-200"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"
       >
         <div
-          class="bg-white dark:bg-stone-900 w-full max-w-md rounded-3xl p-6 shadow-2xl border border-stone-200 dark:border-stone-800 space-y-5 animate-in zoom-in-95 duration-200"
+          class="bg-white dark:bg-[#121217] w-full max-w-md rounded-3xl p-6 shadow-2xl border border-zinc-200 dark:border-zinc-800 space-y-5 animate-in zoom-in-95 duration-200"
         >
           <div class="flex items-center gap-3">
             <div class="w-12 h-12 rounded-2xl bg-rose-100 dark:bg-rose-900/40 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0">
               <AlertTriangle class="w-6 h-6" />
             </div>
             <div>
-              <h3 class="text-base font-bold text-stone-900 dark:text-stone-100">Видалити акаунт?</h3>
-              <p class="text-xs text-stone-500 dark:text-stone-400">Цю дію неможливо скасувати</p>
+              <h3 class="text-base font-bold text-zinc-900 dark:text-zinc-100">Видалити акаунт?</h3>
+              <p class="text-xs text-zinc-500 dark:text-zinc-400">Цю дію неможливо скасувати</p>
             </div>
           </div>
 
-          <p class="text-xs text-stone-600 dark:text-stone-300 leading-relaxed">
+          <p class="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed">
             Ви впевнені, що хочете видалити свій профіль? Усі збережені продукти, плани харчування та налаштування буде безповоротно втрачено.
           </p>
 
           <div class="space-y-1.5">
-            <label class="block text-xs font-medium text-stone-700 dark:text-stone-300">
+            <label class="block text-xs font-medium text-zinc-700 dark:text-zinc-300">
               Введіть слово <span class="font-bold text-rose-600 dark:text-rose-400 tracking-wider">ВИДАЛИТИ</span> для підтвердження:
             </label>
             <input
               v-model="deleteConfirmationText"
               type="text"
               placeholder="ВИДАЛИТИ"
-              class="w-full px-3.5 py-2.5 bg-stone-50 dark:bg-stone-800 text-xs text-stone-900 dark:text-stone-100 rounded-xl border border-rose-300 dark:border-rose-800 focus:outline-rose-500"
+              class="w-full px-3.5 py-2.5 bg-zinc-50 dark:bg-zinc-900 text-xs text-zinc-900 dark:text-zinc-100 rounded-xl border border-rose-300 dark:border-rose-800 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500"
             />
           </div>
 
@@ -526,7 +580,7 @@ function clearNotices() {
             <button
               type="button"
               @click="showDeleteModal = false"
-              class="px-4 py-2 bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 rounded-xl text-xs font-medium transition-colors cursor-pointer"
+              class="px-4 py-2 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 rounded-xl text-xs font-medium transition-colors cursor-pointer"
             >
               Скасувати
             </button>
