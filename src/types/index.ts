@@ -178,6 +178,18 @@ export interface AuthResult {
   fridges: Fridge[]
 }
 
+export interface RegisterResponse {
+  status: string
+  email: string
+  message: string
+  dev_code?: string
+}
+
+export interface ConfirmRegistrationInput {
+  email: string
+  code: string
+}
+
 export interface TokenResult {
   access_token: string
   refresh_token: string

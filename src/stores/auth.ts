@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { api } from '@/services/api'
-import type { User, Fridge, AuthResult } from '@/types'
+import type { User, Fridge, AuthResult, RegisterResponse } from '@/types'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null)
@@ -33,11 +33,31 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function register(email: string, name: string, password: string) {
+  async function register(email: string, name: string, password: string): Promise<RegisterResponse> {
     loading.value = true
     try {
-      const data = await api.post<AuthResult>('/auth/register', { email, name, password })
+      const data = await api.post<RegisterResponse>('/auth/register', { email, name, password })
+      return data
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function confirmRegistration(email: string, code: string): Promise<AuthResult> {
+    loading.value = true
+    try {
+      const data = await api.post<AuthResult>('/auth/register/confirm', { email, code })
       handleAuthSuccess(data)
+      return data
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function resendVerificationCode(email: string): Promise<RegisterResponse> {
+    loading.value = true
+    try {
+      const data = await api.post<RegisterResponse>('/auth/register/resend', { email })
       return data
     } finally {
       loading.value = false
@@ -143,6 +163,8 @@ export const useAuthStore = defineStore('auth', () => {
     initialized,
     isAuthenticated,
     register,
+    confirmRegistration,
+    resendVerificationCode,
     login,
     logout,
     fetchMe,
