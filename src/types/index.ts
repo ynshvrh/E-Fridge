@@ -137,6 +137,28 @@ export interface NutritionLog {
   fat: number
   carbs: number
   logged_at: string
+  product_id?: string
+  fridge_id?: string
+}
+
+export interface UpdateNutritionLogInput {
+  meal_type?: string
+  food_name?: string
+  quantity?: number
+  unit?: string
+  calories?: number
+  protein?: number
+  fat?: number
+  carbs?: number
+}
+
+export interface DeleteLogResult {
+  message: string
+  restored_to_fridge: boolean
+  restored_fridge_id?: string
+  food_name?: string
+  quantity?: number
+  unit?: string
 }
 
 export interface Goals {

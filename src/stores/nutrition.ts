@@ -40,13 +40,19 @@ export const useNutritionStore = defineStore('nutrition', () => {
     return res
   }
 
-  async function deleteLog(id: string) {
-    await api.delete(`/nutrition/log/${id}`)
+  async function updateMealLog(id: string, payload: import('@/types').UpdateNutritionLogInput) {
+    const updated = await api.put<NutritionLog>(`/nutrition/log/${id}`, payload)
+    await fetchDaily(currentDate.value)
+    return updated
+  }
+
+  async function deleteLog(id: string): Promise<import('@/types').DeleteLogResult> {
+    const res = await api.delete<import('@/types').DeleteLogResult>(`/nutrition/log/${id}`)
     if (dailySummary.value) {
       dailySummary.value.logs = dailySummary.value.logs.filter((l) => l.id !== id)
-      // re-calculate totals locally or fetch
       await fetchDaily(currentDate.value)
     }
+    return res
   }
 
   async function updateGoals(goals: Goals) {
@@ -90,6 +96,7 @@ export const useNutritionStore = defineStore('nutrition', () => {
     loading,
     fetchDaily,
     logMeal,
+    updateMealLog,
     deleteLog,
     updateGoals,
     cookRecipe,
