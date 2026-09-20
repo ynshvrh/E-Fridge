@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { Refrigerator, ArrowRight, Lock, Mail, AlertCircle } from 'lucide-vue-next'
+import GoogleSignInButton from '@/components/GoogleSignInButton.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -102,6 +103,8 @@ async function handleSubmit() {
             </button>
           </div>
         </form>
+
+        <GoogleSignInButton mode="login" />
 
         <div class="mt-6 text-center text-xs text-stone-500">
           Ще не маєте акаунту?

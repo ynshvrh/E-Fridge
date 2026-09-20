@@ -64,6 +64,17 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  async function signInWithGoogle(idToken: string): Promise<AuthResult> {
+    loading.value = true
+    try {
+      const data = await api.post<AuthResult>('/auth/google', { id_token: idToken })
+      handleAuthSuccess(data)
+      return data
+    } finally {
+      loading.value = false
+    }
+  }
+
   async function login(email: string, password: string) {
     loading.value = true
     try {
@@ -165,6 +176,7 @@ export const useAuthStore = defineStore('auth', () => {
     register,
     confirmRegistration,
     resendVerificationCode,
+    signInWithGoogle,
     login,
     logout,
     fetchMe,

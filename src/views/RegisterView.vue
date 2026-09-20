@@ -14,6 +14,7 @@ import {
   RefreshCw,
   KeyRound,
 } from 'lucide-vue-next'
+import GoogleSignInButton from '@/components/GoogleSignInButton.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -58,8 +59,8 @@ async function handleInitiateRegister() {
     return
   }
 
-  if (password.value.length < 6) {
-    errorMessage.value = 'Пароль має містити щонайменше 6 символів'
+  if (password.value.length < 8) {
+    errorMessage.value = 'Пароль має містити щонайменше 8 символів'
     return
   }
 
@@ -213,7 +214,7 @@ function handleBackToForm() {
                 v-model="password"
                 type="password"
                 required
-                placeholder="Мінімум 6 символів"
+                placeholder="Мінімум 8 символів"
                 class="w-full pl-10 pr-4 py-2.5 bg-stone-50/60 hover:bg-stone-50 focus:bg-white text-stone-800 text-sm rounded-2xl border border-stone-200/80 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
               />
             </div>
@@ -249,6 +250,8 @@ function handleBackToForm() {
             </button>
           </div>
         </form>
+
+        <GoogleSignInButton v-if="step === 'form'" mode="register" />
 
         <!-- STEP 2: Email Verification Code -->
         <div v-else class="space-y-5">
