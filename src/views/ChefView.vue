@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, nextTick, onMounted } from 'vue'
+import { ref, nextTick, onMounted, watch } from 'vue'
 import { useChefStore } from '@/stores/chef'
 import { useNutritionStore } from '@/stores/nutrition'
 import { useProductStore } from '@/stores/products'
@@ -12,7 +12,11 @@ import {
   PlusCircle,
   RotateCcw,
   CheckCircle2,
-  ShoppingCart
+  ShoppingCart,
+  Bot,
+  User as UserIcon,
+  ChefHat,
+  Loader2
 } from 'lucide-vue-next'
 import type { Recipe, ShoppingSuggestion } from '@/types'
 
@@ -27,26 +31,50 @@ const cookingSuccess = ref<string | null>(null)
 const isCooking = ref(false)
 const savedRecipeTitles = ref<Set<string>>(new Set())
 const addedToShoppingTitles = ref<Set<string>>(new Set())
+const messagesContainer = ref<HTMLDivElement | null>(null)
 
 const quickPrompts = [
-  'Що приготувати на вечерю?',
-  'Легкий дієтичний сніданок',
-  'Швидка страва за 15 хвилин',
+  'Що приготувати на вечерю з моїх продуктів?',
+  'Легкий високобілковий сніданок',
+  'Швидка страва до 20 хвилин',
+  'Рецепт для продуктів, що закінчуються',
 ]
 
 onMounted(async () => {
   await chefStore.fetchHistory()
+  scrollToBottom()
 })
+
+watch(
+  () => chefStore.messages.length,
+  async () => {
+    await nextTick()
+    scrollToBottom()
+  }
+)
+
+function scrollToBottom() {
+  if (messagesContainer.value) {
+    messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
+  }
+}
 
 async function send(text?: string) {
   const query = text || inputMessage.value
-  if (!query.trim()) return
+  if (!query.trim() || chefStore.loading) return
 
   inputMessage.value = ''
   cookingSuccess.value = null
   await chefStore.sendMessage(query)
   await nextTick()
-  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+  scrollToBottom()
+}
+
+function handleKeydown(e: KeyboardEvent) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault()
+    send()
+  }
 }
 
 async function handleCookFromRecipe(recipe: Recipe) {
@@ -63,7 +91,7 @@ async function handleCookFromRecipe(recipe: Recipe) {
       servings: recipe.servings,
       expiry_days: 4,
       ingredients,
-      ignore_missing: true, // Allow cooking even if optional items aren't recorded
+      ignore_missing: true,
       auto_log_as_meal: true,
       meal_type: 'lunch',
     })
@@ -150,139 +178,221 @@ async function handleAddMissingToShopping(recipe: Recipe) {
 </script>
 
 <template>
-  <div class="space-y-4">
-    <!-- Header banner -->
-    <div class="bg-gradient-to-br from-teal-50/70 via-white to-emerald-50/50 p-5 rounded-3xl border border-teal-100/70 shadow-sm flex items-center justify-between">
+  <div class="flex flex-col h-[calc(100vh-210px)] md:h-[calc(100vh-140px)] bg-white dark:bg-stone-900 rounded-3xl border border-stone-200/80 dark:border-stone-800 shadow-sm overflow-hidden">
+    <!-- Chat Header -->
+    <div class="px-4 py-3 sm:px-6 sm:py-4 bg-gradient-to-r from-teal-50/80 via-white to-emerald-50/50 dark:from-stone-900 dark:via-stone-900 dark:to-teal-950/30 border-b border-stone-200/80 dark:border-stone-800 flex items-center justify-between shrink-0">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl bg-teal-100/80 text-teal-700 flex items-center justify-center shadow-xs">
-          <Sparkles class="w-5 h-5" />
+        <div class="w-10 h-10 rounded-2xl bg-teal-600 text-white flex items-center justify-center shadow-xs">
+          <ChefHat class="w-5 h-5" />
         </div>
         <div>
-          <h2 class="text-base font-semibold text-stone-800">E-Chef AI Помічник</h2>
-          <p class="text-xs text-stone-500">Працює на базі OpenRouter з урахуванням ваших продуктів</p>
+          <div class="flex items-center gap-2">
+            <h2 class="text-sm sm:text-base font-bold text-stone-800 dark:text-stone-100">AI Шеф-кухар</h2>
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              Готовий допомогти
+            </span>
+          </div>
+          <p class="text-[11px] sm:text-xs text-stone-500 dark:text-stone-400">Підбирає рецепти з продуктів вашого холодильника</p>
         </div>
       </div>
+
       <button
         @click="chefStore.clearMessages"
-        title="Очистити чат"
-        class="p-2 text-stone-400 hover:text-stone-600 hover:bg-stone-100 rounded-xl transition-colors"
+        title="Очистити історію діалогу"
+        class="p-2 text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-xl transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-medium"
       >
         <RotateCcw class="w-4 h-4" />
+        <span class="hidden sm:inline">Очистити</span>
       </button>
     </div>
 
-    <!-- Quick suggestions -->
-    <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+    <!-- Cooking Success Notice -->
+    <div
+      v-if="cookingSuccess"
+      class="mx-4 mt-3 p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs flex items-center justify-between gap-2 shrink-0"
+    >
+      <div class="flex items-center gap-2">
+        <CheckCircle2 class="w-4 h-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
+        <span>{{ cookingSuccess }}</span>
+      </div>
+      <button @click="cookingSuccess = null" class="text-emerald-600 dark:text-emerald-400">
+        &times;
+      </button>
+    </div>
+
+    <!-- Chat Messages Scroll Area -->
+    <div
+      ref="messagesContainer"
+      class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 scroll-smooth"
+    >
+      <!-- Empty state when no conversation yet -->
+      <div
+        v-if="chefStore.messages.length === 0"
+        class="h-full flex flex-col items-center justify-center text-center max-w-md mx-auto space-y-4 py-8"
+      >
+        <div class="w-14 h-14 rounded-3xl bg-teal-50 dark:bg-teal-950/40 text-teal-600 dark:text-teal-400 flex items-center justify-center shadow-xs">
+          <Sparkles class="w-7 h-7" />
+        </div>
+        <div>
+          <h3 class="text-base font-bold text-stone-800 dark:text-stone-100">Чим вам допомогти сьогодні?</h3>
+          <p class="text-xs text-stone-500 dark:text-stone-400 mt-1 leading-relaxed">
+            Я можу створити страву з продуктів, які вже є у вашому холодильнику, розрахувати КБЖВ або підказати відсутні інгредієнти.
+          </p>
+        </div>
+
+        <!-- Quick suggestion pills in empty state -->
+        <div class="w-full flex flex-col gap-2 pt-2">
+          <button
+            v-for="prompt in quickPrompts"
+            :key="prompt"
+            @click="send(prompt)"
+            class="text-left px-4 py-2.5 rounded-2xl bg-stone-50 dark:bg-stone-800/80 hover:bg-teal-50 dark:hover:bg-teal-950/30 border border-stone-200/80 dark:border-stone-700 text-xs text-stone-700 dark:text-stone-200 font-medium transition-all shadow-2xs cursor-pointer flex items-center justify-between group"
+          >
+            <span>{{ prompt }}</span>
+            <Sparkles class="w-3.5 h-3.5 text-stone-400 group-hover:text-teal-600 transition-colors shrink-0 ml-2" />
+          </button>
+        </div>
+      </div>
+
+      <!-- Messages Stream -->
+      <div
+        v-for="(msg, index) in chefStore.messages"
+        :key="index"
+        :class="['flex gap-3', msg.role === 'user' ? 'justify-end' : 'justify-start']"
+      >
+        <!-- Assistant Avatar -->
+        <div
+          v-if="msg.role === 'assistant'"
+          class="w-8 h-8 rounded-2xl bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-xs mt-1"
+        >
+          <Bot class="w-4 h-4" />
+        </div>
+
+        <!-- Message Body Container -->
+        <div
+          :class="[
+            'flex flex-col max-w-[88%] sm:max-w-[80%]',
+            msg.role === 'user' ? 'items-end' : 'items-start'
+          ]"
+        >
+          <!-- User Bubble -->
+          <div
+            v-if="msg.role === 'user'"
+            class="bg-emerald-600 text-white text-xs sm:text-sm px-4 py-2.5 rounded-2xl rounded-tr-xs shadow-xs leading-relaxed"
+          >
+            {{ msg.content }}
+          </div>
+
+          <!-- Assistant Bubble -->
+          <div
+            v-else
+            class="bg-stone-50 dark:bg-stone-800/90 border border-stone-200/80 dark:border-stone-700 p-4 sm:p-5 rounded-3xl rounded-tl-xs shadow-xs space-y-4 w-full"
+          >
+            <div class="text-xs sm:text-sm text-stone-800 dark:text-stone-100 leading-relaxed whitespace-pre-line">
+              {{ msg.content }}
+            </div>
+
+            <!-- Embedded Recipe Card -->
+            <RecipeCard
+              v-if="msg.recipe"
+              :recipe="msg.recipe"
+              :is-saved="savedRecipeTitles.has(msg.recipe.title)"
+              :is-cooking="isCooking"
+              :is-missing-added="addedToShoppingTitles.has(msg.recipe.title)"
+              @cook="handleCookFromRecipe"
+              @save="handleSaveRecipe"
+              @add-missing="handleAddMissingToShopping"
+            />
+
+            <!-- Shopping Suggestions -->
+            <div
+              v-if="msg.shopping_suggestions && msg.shopping_suggestions.length > 0"
+              class="bg-emerald-50/60 dark:bg-emerald-950/40 border border-emerald-200/70 dark:border-emerald-800 rounded-2xl p-3.5 space-y-2.5"
+            >
+              <div class="flex items-center justify-between gap-2 flex-wrap">
+                <div class="text-xs font-semibold text-emerald-900 dark:text-emerald-200 flex items-center gap-1.5">
+                  <PlusCircle class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                  <span>Рекомендовано докупити:</span>
+                </div>
+                <button
+                  @click="handleAddSuggestionsToShopping(msg.shopping_suggestions, 'sug_' + index)"
+                  :disabled="addedToShoppingTitles.has('sug_' + index)"
+                  class="text-[11px] font-medium text-emerald-700 dark:text-emerald-300 hover:text-emerald-800 bg-white dark:bg-stone-800 border border-emerald-200 dark:border-emerald-700 px-2.5 py-1 rounded-xl flex items-center gap-1 transition-colors cursor-pointer shadow-2xs"
+                >
+                  <ShoppingCart class="w-3 h-3" />
+                  <span>{{ addedToShoppingTitles.has('sug_' + index) ? 'Додано' : 'Додати всі в список' }}</span>
+                </button>
+              </div>
+              <div class="flex flex-wrap gap-1.5">
+                <span
+                  v-for="(sug, sIdx) in msg.shopping_suggestions"
+                  :key="sIdx"
+                  class="text-[11px] px-2.5 py-1 bg-white dark:bg-stone-800 border border-emerald-200/60 dark:border-stone-700 text-stone-700 dark:text-stone-300 rounded-xl font-medium"
+                >
+                  {{ sug.name }} ({{ sug.quantity }} {{ sug.unit }})
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- User Avatar -->
+        <div
+          v-if="msg.role === 'user'"
+          class="w-8 h-8 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs mt-1"
+        >
+          <UserIcon class="w-4 h-4" />
+        </div>
+      </div>
+
+      <!-- Thinking indicator -->
+      <div v-if="chefStore.loading" class="flex items-center gap-3 text-stone-500 dark:text-stone-400 text-xs p-2">
+        <div class="w-8 h-8 rounded-2xl bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+          <Loader2 class="w-4 h-4 animate-spin" />
+        </div>
+        <div class="bg-stone-100 dark:bg-stone-800 px-4 py-2.5 rounded-2xl rounded-tl-xs flex items-center gap-2">
+          <span class="animate-pulse">E-Chef формує рецепт та перевіряє продукти...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Prompts Bar (above input when there are messages) -->
+    <div
+      v-if="chefStore.messages.length > 0"
+      class="px-4 py-2 bg-stone-50/70 dark:bg-stone-900/80 border-t border-stone-100 dark:border-stone-800/80 flex items-center gap-1.5 overflow-x-auto scrollbar-none shrink-0"
+    >
       <button
         v-for="prompt in quickPrompts"
         :key="prompt"
         @click="send(prompt)"
-        class="px-3 py-1.5 bg-white border border-stone-200/80 rounded-xl text-xs text-stone-600 hover:bg-emerald-50 hover:text-emerald-800 hover:border-emerald-200 transition-all whitespace-nowrap shadow-xs"
+        :disabled="chefStore.loading"
+        class="px-3 py-1 bg-white dark:bg-stone-800 border border-stone-200/70 dark:border-stone-700 rounded-xl text-[11px] text-stone-600 dark:text-stone-300 hover:bg-teal-50 dark:hover:bg-teal-950/30 hover:text-teal-700 transition-all whitespace-nowrap shadow-2xs cursor-pointer shrink-0"
       >
         {{ prompt }}
       </button>
     </div>
 
-    <!-- Success banner if cooked -->
-    <div
-      v-if="cookingSuccess"
-      class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2"
-    >
-      <CheckCircle2 class="w-4 h-4 shrink-0 text-emerald-600" />
-      <span>{{ cookingSuccess }}</span>
-    </div>
-
-    <!-- Messages Container -->
-    <div class="space-y-4 min-h-[300px]">
-      <div
-        v-for="(msg, index) in chefStore.messages"
-        :key="index"
-        :class="['flex flex-col', msg.role === 'user' ? 'items-end' : 'items-start']"
-      >
-        <!-- User Bubble -->
-        <div
-          v-if="msg.role === 'user'"
-          class="bg-emerald-600 text-white text-xs sm:text-sm px-4 py-2.5 rounded-2xl rounded-tr-xs max-w-[85%] shadow-xs leading-relaxed"
-        >
-          {{ msg.content }}
-        </div>
-
-        <!-- Assistant Bubble -->
-        <div
-          v-else
-          class="bg-white border border-stone-200/70 p-4 sm:p-5 rounded-3xl rounded-tl-xs max-w-full sm:max-w-[95%] shadow-sm space-y-3.5"
-        >
-          <div class="text-xs sm:text-sm text-stone-700 leading-relaxed whitespace-pre-line">
-            {{ msg.content }}
-          </div>
-
-          <!-- Embedded Recipe Card -->
-          <RecipeCard
-            v-if="msg.recipe"
-            :recipe="msg.recipe"
-            :is-saved="savedRecipeTitles.has(msg.recipe.title)"
-            :is-cooking="isCooking"
-            :is-missing-added="addedToShoppingTitles.has(msg.recipe.title)"
-            @cook="handleCookFromRecipe"
-            @save="handleSaveRecipe"
-            @add-missing="handleAddMissingToShopping"
-          />
-
-          <!-- Shopping Suggestions (if any) -->
-          <div
-            v-if="msg.shopping_suggestions && msg.shopping_suggestions.length > 0"
-            class="bg-emerald-50/50 border border-emerald-100 rounded-2xl p-3 space-y-2"
-          >
-            <div class="flex items-center justify-between gap-2">
-              <div class="text-xs font-medium text-emerald-900 flex items-center gap-1.5">
-                <PlusCircle class="w-3.5 h-3.5 text-emerald-600" />
-                <span>Рекомендовано докупити:</span>
-              </div>
-              <button
-                @click="handleAddSuggestionsToShopping(msg.shopping_suggestions, 'sug_' + index)"
-                :disabled="addedToShoppingTitles.has('sug_' + index)"
-                class="text-[11px] font-medium text-emerald-700 hover:text-emerald-800 bg-white border border-emerald-200/80 px-2 py-0.5 rounded-lg flex items-center gap-1 transition-colors"
-              >
-                <ShoppingCart class="w-3 h-3" />
-                <span>{{ addedToShoppingTitles.has('sug_' + index) ? 'Додано' : 'Додати всі в список' }}</span>
-              </button>
-            </div>
-            <div class="flex flex-wrap gap-1.5">
-              <span
-                v-for="(sug, sIdx) in msg.shopping_suggestions"
-                :key="sIdx"
-                class="text-[11px] px-2 py-0.5 bg-white border border-emerald-200/60 text-stone-700 rounded-lg"
-              >
-                {{ sug.name }} ({{ sug.quantity }} {{ sug.unit }})
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Loading indicator -->
-      <div v-if="chefStore.loading" class="flex items-center gap-2 text-stone-400 text-xs p-3">
-        <Sparkles class="w-4 h-4 animate-spin text-teal-600" />
-        <span>E-Chef думає та готує відповідь...</span>
-      </div>
-    </div>
-
-    <!-- Input Bar -->
-    <div class="sticky bottom-4 z-10 bg-white/90 backdrop-blur-md p-2 rounded-2xl border border-stone-200/80 shadow-md">
+    <!-- Chat Input Footer -->
+    <div class="p-3 sm:p-4 bg-white dark:bg-stone-900 border-t border-stone-200/80 dark:border-stone-800 shrink-0">
       <form @submit.prevent="send()" class="flex items-center gap-2">
-        <input
-          v-model="inputMessage"
-          type="text"
-          placeholder="Запитайте щось у Шефа..."
-          :disabled="chefStore.loading"
-          class="flex-1 px-3.5 py-2 text-xs sm:text-sm bg-stone-50 rounded-xl border border-stone-200 focus:outline-none focus:border-emerald-500 transition-all"
-        />
+        <div class="relative flex-1">
+          <input
+            v-model="inputMessage"
+            type="text"
+            placeholder="Запитайте щось у Шефа (наприклад: що приготувати з яєць та помідорів?)..."
+            :disabled="chefStore.loading"
+            @keydown="handleKeydown"
+            class="w-full pl-4 pr-10 py-3 text-xs sm:text-sm bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-stone-100 rounded-2xl border border-stone-200 dark:border-stone-700 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all placeholder:text-stone-400 dark:placeholder:text-stone-500"
+          />
+        </div>
         <button
           type="submit"
           :disabled="!inputMessage.trim() || chefStore.loading"
-          class="p-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-xs transition-colors disabled:opacity-40"
+          class="p-3 bg-teal-600 hover:bg-teal-700 disabled:opacity-40 text-white rounded-2xl shadow-xs transition-all cursor-pointer shrink-0 flex items-center justify-center"
         >
-          <Send class="w-4 h-4" />
+          <Loader2 v-if="chefStore.loading" class="w-4 h-4 animate-spin" />
+          <Send v-else class="w-4 h-4" />
         </button>
       </form>
     </div>
