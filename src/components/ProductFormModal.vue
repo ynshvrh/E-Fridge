@@ -398,7 +398,7 @@ function save() {
           <button
             type="button"
             @click="save"
-            class="w-full py-2.5 px-4 text-xs font-medium text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 rounded-xl shadow-xs transition-colors cursor-pointer"
+            class="w-full py-2.5 px-4 text-xs font-medium text-white bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 rounded-xl shadow-xs transition-colors cursor-pointer"
           >
             Додати в холодильник
           </button>
@@ -421,7 +421,7 @@ function save() {
               type="button"
               @click="handleAIEstimate"
               :disabled="isEstimatingAI || !aiPrompt.trim()"
-              class="w-full py-2.5 px-4 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 disabled:opacity-50 text-white text-xs font-medium rounded-xl flex items-center justify-center gap-1.5 transition-colors shadow-xs cursor-pointer"
+              class="w-full py-2.5 px-4 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 disabled:opacity-50 text-white text-xs font-medium rounded-xl flex items-center justify-center gap-1.5 transition-colors shadow-xs cursor-pointer"
             >
               <Loader2 v-if="isEstimatingAI" class="w-3.5 h-3.5 animate-spin" />
               <Sparkles v-else class="w-3.5 h-3.5" />
@@ -497,7 +497,7 @@ function save() {
           <button
             type="button"
             @click="save"
-            class="w-full py-2.5 px-4 text-xs font-medium text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 rounded-xl shadow-xs transition-colors cursor-pointer"
+            class="w-full py-2.5 px-4 text-xs font-medium text-white bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 rounded-xl shadow-xs transition-colors cursor-pointer"
           >
             Додати в холодильник
           </button>
@@ -654,7 +654,7 @@ function save() {
           </button>
           <button
             type="submit"
-            class="flex-1 py-2.5 px-4 text-xs font-medium text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 rounded-xl shadow-xs transition-all cursor-pointer"
+            class="flex-1 py-2.5 px-4 text-xs font-medium text-white bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 rounded-xl shadow-xs transition-all cursor-pointer"
           >
             {{ isEditing ? 'Зберегти зміни' : 'Додати продукт' }}
           </button>

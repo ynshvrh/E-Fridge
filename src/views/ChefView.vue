@@ -178,29 +178,29 @@ async function handleAddMissingToShopping(recipe: Recipe) {
 </script>
 
 <template>
-  <div class="flex flex-col h-[calc(100vh-210px)] md:h-[calc(100vh-140px)] bg-white dark:bg-[#121217] rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-sm overflow-hidden">
+  <div class="flex flex-col h-[calc(100vh-175px)] md:h-[calc(100vh-140px)] bg-white dark:bg-[#121217] rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-sm overflow-hidden">
     <!-- Chat Header -->
-    <div class="px-4 py-3 sm:px-6 sm:py-4 bg-gradient-to-r from-violet-500/10 via-purple-500/5 to-indigo-500/10 dark:from-[#121217] dark:via-[#121217] dark:to-zinc-900 border-b border-zinc-200/80 dark:border-zinc-800 flex items-center justify-between shrink-0">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-600 text-white flex items-center justify-center shadow-xs">
-          <ChefHat class="w-5 h-5" />
+    <div class="px-3 py-2 sm:px-6 sm:py-4 bg-gradient-to-r from-violet-500/10 via-purple-500/5 to-emerald-500/10 dark:from-[#121217] dark:via-[#121217] dark:to-zinc-900 border-b border-zinc-200/80 dark:border-zinc-800 flex items-center justify-between shrink-0">
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-violet-600 via-purple-600 to-violet-500 text-white flex items-center justify-center shadow-xs shrink-0">
+          <ChefHat class="w-4 h-4 sm:w-5 sm:h-5" />
         </div>
         <div>
-          <div class="flex items-center gap-2">
-            <h2 class="text-sm sm:text-base font-bold text-zinc-800 dark:text-zinc-100">AI Шеф-кухар</h2>
-            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-violet-100 dark:bg-violet-950/60 text-violet-800 dark:text-violet-300">
+          <div class="flex items-center gap-1.5 sm:gap-2">
+            <h2 class="text-xs sm:text-base font-bold text-zinc-800 dark:text-zinc-100">AI Шеф-кухар</h2>
+            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-medium bg-violet-100 dark:bg-violet-950/60 text-violet-800 dark:text-violet-300">
               <span class="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse"></span>
-              Готовий допомогти
+              Готовий
             </span>
           </div>
-          <p class="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400">Підбирає рецепти з продуктів вашого холодильника</p>
+          <p class="text-[10px] sm:text-xs text-zinc-500 dark:text-zinc-400">Підбирає рецепти з продуктів холодильника</p>
         </div>
       </div>
 
       <button
         @click="chefStore.clearMessages"
         title="Очистити історію діалогу"
-        class="p-2 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-medium"
+        class="p-1.5 sm:p-2 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-medium"
       >
         <RotateCcw class="w-4 h-4" />
         <span class="hidden sm:inline">Очистити</span>
@@ -210,7 +210,7 @@ async function handleAddMissingToShopping(recipe: Recipe) {
     <!-- Cooking Success Notice -->
     <div
       v-if="cookingSuccess"
-      class="mx-4 mt-3 p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs flex items-center justify-between gap-2 shrink-0"
+      class="mx-3 sm:mx-4 mt-2.5 sm:mt-3 p-2.5 sm:p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs flex items-center justify-between gap-2 shrink-0"
     >
       <div class="flex items-center gap-2">
         <CheckCircle2 class="w-4 h-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
@@ -224,7 +224,7 @@ async function handleAddMissingToShopping(recipe: Recipe) {
     <!-- Chat Messages Scroll Area -->
     <div
       ref="messagesContainer"
-      class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 scroll-smooth"
+      class="flex-1 overflow-y-auto p-3 sm:p-6 space-y-3.5 sm:space-y-5 scroll-smooth"
     >
 
       <!-- Messages Stream -->
@@ -236,7 +236,7 @@ async function handleAddMissingToShopping(recipe: Recipe) {
         <!-- Assistant Avatar -->
         <div
           v-if="msg.role === 'assistant'"
-          class="w-8 h-8 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-600 text-white flex items-center justify-center shrink-0 shadow-xs mt-1"
+          class="w-8 h-8 rounded-2xl bg-gradient-to-tr from-violet-600 via-purple-600 to-violet-500 text-white flex items-center justify-center shrink-0 shadow-xs mt-1"
         >
           <Bot class="w-4 h-4" />
         </div>
@@ -251,7 +251,7 @@ async function handleAddMissingToShopping(recipe: Recipe) {
           <!-- User Bubble -->
           <div
             v-if="msg.role === 'user'"
-            class="bg-gradient-to-r from-violet-600 to-indigo-600 text-white text-xs sm:text-sm px-4 py-2.5 rounded-2xl rounded-tr-xs shadow-xs leading-relaxed"
+            class="bg-gradient-to-r from-violet-600 to-purple-600 text-white text-xs sm:text-sm px-4 py-2.5 rounded-2xl rounded-tr-xs shadow-xs leading-relaxed"
           >
             {{ msg.content }}
           </div>
@@ -312,7 +312,7 @@ async function handleAddMissingToShopping(recipe: Recipe) {
         <!-- User Avatar -->
         <div
           v-if="msg.role === 'user'"
-          class="w-8 h-8 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white flex items-center justify-center shrink-0 shadow-xs mt-1"
+          class="w-8 h-8 rounded-2xl bg-gradient-to-tr from-purple-600 to-violet-500 text-white flex items-center justify-center shrink-0 shadow-xs mt-1"
         >
           <UserIcon class="w-4 h-4" />
         </div>
@@ -320,7 +320,7 @@ async function handleAddMissingToShopping(recipe: Recipe) {
 
       <!-- Thinking indicator -->
       <div v-if="chefStore.loading" class="flex items-center gap-3 text-zinc-500 dark:text-zinc-400 text-xs p-2">
-        <div class="w-8 h-8 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+        <div class="w-8 h-8 rounded-2xl bg-gradient-to-tr from-violet-600 to-purple-600 text-white flex items-center justify-center shrink-0 shadow-xs">
           <Loader2 class="w-4 h-4 animate-spin" />
         </div>
         <div class="bg-zinc-100 dark:bg-zinc-800 px-4 py-2.5 rounded-2xl rounded-tl-xs flex items-center gap-2">
@@ -355,13 +355,13 @@ async function handleAddMissingToShopping(recipe: Recipe) {
             placeholder="Запитайте щось у Шефа (наприклад: що приготувати з яєць та помідорів?)..."
             :disabled="chefStore.loading"
             @keydown="handleKeydown"
-            class="w-full pl-4 pr-10 py-3 text-xs sm:text-sm bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-2xl border border-zinc-200 dark:border-zinc-700 focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
+            class="w-full pl-4 pr-10 py-3 text-xs sm:text-sm bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-2xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
           />
         </div>
         <button
           type="submit"
           :disabled="!inputMessage.trim() || chefStore.loading"
-          class="p-3 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 disabled:opacity-40 text-white rounded-2xl shadow-sm shadow-violet-500/20 active:scale-95 transition-all cursor-pointer shrink-0 flex items-center justify-center"
+          class="p-3 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 disabled:opacity-40 text-white rounded-2xl shadow-sm shadow-violet-500/20 active:scale-95 transition-all cursor-pointer shrink-0 flex items-center justify-center"
         >
           <Loader2 v-if="chefStore.loading" class="w-4 h-4 animate-spin" />
           <Send v-else class="w-4 h-4" />

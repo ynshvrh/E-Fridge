@@ -154,11 +154,11 @@ async function handleSaveGoals(goals: Goals) {
 </script>
 
 <template>
-  <div class="space-y-6 max-w-4xl mx-auto pb-10">
+  <div class="space-y-3.5 sm:space-y-6 max-w-4xl mx-auto pb-6 sm:pb-10">
     <!-- Notices -->
     <div
       v-if="successNotice"
-      class="p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs flex items-center justify-between gap-2 shadow-xs transition-all"
+      class="p-3 sm:p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs flex items-center justify-between gap-2 shadow-xs transition-all"
     >
       <div class="flex items-center gap-2">
         <CheckCircle2 class="w-4 h-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
@@ -171,7 +171,7 @@ async function handleSaveGoals(goals: Goals) {
 
     <div
       v-if="errorNotice"
-      class="p-3.5 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-300 text-xs flex items-center justify-between gap-2 shadow-xs transition-all"
+      class="p-3 sm:p-3.5 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-300 text-xs flex items-center justify-between gap-2 shadow-xs transition-all"
     >
       <span>{{ errorNotice }}</span>
       <button @click="errorNotice = null" class="text-rose-600 dark:text-rose-400 hover:text-rose-800">
@@ -180,15 +180,15 @@ async function handleSaveGoals(goals: Goals) {
     </div>
 
     <!-- Date Bar & Goals Action -->
-    <div class="flex items-center justify-between bg-white dark:bg-[#121217] p-3 sm:p-4 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xs flex-wrap gap-3">
-      <div class="flex items-center gap-1.5">
+    <div class="flex items-center justify-between bg-white dark:bg-[#121217] p-2.5 sm:p-4 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-xs flex-wrap gap-2 sm:gap-3">
+      <div class="flex items-center gap-1 sm:gap-1.5">
         <button
           @click="changeDate(-1)"
           class="p-1.5 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors cursor-pointer"
         >
           <ChevronLeft class="w-5 h-5" />
         </button>
-        <span class="text-xs sm:text-sm font-semibold text-zinc-700 dark:text-zinc-200 min-w-[120px] text-center">
+        <span class="text-xs sm:text-sm font-semibold text-zinc-700 dark:text-zinc-200 min-w-[100px] sm:min-w-[120px] text-center">
           {{ isToday ? 'Сьогодні' : nutritionStore.currentDate }}
         </span>
         <button
@@ -203,13 +203,13 @@ async function handleSaveGoals(goals: Goals) {
         <button
           @click="showGoalsModal = true"
           title="Налаштувати денні цілі"
-          class="p-2 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors cursor-pointer"
+          class="p-1.5 sm:p-2 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors cursor-pointer"
         >
           <Settings2 class="w-4 h-4" />
         </button>
         <button
           @click="showAddLogModal = true"
-          class="inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white text-xs font-semibold rounded-xl transition-all shadow-sm shadow-violet-500/20 active:scale-95 cursor-pointer"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white text-xs font-semibold rounded-xl transition-all shadow-sm shadow-violet-500/20 active:scale-95 cursor-pointer"
         >
           <Plus class="w-3.5 h-3.5" />
           <span>Додати їжу</span>
@@ -218,7 +218,7 @@ async function handleSaveGoals(goals: Goals) {
     </div>
 
     <!-- Daily Progress Cards -->
-    <div class="bg-white dark:bg-[#121217] p-5 sm:p-6 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-sm space-y-4">
+    <div class="bg-white dark:bg-[#121217] p-3.5 sm:p-6 rounded-3xl border border-zinc-200/80 dark:border-zinc-800 shadow-sm space-y-3 sm:space-y-4">
       <div class="flex items-center justify-between">
         <div>
           <div class="text-xs text-zinc-400 dark:text-zinc-500 font-medium">Спожито калорій</div>
@@ -235,7 +235,7 @@ async function handleSaveGoals(goals: Goals) {
       <!-- Main Calorie Bar -->
       <div class="w-full bg-zinc-100 dark:bg-zinc-800/80 rounded-full h-3 overflow-hidden">
         <div
-          class="bg-gradient-to-r from-violet-600 to-indigo-600 h-3 rounded-full transition-all duration-500 shadow-xs"
+          class="bg-gradient-to-r from-violet-600 to-purple-600 h-3 rounded-full transition-all duration-500 shadow-xs"
           :style="{ width: `${calPercent}%` }"
         ></div>
       </div>
@@ -250,7 +250,7 @@ async function handleSaveGoals(goals: Goals) {
           </div>
           <div class="w-full bg-zinc-100 dark:bg-zinc-800/80 rounded-full h-1.5 overflow-hidden">
             <div
-              class="bg-blue-500 h-1.5 rounded-full transition-all duration-500"
+              class="bg-emerald-500 h-1.5 rounded-full transition-all duration-500"
               :style="{ width: `${proteinPercent}%` }"
             ></div>
           </div>

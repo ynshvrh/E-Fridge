@@ -478,7 +478,7 @@ function submit() {
           <!-- Nutrition Breakdown Card -->
           <div
             v-if="nutritionPreview"
-            class="p-3 rounded-2xl bg-gradient-to-r from-violet-50/80 to-indigo-50/60 dark:from-violet-950/30 dark:to-indigo-950/20 border border-violet-100/80 dark:border-zinc-800 flex items-center justify-between"
+            class="p-3 rounded-2xl bg-gradient-to-r from-violet-50/80 to-purple-50/60 dark:from-violet-950/30 dark:to-purple-950/20 border border-violet-100/80 dark:border-zinc-800 flex items-center justify-between"
           >
             <div class="flex items-center gap-2">
               <div class="w-7 h-7 rounded-lg bg-violet-100 dark:bg-violet-900/50 text-violet-700 dark:text-violet-300 flex items-center justify-center">
@@ -526,7 +526,7 @@ function submit() {
           </button>
           <button
             type="submit"
-            class="flex-1 py-2.5 px-4 text-xs font-medium text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 rounded-xl shadow-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+            class="flex-1 py-2.5 px-4 text-xs font-medium text-white bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 rounded-xl shadow-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
           >
             <Check class="w-4 h-4" />
             <span>З'їсти та записати</span>

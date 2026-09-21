@@ -31,25 +31,32 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <div class="min-h-full flex flex-col justify-center py-12 px-4 sm:px-6 relative">
-    <!-- Top-Right Theme Switcher -->
-    <div class="fixed top-4 right-4 z-20">
+  <div class="min-h-screen flex flex-col justify-center py-10 sm:py-16 px-4 sm:px-6 relative bg-zinc-50 dark:bg-[#09090b] transition-colors duration-200 overflow-hidden">
+    <!-- Ambient glow decoration -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center">
+      <div class="w-[500px] h-[500px] bg-violet-400/10 dark:bg-violet-600/15 rounded-full blur-3xl -translate-y-12"></div>
+      <div class="w-[360px] h-[360px] bg-emerald-400/10 dark:bg-emerald-500/10 rounded-full blur-3xl translate-y-24 translate-x-20"></div>
+    </div>
+
+    <!-- Top-Right Theme Switcher Pill -->
+    <div class="fixed top-3.5 right-3.5 sm:top-5 sm:right-5 z-20">
       <button
         type="button"
         @click="toggleTheme"
-        class="p-2.5 rounded-2xl text-zinc-600 dark:text-zinc-300 hover:text-violet-600 dark:hover:text-violet-400 bg-white dark:bg-[#121217] border border-zinc-200 dark:border-zinc-800 shadow-sm transition cursor-pointer flex items-center justify-center active:scale-95"
+        class="px-3 py-2 rounded-2xl text-xs font-medium text-zinc-700 dark:text-zinc-200 hover:text-violet-600 dark:hover:text-violet-400 bg-white/90 dark:bg-[#121217]/90 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800 shadow-xs hover:shadow-md transition-all cursor-pointer flex items-center gap-2 active:scale-95"
         :title="isDark ? 'Перемкнути на світлу тему' : 'Перемкнути на темну тему'"
         aria-label="Перемикач теми"
       >
-        <Sun v-if="isDark" class="w-4 h-4 text-amber-400" />
-        <Moon v-else class="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
+        <Sun v-if="isDark" class="w-4 h-4 text-amber-500 shrink-0" />
+        <Moon v-else class="w-4 h-4 text-violet-600 shrink-0" />
+        <span class="text-xs font-semibold">{{ isDark ? 'Темна тема' : 'Світла тема' }}</span>
       </button>
     </div>
 
-    <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
       <!-- Brand Header -->
       <div class="flex justify-center mb-4">
-        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-600 flex items-center justify-center text-white shadow-sm shadow-violet-500/20">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-violet-600 to-purple-600 flex items-center justify-center text-white shadow-sm shadow-violet-500/20">
           <Refrigerator class="w-7 h-7" />
         </div>
       </div>
@@ -61,8 +68,8 @@ async function handleSubmit() {
       </p>
     </div>
 
-    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-      <div class="bg-white dark:bg-[#121217] py-8 px-6 sm:px-8 shadow-sm border border-zinc-200/80 dark:border-zinc-800 rounded-3xl">
+    <div class="mt-6 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
+      <div class="bg-white/95 dark:bg-[#121217]/95 backdrop-blur-md py-7 sm:py-8 px-5 sm:px-8 shadow-sm border border-zinc-200/80 dark:border-zinc-800 rounded-3xl">
         <!-- Error alert -->
         <div
           v-if="errorMessage"
@@ -84,7 +91,7 @@ async function handleSubmit() {
                 type="email"
                 required
                 placeholder="name@example.com"
-                class="w-full pl-10 pr-4 py-2.5 bg-zinc-50 dark:bg-zinc-900 focus:bg-white dark:focus:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm rounded-2xl border border-zinc-200 dark:border-zinc-700 focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
+                class="w-full pl-10 pr-4 py-2.5 bg-zinc-50 dark:bg-zinc-900 focus:bg-white dark:focus:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm rounded-2xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
               />
             </div>
           </div>
@@ -100,7 +107,7 @@ async function handleSubmit() {
                 type="password"
                 required
                 placeholder="••••••••"
-                class="w-full pl-10 pr-4 py-2.5 bg-zinc-50 dark:bg-zinc-900 focus:bg-white dark:focus:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm rounded-2xl border border-zinc-200 dark:border-zinc-700 focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
+                class="w-full pl-10 pr-4 py-2.5 bg-zinc-50 dark:bg-zinc-900 focus:bg-white dark:focus:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm rounded-2xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
               />
             </div>
           </div>
@@ -109,7 +116,7 @@ async function handleSubmit() {
             <button
               type="submit"
               :disabled="authStore.loading"
-              class="w-full py-2.5 px-4 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 active:scale-[0.99] text-white text-sm font-semibold rounded-2xl shadow-sm shadow-violet-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
+              class="w-full py-2.5 px-4 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 active:scale-[0.99] text-white text-sm font-semibold rounded-2xl shadow-sm shadow-violet-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
             >
               <span v-if="authStore.loading">Вхід...</span>
               <template v-else>
