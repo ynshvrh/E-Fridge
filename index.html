@@ -12,7 +12,7 @@
       (function() {
         try {
           const saved = localStorage.getItem('e_fridge_theme');
-          if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          if (saved === 'dark') {
             document.documentElement.classList.add('dark');
           } else {
             document.documentElement.classList.remove('dark');

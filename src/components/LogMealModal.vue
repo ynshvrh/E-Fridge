@@ -70,7 +70,7 @@ function handleSubmit() {
             <label class="block font-medium text-zinc-700 dark:text-zinc-300 mb-1">Прийом їжі</label>
             <select
               v-model="foodMealType"
-              class="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
+              class="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
             >
               <option v-for="m in mealTypes" :key="m.id" :value="m.id">{{ m.label }}</option>
             </select>
@@ -83,7 +83,7 @@ function handleSubmit() {
               type="text"
               required
               placeholder="Наприклад: Вівсянка з бананом"
-              class="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
+              class="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
             />
           </div>
 
@@ -96,14 +96,14 @@ function handleSubmit() {
                 min="0.1"
                 step="any"
                 required
-                class="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
+                class="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
               />
             </div>
             <div>
               <label class="block font-medium text-zinc-700 dark:text-zinc-300 mb-1">Одиниця</label>
               <select
                 v-model="foodUnit"
-                class="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
+                class="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
               >
                 <option v-for="u in unitOptions" :key="u" :value="u">{{ u }}</option>
               </select>

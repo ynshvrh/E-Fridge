@@ -355,7 +355,7 @@ async function handleAddMissingToShopping(recipe: Recipe) {
             placeholder="Запитайте щось у Шефа (наприклад: що приготувати з яєць та помідорів?)..."
             :disabled="chefStore.loading"
             @keydown="handleKeydown"
-            class="w-full pl-4 pr-10 py-3 text-xs sm:text-sm bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-2xl border border-zinc-200 dark:border-zinc-700 focus:outline-hidden focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
+            class="w-full pl-4 pr-10 py-3 text-xs sm:text-sm bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-2xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
           />
         </div>
         <button

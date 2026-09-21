@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { useTheme } from '@/composables/useTheme'
 
 const props = defineProps<{
   mode?: 'login' | 'register'
@@ -9,6 +10,7 @@ const props = defineProps<{
 
 const router = useRouter()
 const authStore = useAuthStore()
+const { isDark } = useTheme()
 const buttonRef = ref<HTMLDivElement | null>(null)
 const errorMessage = ref('')
 
@@ -96,6 +98,13 @@ onMounted(() => {
     } else {
       existingScript.addEventListener('load', initGoogleSignIn)
     }
+  }
+})
+
+watch(isDark, () => {
+  if (buttonRef.value) {
+    buttonRef.value.innerHTML = ''
+    initGoogleSignIn()
   }
 })
 </script>

@@ -9,10 +9,8 @@ function getInitialTheme(): Theme {
     if (saved === 'dark' || saved === 'light') {
       return saved
     }
-    if (typeof document !== 'undefined' && document.documentElement.classList.contains('dark')) {
-      return 'dark'
-    }
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    // Default to clean light mode
+    return 'light'
   } catch {
     return 'light'
   }
