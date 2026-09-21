@@ -170,6 +170,9 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = null
       fridges.value = []
       currentFridgeId.value = null
+      if (window.location.pathname !== '/login' && window.location.pathname !== '/register') {
+        window.location.href = '/login'
+      }
     })
   }
 

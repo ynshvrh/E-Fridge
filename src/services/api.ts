@@ -31,12 +31,51 @@ class ApiClient {
     localStorage.setItem('e_fridge_current_fridge_id', fridgeId)
   }
 
-  private isRefreshing = false
-  private refreshSubscribers: ((token: string) => void)[] = []
+  private refreshPromise: Promise<string> | null = null
 
-  private onRefreshed(token: string) {
-    this.refreshSubscribers.forEach((callback) => callback(token))
-    this.refreshSubscribers = []
+  private async refreshAccessToken(): Promise<string> {
+    if (this.refreshPromise) {
+      return this.refreshPromise
+    }
+
+    const refreshToken = this.getRefreshToken()
+    if (!refreshToken) {
+      this.clearTokens()
+      window.dispatchEvent(new Event('auth:unauthorized'))
+      throw new Error('Unauthorized: no refresh token')
+    }
+
+    this.refreshPromise = (async () => {
+      try {
+        const refreshRes = await fetch(`${BASE_URL}/auth/refresh`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ refresh_token: refreshToken }),
+        })
+
+        let data: APIResponse<{ access_token: string; refresh_token: string }>
+        try {
+          data = await refreshRes.json()
+        } catch {
+          throw new Error('Refresh failed: invalid server response')
+        }
+
+        if (!refreshRes.ok || !data.success || !data.data) {
+          throw new Error(data?.error?.message || 'Refresh failed')
+        }
+
+        this.setTokens(data.data.access_token, data.data.refresh_token)
+        return data.data.access_token
+      } catch (err) {
+        this.clearTokens()
+        window.dispatchEvent(new Event('auth:unauthorized'))
+        throw err
+      } finally {
+        this.refreshPromise = null
+      }
+    })()
+
+    return this.refreshPromise
   }
 
   public async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
@@ -64,72 +103,35 @@ class ApiClient {
         headers,
       })
     } catch (networkErr: any) {
-      throw new Error(`Помилка мережі: не вдалося з'єднатися з сервером (${networkErr.message || 'перевірте з\'єднання'})`)
+      throw new Error(`Помилка мережі: не вдалося з'єднатися з сервером (${networkErr?.message || 'перевірте з\'єднання'})`)
     }
 
     // Auto-refresh token if 401
     if (response.status === 401 && !endpoint.includes('/auth/login') && !endpoint.includes('/auth/refresh')) {
-      const refreshToken = this.getRefreshToken()
-      if (!refreshToken) {
-        this.clearTokens()
-        window.dispatchEvent(new Event('auth:unauthorized'))
-        throw new Error('Unauthorized')
+      const newToken = await this.refreshAccessToken()
+      headers['Authorization'] = `Bearer ${newToken}`
+      let retryResponse: Response
+      try {
+        retryResponse = await fetch(url, { ...options, headers })
+      } catch (networkErr: any) {
+        throw new Error(`Помилка мережі при повторному запиті: ${networkErr?.message || 'перевірте з\'єднання'}`)
       }
 
-      if (!this.isRefreshing) {
-        this.isRefreshing = true
-        try {
-          const refreshRes = await fetch(`${BASE_URL}/auth/refresh`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ refresh_token: refreshToken }),
-          })
-
-          let data: APIResponse<{ access_token: string; refresh_token: string }>
-          try {
-            data = await refreshRes.json()
-          } catch {
-            throw new Error('Refresh failed: invalid server response')
-          }
-
-          if (!refreshRes.ok || !data.success || !data.data) {
-            throw new Error('Refresh failed')
-          }
-
-          this.setTokens(data.data.access_token, data.data.refresh_token)
-          this.isRefreshing = false
-          this.onRefreshed(data.data.access_token)
-        } catch (err) {
-          this.isRefreshing = false
-          this.clearTokens()
-          window.dispatchEvent(new Event('auth:unauthorized'))
-          throw err
+      let retryData: APIResponse<T>
+      try {
+        retryData = await retryResponse.json()
+      } catch {
+        if (!retryResponse.ok) {
+          throw new Error(`Помилка сервера (${retryResponse.status}): бекенд недоступний або повертає неочікувану відповідь`)
         }
+        throw new Error('Некоректна відповідь сервера (очікувався JSON)')
       }
 
-      // Retry request with new token
-      return new Promise<T>((resolve, reject) => {
-        this.refreshSubscribers.push(async (newToken: string) => {
-          try {
-            headers['Authorization'] = `Bearer ${newToken}`
-            const retryRes = await fetch(url, { ...options, headers })
-            let retryData: APIResponse<T>
-            try {
-              retryData = await retryRes.json()
-            } catch {
-              reject(new Error(`Помилка сервера (${retryRes.status})`))
-              return
-            }
-            if (!retryRes.ok || !retryData.success) {
-              reject(new Error(retryData.error?.message || 'Request failed'))
-            } else {
-              resolve(retryData.data as T)
-            }
-          } catch (e) {
-            reject(e)
-          }
-        })
-      })
+      if (!retryResponse.ok || !retryData.success) {
+        throw new Error(retryData.error?.message || 'Request failed')
+      }
+
+      return retryData.data as T
     }
 
     let data: APIResponse<T>
