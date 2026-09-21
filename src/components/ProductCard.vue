@@ -66,13 +66,13 @@ const hasMacros = computed(() => {
 
 <template>
   <div
-    class="group relative bg-white dark:bg-[#121217] border border-zinc-200/80 dark:border-zinc-800 rounded-2xl p-3 sm:p-4 transition-all hover:shadow-md hover:border-violet-300 dark:hover:border-violet-700 flex flex-col justify-between gap-2.5 sm:gap-3"
+    class="group relative bg-white dark:bg-[#121217] border border-zinc-200/80 dark:border-zinc-800 rounded-xl p-2.5 sm:p-3.5 transition-all hover:shadow-md hover:border-violet-300 dark:hover:border-violet-700 flex flex-col justify-between gap-2 sm:gap-2.5"
   >
     <!-- Top Row: Name, Category & Actions -->
     <div>
       <div class="flex items-start justify-between gap-2">
         <div>
-          <h3 class="font-medium text-zinc-800 dark:text-zinc-100 text-base leading-snug">
+          <h3 class="font-medium text-zinc-800 dark:text-zinc-100 text-sm sm:text-base leading-snug">
             {{ product.name }}
           </h3>
           <p v-if="product.notes" class="text-xs text-zinc-400 dark:text-zinc-500 mt-0.5 line-clamp-1">
