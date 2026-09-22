@@ -35,6 +35,22 @@ function toggleExpand(id: string) {
 }
 
 async function handleCook(recipe: SavedRecipe) {
+  const allMissing = recipe.ingredients.length > 0 && recipe.ingredients.every((i) => !i.in_fridge)
+  if (allMissing) {
+    alert('Неможливо приготувати страву: всі інгредієнти відсутні в холодильнику. Спочатку додайте або купіть продукти.')
+    return
+  }
+
+  const someMissing = recipe.ingredients.some((i) => !i.in_fridge)
+  let ignoreMissing = false
+  if (someMissing) {
+    const confirmCook = confirm('Деякі інгредієнти відсутні в холодильнику. Все одно приготувати страву з наявних продуктів?')
+    if (!confirmCook) {
+      return
+    }
+    ignoreMissing = true
+  }
+
   isCookingId.value = recipe.id
   try {
     const ingredients = recipe.ingredients.map((i) => ({
@@ -48,7 +64,7 @@ async function handleCook(recipe: SavedRecipe) {
       servings: recipe.servings,
       expiry_days: 4,
       ingredients,
-      ignore_missing: true,
+      ignore_missing: ignoreMissing,
       auto_log_as_meal: true,
       meal_type: 'lunch',
     })
