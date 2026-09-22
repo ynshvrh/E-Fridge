@@ -144,6 +144,15 @@ export const useAuthStore = defineStore('auth', () => {
     api.clearTokens()
   }
 
+  async function fetchFridges(): Promise<Fridge[]> {
+    const list = await api.get<Fridge[]>('/fridges')
+    fridges.value = list || []
+    if (fridges.value.length > 0 && (!currentFridgeId.value || !fridges.value.some((f) => f.id === currentFridgeId.value))) {
+      selectFridge(fridges.value[0].id)
+    }
+    return list
+  }
+
   async function fetchFridgeDetails(fridgeId: string): Promise<Fridge> {
     const details = await api.get<Fridge>(`/fridges/${fridgeId}`)
     const idx = fridges.value.findIndex((f) => f.id === fridgeId)
@@ -162,6 +171,38 @@ export const useAuthStore = defineStore('auth', () => {
   async function removeFridgeMember(fridgeId: string, userId: string) {
     await api.delete(`/fridges/${fridgeId}/members/${userId}`)
     await fetchFridgeDetails(fridgeId)
+  }
+
+  async function createFridgeInvite(fridgeId: string): Promise<{ id: string; token: string; expires_at: string }> {
+    return await api.post<{ id: string; token: string; expires_at: string }>(`/fridges/${fridgeId}/invites`)
+  }
+
+  async function getFridgeInvite(token: string): Promise<{ fridge_id: string; fridge_name: string; token: string; expires_at: string }> {
+    return await api.get<{ fridge_id: string; fridge_name: string; token: string; expires_at: string }>(`/fridges/invites/${token}`)
+  }
+
+  async function joinFridge(token: string): Promise<Fridge> {
+    const fridge = await api.post<Fridge>(`/fridges/join/${token}`)
+    await fetchFridges()
+    selectFridge(fridge.id)
+    return fridge
+  }
+
+  async function leaveFridge(fridgeId: string): Promise<void> {
+    await api.post(`/fridges/${fridgeId}/leave`)
+    await fetchFridges()
+    if (currentFridgeId.value === fridgeId) {
+      currentFridgeId.value = fridges.value.length > 0 ? fridges.value[0].id : null
+      if (currentFridgeId.value) {
+        api.setFridgeId(currentFridgeId.value)
+      }
+    }
+  }
+
+  async function transferFridgeOwnership(fridgeId: string, newOwnerId: string): Promise<void> {
+    await api.post(`/fridges/${fridgeId}/transfer`, { new_owner_id: newOwnerId })
+    await fetchFridgeDetails(fridgeId)
+    await fetchFridges()
   }
 
   // Listen for 401 events
@@ -196,7 +237,13 @@ export const useAuthStore = defineStore('auth', () => {
     updatePassword,
     deleteAccount,
     fetchFridgeDetails,
+    fetchFridges,
     addFridgeMember,
     removeFridgeMember,
+    createFridgeInvite,
+    getFridgeInvite,
+    joinFridge,
+    leaveFridge,
+    transferFridgeOwnership,
   }
 })

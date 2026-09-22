@@ -21,6 +21,11 @@ const routes = [
     meta: { guestOnly: true },
   },
   {
+    path: '/join/:token',
+    name: 'join-fridge',
+    component: () => import('@/views/JoinFridgeView.vue'),
+  },
+  {
     path: '/:pathMatch(.*)*',
     redirect: '/',
   },
