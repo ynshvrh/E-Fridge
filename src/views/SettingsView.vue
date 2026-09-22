@@ -15,7 +15,12 @@ import {
   Loader2,
   ShieldAlert,
   Sun,
-  Moon
+  Moon,
+  Link,
+  Copy,
+  Check,
+  LogOut,
+  Crown
 } from 'lucide-vue-next'
 
 const router = useRouter()
@@ -43,6 +48,10 @@ const confirmPassword = ref('')
 // Member Form
 const inviteEmail = ref('')
 const inviteRole = ref('member')
+const inviteLink = ref<string | null>(null)
+const isGeneratingInvite = ref(false)
+const copiedInvite = ref(false)
+const isLeaving = ref(false)
 
 // Account Deletion Modal
 const showDeleteModal = ref(false)
@@ -174,6 +183,78 @@ async function handleRemoveMember(userId: string) {
     showNotice('Учасника вилучено')
   } catch (err: any) {
     showError(err.message || 'Помилка вилучення')
+  }
+}
+
+async function handleGenerateInviteLink() {
+  if (!authStore.currentFridgeId) return
+  isGeneratingInvite.value = true
+  clearNotices()
+  try {
+    const inv = await authStore.createFridgeInvite(authStore.currentFridgeId)
+    const origin = window.location.origin
+    inviteLink.value = `${origin}/join/${inv.token}`
+    showNotice('Посилання для запрошення створено! Дійсне 7 днів.')
+  } catch (err: any) {
+    showError(err.message || 'Не вдалося створити посилання')
+  } finally {
+    isGeneratingInvite.value = false
+  }
+}
+
+async function handleCopyInviteLink() {
+  if (!inviteLink.value) return
+  try {
+    await navigator.clipboard.writeText(inviteLink.value)
+    copiedInvite.value = true
+    setTimeout(() => {
+      copiedInvite.value = false
+    }, 2500)
+    showNotice('Посилання скопійовано в буфер обміну!')
+  } catch (e) {
+    showError('Не вдалося скопіювати посилання')
+  }
+}
+
+async function handleTransferOwnership(targetUserId: string, targetUserName: string) {
+  if (!authStore.currentFridgeId) return
+  if (!confirm(`Ви дійсно бажаєте передати статус головного власника користувачу ${targetUserName}? Ви залишитеся адміністратором.`)) {
+    return
+  }
+  clearNotices()
+  try {
+    await authStore.transferFridgeOwnership(authStore.currentFridgeId, targetUserId)
+    showNotice(`Права власника успішно передано користувачу ${targetUserName}!`)
+  } catch (err: any) {
+    showError(err.message || 'Помилка передачі прав')
+  }
+}
+
+async function handleLeaveFridge() {
+  if (!authStore.currentFridgeId) return
+  const isOwner = authStore.currentFridge?.role === 'owner'
+  const memberCount = authStore.currentFridge?.members?.length || 1
+
+  if (isOwner && memberCount > 1) {
+    showError('Ви є власником. Щоб вийти з холодильника, спочатку передайте статус власника іншому учаснику.')
+    return
+  }
+
+  const confirmMsg = isOwner && memberCount === 1
+    ? 'Ви єдиний учасник і власник цього холодильника. Якщо ви вийдете, холодильник буде повністю видалено. Продовжити?'
+    : 'Ви впевнені, що бажаєте покинути цей холодильник?'
+
+  if (!confirm(confirmMsg)) return
+
+  isLeaving.value = true
+  clearNotices()
+  try {
+    await authStore.leaveFridge(authStore.currentFridgeId)
+    showNotice('Ви успішно покинули холодильник')
+  } catch (err: any) {
+    showError(err.message || 'Не вдалося покинути холодильник')
+  } finally {
+    isLeaving.value = false
   }
 }
 
@@ -425,15 +506,37 @@ function clearNotices() {
             <div class="font-medium text-zinc-800 dark:text-zinc-100">{{ mem.name }}</div>
             <div class="text-[11px] text-zinc-400">{{ mem.email }}</div>
           </div>
-          <div class="flex items-center gap-2">
-            <span class="px-2 py-0.5 bg-violet-100 dark:bg-violet-950/60 text-violet-800 dark:text-violet-300 rounded-md font-medium text-[10px]">
-              {{ mem.role === 'owner' ? 'Власник' : 'Учасник' }}
+          <div class="flex items-center gap-1.5">
+            <!-- Role Badge -->
+            <span
+              :class="[
+                'px-2 py-0.5 rounded-md font-medium text-[10px]',
+                mem.role === 'owner' ? 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-200/60 dark:border-amber-800/40' :
+                mem.role === 'admin' ? 'bg-violet-100 dark:bg-violet-950/60 text-violet-800 dark:text-violet-300 border border-violet-200/60 dark:border-violet-800/40' :
+                'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300'
+              ]"
+            >
+              {{ mem.role === 'owner' ? 'Власник' : (mem.role === 'admin' ? 'Адміністратор' : 'Учасник') }}
             </span>
+
+            <!-- Transfer Ownership (only owner can transfer to non-owner) -->
             <button
               v-if="mem.role !== 'owner' && authStore.currentFridge?.role === 'owner'"
               type="button"
+              @click="handleTransferOwnership(mem.id, mem.name)"
+              class="p-1.5 text-zinc-400 hover:text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/40 rounded-lg transition-colors cursor-pointer"
+              title="Передати статус власника"
+            >
+              <Crown class="w-3.5 h-3.5" />
+            </button>
+
+            <!-- Remove Member -->
+            <button
+              v-if="mem.role !== 'owner' && (authStore.currentFridge?.role === 'owner' || (authStore.currentFridge?.role === 'admin' && mem.role !== 'admin'))"
+              type="button"
               @click="handleRemoveMember(mem.id)"
-              class="p-1 text-zinc-400 hover:text-rose-600 transition-colors cursor-pointer"
+              class="p-1.5 text-zinc-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors cursor-pointer"
+              title="Вилучити учасника"
             >
               <Trash2 class="w-3.5 h-3.5" />
             </button>
@@ -441,8 +544,43 @@ function clearNotices() {
         </div>
       </div>
 
-      <!-- Invite form -->
-      <div class="pt-3 border-t border-zinc-100 dark:border-zinc-800">
+      <!-- Invite by link -->
+      <div class="pt-4 border-t border-zinc-100 dark:border-zinc-800 space-y-2">
+        <div class="flex items-center justify-between">
+          <h4 class="text-xs font-semibold text-zinc-700 dark:text-zinc-300">Запрошення за посиланням</h4>
+          <button
+            v-if="!inviteLink && (authStore.currentFridge?.role === 'owner' || authStore.currentFridge?.role === 'admin')"
+            type="button"
+            :disabled="isGeneratingInvite"
+            @click="handleGenerateInviteLink"
+            class="text-xs text-violet-600 dark:text-violet-400 hover:underline font-medium cursor-pointer flex items-center gap-1"
+          >
+            <Loader2 v-if="isGeneratingInvite" class="w-3.5 h-3.5 animate-spin" />
+            <Link v-else class="w-3.5 h-3.5" />
+            <span>Створити посилання</span>
+          </button>
+        </div>
+
+        <div v-if="inviteLink" class="flex gap-2">
+          <input
+            :value="inviteLink"
+            readonly
+            class="flex-1 px-3 py-2 bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 text-xs rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none"
+          />
+          <button
+            type="button"
+            @click="handleCopyInviteLink"
+            class="px-3 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-xl text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
+          >
+            <Check v-if="copiedInvite" class="w-3.5 h-3.5" />
+            <Copy v-else class="w-3.5 h-3.5" />
+            <span>{{ copiedInvite ? 'Скопійовано' : 'Копіювати' }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Invite by email form -->
+      <div v-if="authStore.currentFridge?.role === 'owner' || authStore.currentFridge?.role === 'admin'" class="pt-3 border-t border-zinc-100 dark:border-zinc-800">
         <h4 class="text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Запросити учасника за email</h4>
         <form @submit.prevent="handleInviteMember" class="flex flex-col sm:flex-row gap-2 text-xs">
           <input
@@ -459,6 +597,24 @@ function clearNotices() {
             Запросити
           </button>
         </form>
+      </div>
+
+      <!-- Leave fridge section -->
+      <div class="pt-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
+        <div>
+          <h4 class="text-xs font-semibold text-zinc-700 dark:text-zinc-300">Покинути холодильник</h4>
+          <p class="text-[11px] text-zinc-400">Ви втратите доступ до спільних продуктів цього холодильника</p>
+        </div>
+        <button
+          type="button"
+          :disabled="isLeaving"
+          @click="handleLeaveFridge"
+          class="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 dark:hover:bg-rose-900/60 text-rose-600 dark:text-rose-400 border border-rose-200/80 dark:border-rose-900/60 rounded-xl text-xs font-medium transition-colors cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
+        >
+          <Loader2 v-if="isLeaving" class="w-3.5 h-3.5 animate-spin" />
+          <LogOut v-else class="w-3.5 h-3.5" />
+          <span>Вийти</span>
+        </button>
       </div>
     </div>
 
