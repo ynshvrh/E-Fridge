@@ -34,15 +34,23 @@ onMounted(async () => {
 })
 
 async function handleAddItem() {
-  if (!newItemName.value.trim()) return
+  const name = newItemName.value.trim()
+  if (!name) return
+  const prevCount = shoppingStore.items.length
   isAdding.value = true
   try {
     await shoppingStore.addItem({
-      name: newItemName.value.trim(),
+      name,
       quantity: newItemQty.value || 1,
       unit: newItemUnit.value || 'шт',
       category: newItemCategory.value || 'other',
     })
+    const merged = shoppingStore.items.length === prevCount
+    if (merged) {
+      showNotice(`Товар "${name}" вже був у списку — кількість об'єднано!`)
+    } else {
+      showNotice(`Товар "${name}" додано до списку покупок!`)
+    }
     newItemName.value = ''
     newItemQty.value = 1
   } catch (err: any) {
@@ -63,8 +71,8 @@ async function handleToggleBought(item: ShoppingItem) {
 async function handleMoveToFridge(item: ShoppingItem) {
   movingItemId.value = item.id
   try {
-    await shoppingStore.purchaseAndMoveToFridge(item.id, 7)
-    showNotice(`Товар "${item.name}" додано до холодильника!`)
+    const prod = await shoppingStore.purchaseAndMoveToFridge(item.id, 7)
+    showNotice(`Товар "${item.name}" додано до холодильника (залишок: ${prod.quantity} ${prod.unit})!`)
   } catch (err: any) {
     alert(err.message || 'Помилка перенесення до холодильника')
   } finally {
