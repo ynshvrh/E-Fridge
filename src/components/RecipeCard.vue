@@ -102,12 +102,12 @@ const emit = defineEmits<{
     <div class="pt-2 flex flex-wrap items-center gap-1.5 border-t border-amber-200/50 dark:border-amber-900/30 mt-1">
       <button
         @click="emit('cook', recipe)"
-        :disabled="isCooking"
-        title="Приготувати страву та списати продукти з холодильника"
-        class="py-1.5 px-2.5 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 active:scale-95 text-white text-xs font-semibold rounded-xl shadow-2xs shadow-violet-500/20 transition-all inline-flex items-center justify-center gap-1.5 disabled:opacity-60 cursor-pointer shrink-0 whitespace-nowrap"
+        :disabled="isCooking || (recipe.ingredients.length > 0 && recipe.ingredients.every(i => !i.in_fridge))"
+        :title="recipe.ingredients.length > 0 && recipe.ingredients.every(i => !i.in_fridge) ? 'Усі інгредієнти відсутні в холодильнику' : 'Приготувати страву та списати продукти з холодильника'"
+        class="py-1.5 px-2.5 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 active:scale-95 text-white text-xs font-semibold rounded-xl shadow-2xs shadow-violet-500/20 transition-all inline-flex items-center justify-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shrink-0 whitespace-nowrap"
       >
         <CookingPot class="w-3.5 h-3.5" />
-        <span>{{ isCooking ? 'Готується...' : 'Приготувати' }}</span>
+        <span>{{ isCooking ? 'Готується...' : (recipe.ingredients.length > 0 && recipe.ingredients.every(i => !i.in_fridge) ? 'Немає продуктів' : 'Приготувати') }}</span>
       </button>
 
       <button
