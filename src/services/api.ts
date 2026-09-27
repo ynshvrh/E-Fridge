@@ -3,6 +3,10 @@ import type { APIResponse } from '@/types'
 const API_BASE_URL = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '')
 const BASE_URL = `${API_BASE_URL}/api/v1`
 
+export interface ApiRequestOptions extends RequestInit {
+  timeout?: number
+}
+
 class ApiClient {
   private getAccessToken(): string | null {
     return localStorage.getItem('e_fridge_access_token')
@@ -12,7 +16,7 @@ class ApiClient {
     return localStorage.getItem('e_fridge_refresh_token')
   }
 
-  private getFridgeId(): string | null {
+  public getFridgeId(): string | null {
     return localStorage.getItem('e_fridge_current_fridge_id')
   }
 
@@ -78,7 +82,7 @@ class ApiClient {
     return this.refreshPromise
   }
 
-  public async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+  public async request<T>(endpoint: string, options: ApiRequestOptions = {}): Promise<T> {
     const url = `${BASE_URL}${endpoint}`
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
@@ -96,25 +100,51 @@ class ApiClient {
       headers['X-Fridge-Id'] = fridgeId
     }
 
+    // Default timeout: 60s for AI/Chef/Planner, 25s for general API
+    const isAiEndpoint = endpoint.includes('/chef') || endpoint.includes('/generate') || endpoint.includes('/planner')
+    const timeoutMs = options.timeout ?? (isAiEndpoint ? 60000 : 25000)
+
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs)
+
     let response: Response
     try {
       response = await fetch(url, {
         ...options,
         headers,
+        signal: options.signal || controller.signal,
       })
     } catch (networkErr: any) {
+      if (networkErr?.name === 'AbortError') {
+        throw new Error(`Перевищено час очікування відповіді від сервера (${Math.round(timeoutMs / 1000)} с). Спробуйте ще раз або перевірте мережу.`)
+      }
       throw new Error(`Помилка мережі: не вдалося з'єднатися з сервером (${networkErr?.message || 'перевірте з\'єднання'})`)
+    } finally {
+      clearTimeout(timeoutId)
     }
 
     // Auto-refresh token if 401
     if (response.status === 401 && !endpoint.includes('/auth/login') && !endpoint.includes('/auth/refresh')) {
       const newToken = await this.refreshAccessToken()
       headers['Authorization'] = `Bearer ${newToken}`
+
+      const retryController = new AbortController()
+      const retryTimeoutId = setTimeout(() => retryController.abort(), timeoutMs)
+
       let retryResponse: Response
       try {
-        retryResponse = await fetch(url, { ...options, headers })
+        retryResponse = await fetch(url, {
+          ...options,
+          headers,
+          signal: options.signal || retryController.signal,
+        })
       } catch (networkErr: any) {
+        if (networkErr?.name === 'AbortError') {
+          throw new Error(`Перевищено час очікування відповіді від сервера (${Math.round(timeoutMs / 1000)} с).`)
+        }
         throw new Error(`Помилка мережі при повторному запиті: ${networkErr?.message || 'перевірте з\'єднання'}`)
+      } finally {
+        clearTimeout(retryTimeoutId)
       }
 
       let retryData: APIResponse<T>
@@ -151,33 +181,36 @@ class ApiClient {
     return data.data as T
   }
 
-  public get<T>(endpoint: string): Promise<T> {
-    return this.request<T>(endpoint, { method: 'GET' })
+  public get<T>(endpoint: string, options?: ApiRequestOptions): Promise<T> {
+    return this.request<T>(endpoint, { method: 'GET', ...options })
   }
 
-  public post<T>(endpoint: string, body?: unknown): Promise<T> {
+  public post<T>(endpoint: string, body?: unknown, options?: ApiRequestOptions): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'POST',
       body: body ? JSON.stringify(body) : undefined,
+      ...options,
     })
   }
 
-  public put<T>(endpoint: string, body?: unknown): Promise<T> {
+  public put<T>(endpoint: string, body?: unknown, options?: ApiRequestOptions): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'PUT',
       body: body ? JSON.stringify(body) : undefined,
+      ...options,
     })
   }
 
-  public patch<T>(endpoint: string, body?: unknown): Promise<T> {
+  public patch<T>(endpoint: string, body?: unknown, options?: ApiRequestOptions): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'PATCH',
       body: body ? JSON.stringify(body) : undefined,
+      ...options,
     })
   }
 
-  public delete<T>(endpoint: string): Promise<T> {
-    return this.request<T>(endpoint, { method: 'DELETE' })
+  public delete<T>(endpoint: string, options?: ApiRequestOptions): Promise<T> {
+    return this.request<T>(endpoint, { method: 'DELETE', ...options })
   }
 }
 

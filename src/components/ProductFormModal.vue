@@ -10,8 +10,10 @@ import {
   Sparkles,
   SlidersHorizontal,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  Camera
 } from 'lucide-vue-next'
+import BarcodeScannerModal from '@/components/BarcodeScannerModal.vue'
 import { useProductStore } from '@/stores/products'
 import type { Product, CategoryInfo, CreateProductInput, UpdateProductInput, BarcodeProductResult } from '@/types'
 
@@ -50,6 +52,13 @@ const barcodeInput = ref('')
 const isLookingUpBarcode = ref(false)
 const barcodeResolved = ref<BarcodeProductResult | null>(null)
 const barcodeError = ref<string | null>(null)
+const isScannerOpen = ref(false)
+
+function handleBarcodeScanned(code: string) {
+  barcodeInput.value = code
+  isScannerOpen.value = false
+  handleBarcodeLookup()
+}
 
 // AI mode state
 const aiPrompt = ref('')
@@ -297,6 +306,15 @@ function save() {
               class="flex-1 px-3.5 py-2.5 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-xs rounded-xl border border-zinc-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500"
               @keyup.enter.prevent="handleBarcodeLookup"
             />
+            <button
+              type="button"
+              @click="isScannerOpen = true"
+              title="Сканувати штрих-код камерою"
+              class="px-3 py-2.5 bg-violet-100 dark:bg-violet-950/70 hover:bg-violet-200 dark:hover:bg-violet-900/80 text-violet-700 dark:text-violet-300 text-xs font-medium rounded-xl flex items-center gap-1.5 transition-colors shrink-0 cursor-pointer"
+            >
+              <Camera class="w-3.5 h-3.5" />
+              <span class="hidden sm:inline">Камера</span>
+            </button>
             <button
               type="button"
               @click="handleBarcodeLookup"
@@ -663,4 +681,10 @@ function save() {
     </div>
   </div>
   </Teleport>
+
+  <BarcodeScannerModal
+    :open="isScannerOpen"
+    @close="isScannerOpen = false"
+    @scanned="handleBarcodeScanned"
+  />
 </template>

@@ -5,12 +5,10 @@ import { useProductStore } from '@/stores/products'
 import {
   ShoppingCart,
   Plus,
-  Trash2,
-  Check,
-  PackagePlus,
   CheckCircle2,
   ShoppingBag
 } from 'lucide-vue-next'
+import ShoppingItemRow from '@/components/ShoppingItemRow.vue'
 import type { ShoppingItem } from '@/types'
 
 const shoppingStore = useShoppingStore()
@@ -226,49 +224,15 @@ function showNotice(msg: string) {
         </div>
 
         <div v-else class="space-y-1.5">
-          <div
+          <ShoppingItemRow
             v-for="item in shoppingStore.items.filter(i => !i.is_bought)"
             :key="item.id"
-            class="group bg-white dark:bg-[#121217] p-2.5 rounded-xl border border-zinc-200/80 dark:border-zinc-800 hover:border-violet-300 dark:hover:border-violet-700 shadow-xs flex items-center justify-between gap-3 transition-all"
-          >
-            <!-- Item info -->
-            <div class="flex items-center gap-3 flex-1 min-w-0">
-              <div class="w-2 h-2 rounded-full bg-violet-600 dark:bg-violet-400 shrink-0"></div>
-              <div class="truncate">
-                <span class="text-xs sm:text-sm font-medium text-zinc-800 dark:text-zinc-100 truncate block">
-                  {{ item.name }}
-                </span>
-                <span class="text-[11px] text-zinc-400 dark:text-zinc-500">
-                  {{ item.quantity }} {{ item.unit }}
-                </span>
-              </div>
-            </div>
-
-            <!-- Action buttons -->
-            <div class="flex items-center gap-1.5 shrink-0">
-              <!-- Buy & Move to Fridge -->
-              <button
-                type="button"
-                @click="handleMoveToFridge(item)"
-                :disabled="movingItemId === item.id"
-                title="Позначити як куплене та перенести в холодильник"
-                class="px-3 py-1.5 text-xs font-medium bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 active:scale-95 text-white rounded-xl shadow-xs transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
-              >
-                <Check class="w-3.5 h-3.5" />
-                <span>{{ movingItemId === item.id ? 'Додаємо...' : 'Куплено' }}</span>
-              </button>
-
-              <!-- Delete -->
-              <button
-                type="button"
-                @click="handleDeleteItem(item.id)"
-                title="Видалити"
-                class="p-1.5 text-zinc-300 dark:text-zinc-600 hover:text-rose-500 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg transition-colors cursor-pointer"
-              >
-                <Trash2 class="w-3.5 h-3.5" />
-              </button>
-            </div>
-          </div>
+            :item="item"
+            :is-moving="movingItemId === item.id"
+            @move="handleMoveToFridge"
+            @toggle="handleToggleBought"
+            @delete="handleDeleteItem"
+          />
         </div>
       </div>
 
@@ -288,52 +252,15 @@ function showNotice(msg: string) {
         </div>
 
         <div class="space-y-1.5">
-          <div
+          <ShoppingItemRow
             v-for="item in shoppingStore.items.filter(i => i.is_bought)"
             :key="item.id"
-            class="bg-zinc-50/80 dark:bg-zinc-900/60 p-2.5 rounded-2xl border border-zinc-200/60 dark:border-zinc-800/60 flex items-center justify-between gap-3 opacity-75 hover:opacity-100 transition-all"
-          >
-            <div class="flex items-center gap-3 flex-1 min-w-0">
-              <button
-                type="button"
-                @click="handleToggleBought(item)"
-                class="w-5 h-5 rounded-lg bg-violet-600 text-white flex items-center justify-center shrink-0 cursor-pointer"
-              >
-                <Check class="w-3.5 h-3.5 stroke-[3]" />
-              </button>
-              <div class="truncate">
-                <span class="text-xs line-through text-zinc-400 dark:text-zinc-500 font-normal truncate block">
-                  {{ item.name }}
-                </span>
-                <span class="text-[10px] text-zinc-400 dark:text-zinc-500">
-                  {{ item.quantity }} {{ item.unit }}
-                </span>
-              </div>
-            </div>
-
-            <div class="flex items-center gap-1.5 shrink-0">
-              <!-- Move to Fridge -->
-              <button
-                type="button"
-                @click="handleMoveToFridge(item)"
-                :disabled="movingItemId === item.id"
-                title="Перенести в холодильник"
-                class="px-2 py-1 text-[11px] font-medium bg-violet-100/80 hover:bg-violet-200/80 dark:bg-violet-950/50 dark:hover:bg-violet-900/60 text-violet-800 dark:text-violet-300 rounded-lg transition-colors flex items-center gap-1 cursor-pointer"
-              >
-                <PackagePlus class="w-3 h-3" />
-                <span class="hidden sm:inline">В холодильник</span>
-              </button>
-
-              <!-- Delete -->
-              <button
-                type="button"
-                @click="handleDeleteItem(item.id)"
-                class="p-1 text-zinc-300 dark:text-zinc-600 hover:text-rose-500 dark:hover:text-rose-400 rounded-md transition-colors cursor-pointer"
-              >
-                <Trash2 class="w-3 h-3" />
-              </button>
-            </div>
-          </div>
+            :item="item"
+            :is-moving="movingItemId === item.id"
+            @move="handleMoveToFridge"
+            @toggle="handleToggleBought"
+            @delete="handleDeleteItem"
+          />
         </div>
       </div>
     </div>

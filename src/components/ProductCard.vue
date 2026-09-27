@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import type { Product } from '@/types'
 import {
   Calendar,
@@ -62,96 +62,174 @@ const expiryBadge = computed(() => {
 const hasMacros = computed(() => {
   return props.product.calories > 0 || props.product.protein > 0 || props.product.fat > 0 || props.product.carbs > 0
 })
+
+// Mobile Touch Swipes
+const touchStartX = ref(0)
+const touchStartY = ref(0)
+const swipeOffset = ref(0)
+const isSwiping = ref(false)
+
+function handleTouchStart(e: TouchEvent) {
+  if (e.touches.length !== 1) return
+  touchStartX.value = e.touches[0].clientX
+  touchStartY.value = e.touches[0].clientY
+  isSwiping.value = true
+}
+
+function handleTouchMove(e: TouchEvent) {
+  if (!isSwiping.value) return
+  const currentX = e.touches[0].clientX
+  const currentY = e.touches[0].clientY
+  const diffX = currentX - touchStartX.value
+  const diffY = currentY - touchStartY.value
+
+  // Only handle horizontal swipes
+  if (Math.abs(diffX) > Math.abs(diffY)) {
+    // Limit max swipe distance to 85px with soft resistance
+    swipeOffset.value = Math.max(-85, Math.min(85, diffX))
+  }
+}
+
+function handleTouchEnd() {
+  if (!isSwiping.value) return
+  isSwiping.value = false
+
+  if (swipeOffset.value > 55) {
+    // Swiped right -> quick consume
+    if (quickAmount.value > 0) {
+      emit('consume', props.product.id, quickAmount.value, props.product.unit)
+    }
+  } else if (swipeOffset.value < -55) {
+    // Swiped left -> delete
+    emit('delete', props.product.id)
+  }
+
+  swipeOffset.value = 0
+}
 </script>
 
 <template>
-  <div
-    class="group relative bg-white dark:bg-[#121217] border border-zinc-200/80 dark:border-zinc-800 rounded-xl p-2.5 sm:p-3.5 transition-all hover:shadow-md hover:border-violet-300 dark:hover:border-violet-700 flex flex-col justify-between gap-2 sm:gap-2.5"
-  >
-    <!-- Top Row: Name, Category & Actions -->
-    <div>
-      <div class="flex items-start justify-between gap-2">
-        <div>
-          <h3 class="font-medium text-zinc-800 dark:text-zinc-100 text-sm sm:text-base leading-snug">
-            {{ product.name }}
-          </h3>
-          <p v-if="product.notes" class="text-xs text-zinc-400 dark:text-zinc-500 mt-0.5 line-clamp-1">
-            {{ product.notes }}
-          </p>
-        </div>
-
-        <div class="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
-          <button
-            type="button"
-            @click="emit('edit', product)"
-            title="Редагувати"
-            class="p-1.5 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors cursor-pointer"
-          >
-            <Edit2 class="w-3.5 h-3.5" />
-          </button>
-          <button
-            type="button"
-            @click="emit('delete', product.id)"
-            title="Видалити"
-            class="p-1.5 text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg transition-colors cursor-pointer"
-          >
-            <Trash2 class="w-3.5 h-3.5" />
-          </button>
-        </div>
-      </div>
-
-      <!-- Expiry badge & Category -->
-      <div class="flex flex-wrap items-center gap-2 mt-2">
-        <span
-          v-if="expiryBadge"
-          :class="['text-[11px] font-medium px-2 py-0.5 rounded-full border flex items-center gap-1', expiryBadge.classes]"
-        >
-          <Calendar class="w-3 h-3" />
-          {{ expiryBadge.text }}
-        </span>
-
-        <span class="text-[11px] font-medium px-2 py-0.5 rounded-full bg-zinc-100/80 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
-          {{ product.category }}
-        </span>
+  <!-- Outer container with action backdrops revealed by swipe -->
+  <div class="relative overflow-hidden rounded-xl">
+    <!-- Swipe action background for Swipe Right (Consume) -->
+    <div
+      class="absolute inset-y-0 left-0 w-24 bg-emerald-600 dark:bg-emerald-700 text-white flex items-center justify-start pl-4 rounded-xl transition-opacity pointer-events-none"
+      :style="{ opacity: swipeOffset > 10 ? Math.min(1, swipeOffset / 50) : 0 }"
+    >
+      <div class="flex items-center gap-1.5 text-xs font-semibold">
+        <Utensils class="w-4 h-4" />
+        <span>-{{ quickAmount }}</span>
       </div>
     </div>
 
-    <!-- Macros preview if available -->
-    <div v-if="hasMacros" class="flex items-center gap-2 text-[11px] text-zinc-500 dark:text-zinc-400 bg-zinc-50/80 dark:bg-zinc-800/60 px-2.5 py-1.5 rounded-xl border border-zinc-200/50 dark:border-zinc-700/50">
-      <span v-if="product.calories" class="font-medium text-zinc-700 dark:text-zinc-200">{{ product.calories }} ккал</span>
-      <span v-if="product.protein">Б: {{ product.protein }}г</span>
-      <span v-if="product.fat">Ж: {{ product.fat }}г</span>
-      <span v-if="product.carbs">В: {{ product.carbs }}г</span>
+    <!-- Swipe action background for Swipe Left (Delete) -->
+    <div
+      class="absolute inset-y-0 right-0 w-24 bg-rose-600 dark:bg-rose-700 text-white flex items-center justify-end pr-4 rounded-xl transition-opacity pointer-events-none"
+      :style="{ opacity: swipeOffset < -10 ? Math.min(1, Math.abs(swipeOffset) / 50) : 0 }"
+    >
+      <div class="flex items-center gap-1.5 text-xs font-semibold">
+        <Trash2 class="w-4 h-4" />
+        <span>Видалити</span>
+      </div>
     </div>
 
-    <!-- Bottom Row: Quantity & Quick Consume -->
-    <div class="flex items-center justify-between pt-2 border-t border-zinc-100 dark:border-zinc-800">
-      <div class="text-sm">
-        <span class="text-xs text-zinc-400 dark:text-zinc-500">Кількість:</span>
-        <span class="ml-1.5 font-semibold text-zinc-800 dark:text-zinc-100">
-          {{ product.quantity }} {{ product.unit }}
-        </span>
+    <!-- Main Card Body -->
+    <div
+      class="group relative bg-white dark:bg-[#121217] border border-zinc-200/80 dark:border-zinc-800 rounded-xl p-2.5 sm:p-3.5 hover:shadow-md hover:border-violet-300 dark:hover:border-violet-700 flex flex-col justify-between gap-2 sm:gap-2.5 select-none"
+      :style="{
+        transform: swipeOffset ? `translateX(${swipeOffset}px)` : undefined,
+        transition: isSwiping ? 'none' : 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)'
+      }"
+      @touchstart.passive="handleTouchStart"
+      @touchmove="handleTouchMove"
+      @touchend="handleTouchEnd"
+      @touchcancel="handleTouchEnd"
+    >
+      <!-- Top Row: Name, Category & Actions -->
+      <div>
+        <div class="flex items-start justify-between gap-2">
+          <div>
+            <h3 class="font-medium text-zinc-800 dark:text-zinc-100 text-sm sm:text-base leading-snug">
+              {{ product.name }}
+            </h3>
+            <p v-if="product.notes" class="text-xs text-zinc-400 dark:text-zinc-500 mt-0.5 line-clamp-1">
+              {{ product.notes }}
+            </p>
+          </div>
+
+          <div class="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+            <button
+              type="button"
+              @click="emit('edit', product)"
+              title="Редагувати"
+              class="p-1.5 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors cursor-pointer"
+            >
+              <Edit2 class="w-3.5 h-3.5" />
+            </button>
+            <button
+              type="button"
+              @click="emit('delete', product.id)"
+              title="Видалити"
+              class="p-1.5 text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg transition-colors cursor-pointer"
+            >
+              <Trash2 class="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+
+        <!-- Expiry badge & Category -->
+        <div class="flex flex-wrap items-center gap-2 mt-2">
+          <span
+            v-if="expiryBadge"
+            :class="['text-[11px] font-medium px-2 py-0.5 rounded-full border flex items-center gap-1', expiryBadge.classes]"
+          >
+            <Calendar class="w-3 h-3" />
+            {{ expiryBadge.text }}
+          </span>
+
+          <span class="text-[11px] font-medium px-2 py-0.5 rounded-full bg-zinc-100/80 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
+            {{ product.category }}
+          </span>
+        </div>
       </div>
 
-      <div class="flex items-center gap-1.5">
-        <button
-          type="button"
-          @click="emit('eat', product)"
-          title="З'їсти порцію (записати в щоденник)"
-          class="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-xl bg-violet-50 dark:bg-violet-950/50 text-violet-700 dark:text-violet-300 hover:bg-violet-100 dark:hover:bg-violet-900/60 font-medium transition-colors cursor-pointer border border-violet-200/50 dark:border-violet-800/50"
-        >
-          <Utensils class="w-3 h-3" />
-          <span>З'їсти</span>
-        </button>
+      <!-- Macros preview if available -->
+      <div v-if="hasMacros" class="flex items-center gap-2 text-[11px] text-zinc-500 dark:text-zinc-400 bg-zinc-50/80 dark:bg-zinc-800/60 px-2.5 py-1.5 rounded-xl border border-zinc-200/50 dark:border-zinc-700/50">
+        <span v-if="product.calories" class="font-medium text-zinc-700 dark:text-zinc-200">{{ product.calories }} ккал</span>
+        <span v-if="product.protein">Б: {{ product.protein }}г</span>
+        <span v-if="product.fat">Ж: {{ product.fat }}г</span>
+        <span v-if="product.carbs">В: {{ product.carbs }}г</span>
+      </div>
 
-        <button
-          type="button"
-          @click="emit('consume', product.id, quickAmount, product.unit)"
-          :title="`Списати ${quickAmount} ${product.unit}`"
-          class="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 font-medium transition-colors cursor-pointer border border-zinc-200/60 dark:border-zinc-700"
-        >
-          <span>-{{ quickAmount }} {{ product.unit }}</span>
-        </button>
+      <!-- Bottom Row: Quantity & Quick Consume -->
+      <div class="flex items-center justify-between pt-2 border-t border-zinc-100 dark:border-zinc-800">
+        <div class="text-sm">
+          <span class="text-xs text-zinc-400 dark:text-zinc-500">Кількість:</span>
+          <span class="ml-1.5 font-semibold text-zinc-800 dark:text-zinc-100">
+            {{ product.quantity }} {{ product.unit }}
+          </span>
+        </div>
+
+        <div class="flex items-center gap-1.5">
+          <button
+            type="button"
+            @click="emit('eat', product)"
+            title="З'їсти порцію (записати в щоденник)"
+            class="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-xl bg-violet-50 dark:bg-violet-950/50 text-violet-700 dark:text-violet-300 hover:bg-violet-100 dark:hover:bg-violet-900/60 font-medium transition-colors cursor-pointer border border-violet-200/50 dark:border-violet-800/50"
+          >
+            <Utensils class="w-3 h-3" />
+            <span>З'їсти</span>
+          </button>
+
+          <button
+            type="button"
+            @click="emit('consume', product.id, quickAmount, product.unit)"
+            :title="`Списати ${quickAmount} ${product.unit}`"
+            class="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 font-medium transition-colors cursor-pointer border border-zinc-200/60 dark:border-zinc-700"
+          >
+            <span>-{{ quickAmount }} {{ product.unit }}</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>

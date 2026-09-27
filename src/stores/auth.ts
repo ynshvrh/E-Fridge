@@ -98,8 +98,13 @@ export const useAuthStore = defineStore('auth', () => {
       const data = await api.get<{ user: User; fridges: Fridge[] }>('/auth/me')
       user.value = data.user
       fridges.value = data.fridges || []
-      if (fridges.value.length > 0 && !currentFridgeId.value) {
-        selectFridge(fridges.value[0].id)
+      if (fridges.value.length > 0) {
+        const found = fridges.value.find((f) => f.id === currentFridgeId.value)
+        if (!found) {
+          selectFridge(fridges.value[0].id)
+        } else {
+          api.setFridgeId(found.id)
+        }
       }
     } catch {
       user.value = null

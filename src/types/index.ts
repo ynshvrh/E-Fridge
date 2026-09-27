@@ -251,6 +251,7 @@ export interface ChatMessage {
   content: string
   recipe?: Recipe
   shopping_suggestions?: ShoppingSuggestion[]
+  image_url?: string
 }
 
 export interface ChatRequest {
@@ -258,6 +259,7 @@ export interface ChatRequest {
   history?: { role: string; content: string }[]
   dietary_preference?: string
   language?: string
+  image_base64?: string
 }
 
 export interface ChatResponse {
@@ -440,6 +442,7 @@ export interface ChefChatMessage {
   content: string
   recipe?: Recipe
   shopping_suggestions?: ShoppingSuggestion[]
+  image_url?: string
   created_at?: string
 }
 
