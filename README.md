@@ -45,11 +45,6 @@ E-Fridge Client delivers a desktop-optimized and mobile-responsive experience fo
   - Full-height interactive chat interface with inventory awareness.
   - Compact 2x2 quick prompt suggestions for instant recipe queries.
   - Embedded interactive recipe cards (`RecipeCard.vue`) with macro details, step-by-step instructions, and actions to cook, save, or add missing ingredients to the shopping list.
-- Meal Planner (`PlannerView.vue`):
-  - Single-day planner focusing on breakfast, lunch, and dinner.
-  - One-click AI generation for the entire day with pantry validation.
-  - Slot-level meal regeneration and detailed recipe inspection modal (`RecipeModal.vue`).
-  - Meal completion toggling.
 - Nutrition Tracker (`NutritionView.vue`):
   - Daily aggregated calories, protein, fat, and carbs against user goals.
   - Meal log list by category (Breakfast, Lunch, Dinner, Snack).
@@ -124,7 +119,6 @@ E-Fridge/
 ├── src/
 │   ├── assets/                     # Static media and brand assets
 │   ├── components/                 # Reusable Vue components
-│   │   ├── planner/                # Meal planner recipe modals
 │   │   ├── CookModal.vue           # Recipe cooking confirmation
 │   │   ├── EatModal.vue            # Product consumption & logging modal
 │   │   ├── EditNutritionLogModal.vue # Meal log editing modal
@@ -145,7 +139,6 @@ E-Fridge/
 │   │   ├── chef.ts                 # AI Chef chat state
 │   │   ├── fridge.ts               # Inventory products state
 │   │   ├── nutrition.ts            # Daily goals and meal logs state
-│   │   ├── planner.ts              # Day meal plans state
 │   │   ├── recipes.ts              # Saved recipes collection
 │   │   └── shopping.ts             # Shopping list items state
 │   ├── types/                      # TypeScript interface definitions
@@ -156,7 +149,6 @@ E-Fridge/
 │   │   ├── HomeView.vue            # Main layout wrapper with sidebar
 │   │   ├── LoginView.vue           # Login view
 │   │   ├── NutritionView.vue       # Calorie & macro tracking view
-│   │   ├── PlannerView.vue         # Daily meal planning view
 │   │   ├── RegisterView.vue        # Two-step registration view
 │   │   ├── SavedRecipesView.vue    # Saved recipes collection
 │   │   ├── SettingsView.vue        # User profile and account settings
