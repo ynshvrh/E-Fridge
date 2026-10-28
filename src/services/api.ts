@@ -100,8 +100,8 @@ class ApiClient {
       headers['X-Fridge-Id'] = fridgeId
     }
 
-    // Default timeout: 60s for AI/Chef/Planner, 25s for general API
-    const isAiEndpoint = endpoint.includes('/chef') || endpoint.includes('/generate') || endpoint.includes('/planner')
+    // Default timeout: 60s for AI/Chef, 25s for general API
+    const isAiEndpoint = endpoint.includes('/chef') || endpoint.includes('/generate')
     const timeoutMs = options.timeout ?? (isAiEndpoint ? 60000 : 25000)
 
     const controller = new AbortController()

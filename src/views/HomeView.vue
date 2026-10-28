@@ -9,7 +9,6 @@ import NutritionView from '@/views/NutritionView.vue'
 import ChefView from '@/views/ChefView.vue'
 import ShoppingView from '@/views/ShoppingView.vue'
 import SavedRecipesView from '@/views/SavedRecipesView.vue'
-import PlannerView from '@/views/PlannerView.vue'
 import SettingsView from '@/views/SettingsView.vue'
 import {
   Refrigerator,
@@ -21,7 +20,6 @@ import {
   Activity,
   ShoppingCart,
   BookHeart,
-  CalendarDays,
   Settings,
   Sun,
   Moon,
@@ -34,7 +32,7 @@ const authStore = useAuthStore()
 const { isDark, toggleTheme } = useTheme()
 
 // Navigation tabs
-const currentTab = ref<'fridge' | 'nutrition' | 'chef' | 'shopping' | 'recipes' | 'planner' | 'settings'>('fridge')
+const currentTab = ref<'fridge' | 'nutrition' | 'chef' | 'shopping' | 'recipes' | 'settings'>('fridge')
 
 // New Fridge Modal
 const isCreatingFridge = ref(false)
@@ -187,19 +185,6 @@ async function handleLogout() {
           </span>
         </button>
 
-        <button
-          type="button"
-          @click="currentTab = 'planner'"
-          :class="[
-            'w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-semibold transition-all cursor-pointer text-left',
-            currentTab === 'planner'
-              ? 'bg-gradient-to-r from-violet-600 to-purple-600 text-white shadow-xs shadow-violet-500/25'
-              : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/70 hover:text-zinc-900 dark:hover:text-zinc-100'
-          ]"
-        >
-          <CalendarDays class="w-4 h-4 shrink-0" />
-          <span>План харчування</span>
-        </button>
 
         <button
           type="button"
@@ -398,7 +383,6 @@ async function handleLogout() {
         <FridgeView v-if="currentTab === 'fridge'" @navigate="currentTab = $event" />
         <NutritionView v-else-if="currentTab === 'nutrition'" />
         <ChefView v-else-if="currentTab === 'chef'" />
-        <PlannerView v-else-if="currentTab === 'planner'" />
         <ShoppingView v-else-if="currentTab === 'shopping'" />
         <SavedRecipesView v-else-if="currentTab === 'recipes'" />
         <SettingsView v-else-if="currentTab === 'settings'" />
@@ -453,20 +437,6 @@ async function handleLogout() {
         >
           ШІ Шеф
         </span>
-      </button>
-
-      <button
-        type="button"
-        @click="currentTab = 'planner'"
-        class="flex-1 min-w-0 flex flex-col items-center justify-center gap-0.5 py-1 px-1 rounded-xl transition text-[10px] cursor-pointer"
-        :class="[
-          currentTab === 'planner'
-            ? 'text-violet-600 dark:text-violet-400 font-bold'
-            : 'text-zinc-500 dark:text-zinc-400'
-        ]"
-      >
-        <CalendarDays class="w-5 h-5 shrink-0" />
-        <span class="truncate w-full text-center">План</span>
       </button>
 
       <button

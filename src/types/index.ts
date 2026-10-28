@@ -347,82 +347,6 @@ export interface CreateSavedRecipeInput {
   servings: number
 }
 
-export interface PlannerIngredient {
-  name: string
-  amount: number
-  unit: string
-  in_fridge?: boolean
-}
-
-export interface PlannerRecipeData {
-  prep_time_minutes?: number
-  description?: string
-  ingredients?: PlannerIngredient[]
-  instructions?: string[]
-}
-
-export interface MealPlan {
-  id: string
-  fridge_id: string
-  user_id: string
-  date: string
-  meal_type: 'breakfast' | 'lunch' | 'dinner' | 'snack' | string
-  recipe_title: string
-  recipe_id?: string
-  calories: number
-  protein: number
-  fat: number
-  carbs: number
-  is_completed: boolean
-  notes: string
-  recipe_data?: PlannerRecipeData
-  created_at: string
-  updated_at: string
-}
-
-export interface CreateMealPlanInput {
-  date: string
-  meal_type: string
-  recipe_title: string
-  recipe_id?: string
-  calories?: number
-  protein?: number
-  fat?: number
-  carbs?: number
-  notes?: string
-  recipe_data?: PlannerRecipeData
-}
-
-export interface UpdateMealPlanInput {
-  date: string
-  meal_type: string
-  recipe_title: string
-  recipe_id?: string
-  calories?: number
-  protein?: number
-  fat?: number
-  carbs?: number
-  notes?: string
-  recipe_data?: PlannerRecipeData
-}
-
-export interface GeneratePlanInput {
-  days: number
-  start_date?: string
-  dietary_preference?: string
-}
-
-export interface GenerateDayInput {
-  date: string
-  dietary_preference?: string
-}
-
-export interface GenerateMealInput {
-  date: string
-  meal_type: string
-  dietary_preference?: string
-}
-
 export interface UpdateProfileInput {
   name: string
   dietary_preferences: string
@@ -445,6 +369,3 @@ export interface ChefChatMessage {
   image_url?: string
   created_at?: string
 }
-
-
-
